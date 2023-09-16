@@ -1,0 +1,1 @@
+The scripts given in this Code Bundle are the files which gets created automatically when you create the Django projects as per the steps given in the book. Also, as you work through the book the same file gets modified and each modification, modifies the project output.

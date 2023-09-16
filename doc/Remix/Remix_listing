@@ -1,0 +1,48 @@
+Remix
+	
+	Architect
+		remix-architect		
+		remix-architect-grunge	
+		remix-dynamodb		
+		remix-starter-architect. (https://github.com/remix-run/starter-architect.git)
+
+	Community	
+		kentcdodds.com	
+		onewheel-blog
+
+	Courses
+		RemixSingle
+			01_remix-newsletter
+
+		remix-social	
+		remix-syntax
+
+	Examples
+		remix-file-and-cloudinary-upload	
+		remix-infinite-scrolling
+		remix-image-resize
+		remix-route-nesting
+
+	Modals		
+		MyModalRoute			
+		modalroute.tgz. -> local backup			
+		remix-modals
+		modalroute			
+		my-remix-modal			
+		remix-query-modal-example
+
+	Tutorials
+		remix-blog-tutorial	
+		remix-jokes		
+		remix-start			
+		remix-start-indie.   -> **local dev
+
+	example		
+
+	remix
+
+
+Tools/Architect
+	arc-architect-app		
+		v arc-example-working-locally	(fork locally)
+	arc-introduce-ddb	

@@ -1,0 +1,2865 @@
+From: <Saved by Blink>
+Snapshot-Content-Location: https://mobx.js.org/getting-started
+Subject: MobX: Ten minute introduction to MobX and React
+Date: Mon, 12 Sep 2022 08:37:28 -0000
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	type="text/html";
+	boundary="----MultipartBoundary--8eyw3KXcGX90ofgh8W3GtTevXeVDWAKlusfDralZ2f----"
+
+
+------MultipartBoundary--8eyw3KXcGX90ofgh8W3GtTevXeVDWAKlusfDralZ2f----
+Content-Type: text/html
+Content-ID: <frame-ED13B6587B90BD68FD257CF214D6D316@mhtml.blink>
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://mobx.js.org/getting-started
+
+<!DOCTYPE html><html><head><meta http-equiv=3D"Content-Type" content=3D"tex=
+t/html; charset=3DUTF-8">
+   =20
+    <meta http-equiv=3D"X-UA-Compatible" content=3D"chrome=3D1">
+    <meta name=3D"description" content=3D"Ten minute introduction to MobX +=
+ React">
+
+    <link rel=3D"stylesheet" href=3D"https://mobx.js.org/assets/getting-sta=
+rted-assets/style.css">
+    <link href=3D"https://fonts.googleapis.com/css?family=3DPT+Serif" rel=
+=3D"stylesheet" type=3D"text/css">
+
+    <link rel=3D"shortcut icon" type=3D"image/png" href=3D"https://mobx.js.=
+org/assets/getting-started-assets/images/favicon.png">
+
+    <title>MobX: Ten minute introduction to MobX and React</title>
+</head>
+
+<body>
+    <div class=3D"github-fork-ribbon-wrapper right-bottom fixed">
+        <div class=3D"github-fork-ribbon">
+            <a href=3D"https://github.com/mobxjs/mobx">Fork me on GitHub</a=
+>
+        </div>
+    </div>
+    <table class=3D"root">
+        <tbody><tr>
+            <td class=3D"left">
+              <div class=3D"left-content-wrapper">
+                <div class=3D"left-content">
+                    <header>
+                        <a href=3D"https://mobx.js.org/index.html" style=3D=
+"float:left">
+						<img style=3D"width: 120px; padding-right: 20px;" src=3D"https://mobx=
+.js.org/assets/getting-started-assets/images/mobservable.png" id=3D"logo"><=
+/a>
+                        <h1 id=3D"project_title">MobX</h1>
+                        <h2 id=3D"project_tagline" style=3D"font-size: 18pt=
+">Ten minute introduction to MobX and React</h2>
+                        <hr>
+                    </header>
+
+                    <section id=3D"main_content">
+                        <p>
+                            <a href=3D"https://github.com/mobxjs/mobx"><cod=
+e>MobX</code></a> is a simple, scalable and battle tested state management =
+solution.
+							This tutorial will teach you all the important concepts of MobX in t=
+en minutes.
+                            MobX is a standalone library, but most people a=
+re using it with React and this tutorial focuses on that combination.
+                        </p>
+                        <h3>The core idea</h3>
+						<p>
+							State is the heart of each application and there is no quicker way t=
+o create buggy, unmanageable applications than by
+							producing an inconsistent state or state that is out-of-sync with lo=
+cal variables that linger around.
+							Hence many state management solutions try to restrict the ways in wh=
+ich you can modify state, for example by making state immutable.
+							But this introduces new problems; data needs to be normalized, refer=
+ential integrity can no longer be guaranteed and it becomes next to impossi=
+ble to use powerful concepts like classes in case you fancy those.
+						</p><p>
+							MobX makes state management simple again by addressing the root issu=
+e: it makes it impossible to produce an inconsistent state.
+							The strategy to achieve that is simple:
+							<em>Make sure that everything that can be derived from the applicati=
+on state, will be derived. Automatically.</em>
+						</p>
+						<p>
+							Conceptually MobX treats your application like a spreadsheet.
+                        </p><p>
+							<img src=3D"https://mobx.js.org/assets/getting-started-assets/overvi=
+ew.png" width=3D"100%">
+						</p><ol>
+							<li>
+							First of all, there is the <em>application state</em>.
+							Graphs of objects, arrays, primitives, references that forms the mod=
+el of your application.
+							These values are the =E2=80=9Cdata cells=E2=80=9D of your applicatio=
+n.
+							</li>
+                            <li>Secondly there are <em>derivations</em>.
+								Basically, any value that can be computed automatically from the st=
+ate of your application.
+            					These derivations, or computed values, can range from
+                                simple values, like the number of unfinishe=
+d todos, to complex stuff like a visual HTML
+                                representation of your todos. In spreadshee=
+t terms: these are the formulas and charts of
+                                your application.
+                            </li>
+                            <li><em>Reactions</em> are very similar to deri=
+vations. The main difference is these functions don't produce a
+                                value. Instead, they run automatically to p=
+erform some task.
+                                Usually this is I/O related.
+                                They make sure that the DOM is updated or
+                                that network requests are made automaticall=
+y at the right time.
+                            </li>
+                            <li>Finally there are <em>actions</em>. Actions=
+ are all the things that alter the <em>state</em>.
+                            MobX will make sure that all changes to the app=
+lication
+                                state caused by your actions are automatica=
+lly processed by all derivations and reactions.
+                                Synchronously and glitch-free.
+                            </li>
+                        </ol>
+                        <h3>A simple todo store...</h3>
+                        <p>
+                            Enough theory, seeing it in action probably exp=
+lains more than carefully reading the above stuff. For originality's sake
+                            let's start with a very simple ToDo store.
+                            Note that all the code blocks below are editabl=
+e,
+                            So use the <em>run code</em> buttons to execute=
+ them.
+                            Below is a very straightforward <code>TodoStore=
+</code> that maintains a collection of todos.
+                            No MobX involved yet.
+                        </p>
+
+                        <textarea spellcheck=3D"false" class=3D"prettyprint=
+" id=3D"code1" rows=3D"25" style=3D"display: none;">class TodoStore {
+  todos =3D [];
+
+  get completedTodosCount() {
+    return this.todos.filter(
+      todo =3D&gt; todo.completed =3D=3D=3D true
+    ).length;
+  }
+
+  report() {
+    if (this.todos.length =3D=3D=3D 0)
+      return "&lt;none&gt;";
+    const nextTodo =3D this.todos.find(todo =3D&gt; todo.completed =3D=3D=
+=3D false);
+    return `Next todo: "${nextTodo ? nextTodo.task : "&lt;none&gt;"}". ` +
+      `Progress: ${this.completedTodosCount}/${this.todos.length}`;
+  }
+
+  addTodo(task) {
+    this.todos.push({
+      task: task,
+      completed: false,
+      assignee: null
+    });
+  }
+}
+
+const todoStore =3D new TodoStore();
+                        </textarea><div class=3D"CodeMirror cm-s-xq-light">=
+<div style=3D"overflow: hidden; position: relative; width: 3px; height: 0px=
+; top: 19px; left: 19px;"><textarea autocorrect=3D"off" autocapitalize=3D"o=
+ff" spellcheck=3D"false" style=3D"position: absolute; bottom: -1em; padding=
+: 0px; width: 1000px; height: 1em; outline: none;" tabindex=3D"0"></textare=
+a></div><div class=3D"CodeMirror-vscrollbar" tabindex=3D"-1" cm-not-content=
+=3D"true" style=3D"bottom: 0px; width: 18px; pointer-events: none;"><div st=
+yle=3D"min-width: 1px; height: 0px;"></div></div><div class=3D"CodeMirror-h=
+scrollbar" tabindex=3D"-1" cm-not-content=3D"true" style=3D"display: block;=
+ right: 0px; left: 0px; height: 18px; pointer-events: none;"><div style=3D"=
+height: 100%; min-height: 1px; width: 603px;"></div></div><div class=3D"Cod=
+eMirror-scrollbar-filler" cm-not-content=3D"true"></div><div class=3D"CodeM=
+irror-gutter-filler" cm-not-content=3D"true"></div><div class=3D"CodeMirror=
+-scroll" tabindex=3D"-1"><div class=3D"CodeMirror-sizer" style=3D"margin-le=
+ft: 0px; margin-bottom: 0px; border-right-width: 30px; min-height: 428px; m=
+in-width: 575px; padding-right: 0px; padding-bottom: 0px;"><div style=3D"po=
+sition: relative; top: 0px;"><div class=3D"CodeMirror-lines" role=3D"presen=
+tation"><div role=3D"presentation" style=3D"position: relative; outline: no=
+ne;"><div class=3D"CodeMirror-measure"><pre class=3D"CodeMirror-line-like">=
+<span>xxxxxxxxxx</span></pre></div><div class=3D"CodeMirror-measure"></div>=
+<div style=3D"position: relative; z-index: 1;"></div><div class=3D"CodeMirr=
+or-cursors"><div class=3D"CodeMirror-cursor" style=3D"left: 4px; top: 0px; =
+height: 15px;">&nbsp;</div></div><div class=3D"CodeMirror-code" role=3D"pre=
+sentation" style=3D""><pre class=3D" CodeMirror-line " role=3D"presentation=
+"><span role=3D"presentation" style=3D"padding-right: 0.1px;"><span class=
+=3D"cm-keyword">class</span> <span class=3D"cm-variable">TodoStore</span> {=
+</span></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span r=
+ole=3D"presentation" style=3D"padding-right: 0.1px;">  <span class=3D"cm-pr=
+operty">todos</span> <span class=3D"cm-operator">=3D</span> [];</span></pre=
+><pre class=3D" CodeMirror-line " role=3D"presentation"><span role=3D"prese=
+ntation" style=3D"padding-right: 0.1px;"><span cm-text=3D"">=E2=80=8B</span=
+></span></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span =
+role=3D"presentation" style=3D"padding-right: 0.1px;">  <span class=3D"cm-v=
+ariable">get</span> <span class=3D"cm-variable">completedTodosCount</span>(=
+) {</span></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><spa=
+n role=3D"presentation" style=3D"padding-right: 0.1px;">    <span class=3D"=
+cm-keyword">return</span> <span class=3D"cm-keyword">this</span>.<span clas=
+s=3D"cm-property">todos</span>.<span class=3D"cm-property">filter</span>(</=
+span></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span rol=
+e=3D"presentation" style=3D"padding-right: 0.1px;">      <span class=3D"cm-=
+def">todo</span> <span class=3D"cm-operator">=3D&gt;</span> <span class=3D"=
+cm-variable-2">todo</span>.<span class=3D"cm-property">completed</span> <sp=
+an class=3D"cm-operator">=3D=3D=3D</span> <span class=3D"cm-atom">true</spa=
+n></span></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span=
+ role=3D"presentation" style=3D"padding-right: 0.1px;">    ).<span class=3D=
+"cm-property">length</span>;</span></pre><pre class=3D" CodeMirror-line " r=
+ole=3D"presentation"><span role=3D"presentation" style=3D"padding-right: 0.=
+1px;">  }</span></pre><pre class=3D" CodeMirror-line " role=3D"presentation=
+"><span role=3D"presentation" style=3D"padding-right: 0.1px;"><span cm-text=
+=3D"">=E2=80=8B</span></span></pre><pre class=3D" CodeMirror-line " role=3D=
+"presentation"><span role=3D"presentation" style=3D"padding-right: 0.1px;">=
+  <span class=3D"cm-variable">report</span>() {</span></pre><pre class=3D" =
+CodeMirror-line " role=3D"presentation"><span role=3D"presentation" style=
+=3D"padding-right: 0.1px;">    <span class=3D"cm-keyword">if</span> (<span =
+class=3D"cm-keyword">this</span>.<span class=3D"cm-property">todos</span>.<=
+span class=3D"cm-property">length</span> <span class=3D"cm-operator">=3D=3D=
+=3D</span> <span class=3D"cm-number">0</span>)</span></pre><pre class=3D" C=
+odeMirror-line " role=3D"presentation"><span role=3D"presentation" style=3D=
+"padding-right: 0.1px;">      <span class=3D"cm-keyword">return</span> <spa=
+n class=3D"cm-string">"&lt;none&gt;"</span>;</span></pre><pre class=3D" Cod=
+eMirror-line " role=3D"presentation"><span role=3D"presentation" style=3D"p=
+adding-right: 0.1px;">    <span class=3D"cm-keyword">const</span> <span cla=
+ss=3D"cm-variable">nextTodo</span> <span class=3D"cm-operator">=3D</span> <=
+span class=3D"cm-keyword">this</span>.<span class=3D"cm-property">todos</sp=
+an>.<span class=3D"cm-property">find</span>(<span class=3D"cm-def">todo</sp=
+an> <span class=3D"cm-operator">=3D&gt;</span> <span class=3D"cm-variable-2=
+">todo</span>.<span class=3D"cm-property">completed</span> <span class=3D"c=
+m-operator">=3D=3D=3D</span> <span class=3D"cm-atom">false</span>);</span><=
+/pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span role=3D"p=
+resentation" style=3D"padding-right: 0.1px;">    <span class=3D"cm-keyword"=
+>return</span> <span class=3D"cm-string-2">`Next todo: "${</span><span clas=
+s=3D"cm-variable">nextTodo</span> <span class=3D"cm-operator">?</span> <spa=
+n class=3D"cm-variable">nextTodo</span>.<span class=3D"cm-property">task</s=
+pan> : <span class=3D"cm-string">"&lt;none&gt;"</span><span class=3D"cm-str=
+ing-2">}". `</span> <span class=3D"cm-operator">+</span></span></pre><pre c=
+lass=3D" CodeMirror-line " role=3D"presentation"><span role=3D"presentation=
+" style=3D"padding-right: 0.1px;">      <span class=3D"cm-string-2">`Progre=
+ss: ${</span><span class=3D"cm-keyword">this</span>.<span class=3D"cm-prope=
+rty">completedTodosCount</span><span class=3D"cm-string-2">}/${</span><span=
+ class=3D"cm-keyword">this</span>.<span class=3D"cm-property">todos</span>.=
+<span class=3D"cm-property">length</span><span class=3D"cm-string-2">}`</sp=
+an>;</span></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><sp=
+an role=3D"presentation" style=3D"padding-right: 0.1px;">  }</span></pre><p=
+re class=3D" CodeMirror-line " role=3D"presentation"><span role=3D"presenta=
+tion" style=3D"padding-right: 0.1px;"><span cm-text=3D"">=E2=80=8B</span></=
+span></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span rol=
+e=3D"presentation" style=3D"padding-right: 0.1px;">  <span class=3D"cm-vari=
+able">addTodo</span>(<span class=3D"cm-variable">task</span>) {</span></pre=
+><pre class=3D" CodeMirror-line " role=3D"presentation"><span role=3D"prese=
+ntation" style=3D"padding-right: 0.1px;">    <span class=3D"cm-keyword">thi=
+s</span>.<span class=3D"cm-property">todos</span>.<span class=3D"cm-propert=
+y">push</span>({</span></pre><pre class=3D" CodeMirror-line " role=3D"prese=
+ntation"><span role=3D"presentation" style=3D"padding-right: 0.1px;">      =
+<span class=3D"cm-property">task</span>: <span class=3D"cm-variable">task</=
+span>,</span></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><=
+span role=3D"presentation" style=3D"padding-right: 0.1px;">      <span clas=
+s=3D"cm-property">completed</span>: <span class=3D"cm-atom">false</span>,</=
+span></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span rol=
+e=3D"presentation" style=3D"padding-right: 0.1px;">      <span class=3D"cm-=
+property">assignee</span>: <span class=3D"cm-atom">null</span></span></pre>=
+<pre class=3D" CodeMirror-line " role=3D"presentation"><span role=3D"presen=
+tation" style=3D"padding-right: 0.1px;">    });</span></pre><pre class=3D" =
+CodeMirror-line " role=3D"presentation"><span role=3D"presentation" style=
+=3D"padding-right: 0.1px;">  }</span></pre><pre class=3D" CodeMirror-line "=
+ role=3D"presentation"><span role=3D"presentation" style=3D"padding-right: =
+0.1px;">}</span></pre><pre class=3D" CodeMirror-line " role=3D"presentation=
+"><span role=3D"presentation" style=3D"padding-right: 0.1px;"><span cm-text=
+=3D"">=E2=80=8B</span></span></pre><pre class=3D" CodeMirror-line " role=3D=
+"presentation"><span role=3D"presentation" style=3D"padding-right: 0.1px;">=
+<span class=3D"cm-keyword">const</span> <span class=3D"cm-variable">todoSto=
+re</span> <span class=3D"cm-operator">=3D</span> <span class=3D"cm-keyword"=
+>new</span> <span class=3D"cm-variable">TodoStore</span>();</span></pre><pr=
+e class=3D" CodeMirror-line " role=3D"presentation"><span role=3D"presentat=
+ion" style=3D"padding-right: 0.1px;">                        </span></pre><=
+/div></div></div></div></div><div style=3D"position: absolute; height: 30px=
+; width: 1px; border-bottom: 0px solid transparent; top: 428px;"></div><div=
+ class=3D"CodeMirror-gutters" style=3D"display: none; height: 458px;"></div=
+></div></div>
+                        <p>We just created a <code>todoStore</code> instanc=
+e with a <code>todos</code> collection.
+                            Time to fill the todoStore with some objects.
+                            To make sure we see the effects of our changes =
+we invoke <code>todoStore.report</code> after each change and log it.
+                            Note that the report intentionally always print=
+s the <em>first</em> task only.
+                            It makes this example a bit artificial, but as =
+we will see later on it nicely demonstrates that MobX's dependency tracking=
+ is dynamic.
+                        </p>
+
+                        <textarea spellcheck=3D"false" class=3D"prettyprint=
+" id=3D"code2" rows=3D"15" style=3D"display: none;">todoStore.addTodo("read=
+ MobX tutorial");
+console.log(todoStore.report());
+
+todoStore.addTodo("try MobX");
+console.log(todoStore.report());
+
+todoStore.todos[0].completed =3D true;
+console.log(todoStore.report());
+
+todoStore.todos[1].task =3D "try MobX in own project";
+console.log(todoStore.report());
+
+todoStore.todos[0].task =3D "grok MobX tutorial";
+console.log(todoStore.report());
+                        </textarea><div class=3D"CodeMirror cm-s-xq-light">=
+<div style=3D"overflow: hidden; position: relative; width: 3px; height: 0px=
+; top: 19px; left: 19px;"><textarea autocorrect=3D"off" autocapitalize=3D"o=
+ff" spellcheck=3D"false" style=3D"position: absolute; bottom: -1em; padding=
+: 0px; width: 1000px; height: 1em; outline: none;" tabindex=3D"0"></textare=
+a></div><div class=3D"CodeMirror-vscrollbar" tabindex=3D"-1" cm-not-content=
+=3D"true" style=3D"bottom: 0px; width: 18px; pointer-events: none;"><div st=
+yle=3D"min-width: 1px; height: 0px;"></div></div><div class=3D"CodeMirror-h=
+scrollbar" tabindex=3D"-1" cm-not-content=3D"true" style=3D"height: 18px; p=
+ointer-events: none;"><div style=3D"height: 100%; min-height: 1px; width: 0=
+px;"></div></div><div class=3D"CodeMirror-scrollbar-filler" cm-not-content=
+=3D"true"></div><div class=3D"CodeMirror-gutter-filler" cm-not-content=3D"t=
+rue"></div><div class=3D"CodeMirror-scroll" tabindex=3D"-1"><div class=3D"C=
+odeMirror-sizer" style=3D"margin-left: 0px; margin-bottom: 0px; border-righ=
+t-width: 30px; min-height: 233px; min-width: 422.984px; padding-right: 0px;=
+ padding-bottom: 0px;"><div style=3D"position: relative; top: 0px;"><div cl=
+ass=3D"CodeMirror-lines" role=3D"presentation"><div role=3D"presentation" s=
+tyle=3D"position: relative; outline: none;"><div class=3D"CodeMirror-measur=
+e"><pre class=3D"CodeMirror-line-like"><span>xxxxxxxxxx</span></pre></div><=
+div class=3D"CodeMirror-measure"></div><div style=3D"position: relative; z-=
+index: 1;"></div><div class=3D"CodeMirror-cursors"><div class=3D"CodeMirror=
+-cursor" style=3D"left: 4px; top: 0px; height: 15px;">&nbsp;</div></div><di=
+v class=3D"CodeMirror-code" role=3D"presentation" style=3D""><pre class=3D"=
+ CodeMirror-line " role=3D"presentation"><span role=3D"presentation" style=
+=3D"padding-right: 0.1px;"><span class=3D"cm-variable">todoStore</span>.<sp=
+an class=3D"cm-property">addTodo</span>(<span class=3D"cm-string">"read Mob=
+X tutorial"</span>);</span></pre><pre class=3D" CodeMirror-line " role=3D"p=
+resentation"><span role=3D"presentation" style=3D"padding-right: 0.1px;"><s=
+pan class=3D"cm-variable">console</span>.<span class=3D"cm-property">log</s=
+pan>(<span class=3D"cm-variable">todoStore</span>.<span class=3D"cm-propert=
+y">report</span>());</span></pre><pre class=3D" CodeMirror-line " role=3D"p=
+resentation"><span role=3D"presentation" style=3D"padding-right: 0.1px;"><s=
+pan cm-text=3D"">=E2=80=8B</span></span></pre><pre class=3D" CodeMirror-lin=
+e " role=3D"presentation"><span role=3D"presentation" style=3D"padding-righ=
+t: 0.1px;"><span class=3D"cm-variable">todoStore</span>.<span class=3D"cm-p=
+roperty">addTodo</span>(<span class=3D"cm-string">"try MobX"</span>);</span=
+></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span role=3D=
+"presentation" style=3D"padding-right: 0.1px;"><span class=3D"cm-variable">=
+console</span>.<span class=3D"cm-property">log</span>(<span class=3D"cm-var=
+iable">todoStore</span>.<span class=3D"cm-property">report</span>());</span=
+></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span role=3D=
+"presentation" style=3D"padding-right: 0.1px;"><span cm-text=3D"">=E2=80=8B=
+</span></span></pre><pre class=3D" CodeMirror-line " role=3D"presentation">=
+<span role=3D"presentation" style=3D"padding-right: 0.1px;"><span class=3D"=
+cm-variable">todoStore</span>.<span class=3D"cm-property">todos</span>[<spa=
+n class=3D"cm-number">0</span>].<span class=3D"cm-property">completed</span=
+> <span class=3D"cm-operator">=3D</span> <span class=3D"cm-atom">true</span=
+>;</span></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span=
+ role=3D"presentation" style=3D"padding-right: 0.1px;"><span class=3D"cm-va=
+riable">console</span>.<span class=3D"cm-property">log</span>(<span class=
+=3D"cm-variable">todoStore</span>.<span class=3D"cm-property">report</span>=
+());</span></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><sp=
+an role=3D"presentation" style=3D"padding-right: 0.1px;"><span cm-text=3D""=
+>=E2=80=8B</span></span></pre><pre class=3D" CodeMirror-line " role=3D"pres=
+entation"><span role=3D"presentation" style=3D"padding-right: 0.1px;"><span=
+ class=3D"cm-variable">todoStore</span>.<span class=3D"cm-property">todos</=
+span>[<span class=3D"cm-number">1</span>].<span class=3D"cm-property">task<=
+/span> <span class=3D"cm-operator">=3D</span> <span class=3D"cm-string">"tr=
+y MobX in own project"</span>;</span></pre><pre class=3D" CodeMirror-line "=
+ role=3D"presentation"><span role=3D"presentation" style=3D"padding-right: =
+0.1px;"><span class=3D"cm-variable">console</span>.<span class=3D"cm-proper=
+ty">log</span>(<span class=3D"cm-variable">todoStore</span>.<span class=3D"=
+cm-property">report</span>());</span></pre><pre class=3D" CodeMirror-line "=
+ role=3D"presentation"><span role=3D"presentation" style=3D"padding-right: =
+0.1px;"><span cm-text=3D"">=E2=80=8B</span></span></pre><pre class=3D" Code=
+Mirror-line " role=3D"presentation"><span role=3D"presentation" style=3D"pa=
+dding-right: 0.1px;"><span class=3D"cm-variable">todoStore</span>.<span cla=
+ss=3D"cm-property">todos</span>[<span class=3D"cm-number">0</span>].<span c=
+lass=3D"cm-property">task</span> <span class=3D"cm-operator">=3D</span> <sp=
+an class=3D"cm-string">"grok MobX tutorial"</span>;</span></pre><pre class=
+=3D" CodeMirror-line " role=3D"presentation"><span role=3D"presentation" st=
+yle=3D"padding-right: 0.1px;"><span class=3D"cm-variable">console</span>.<s=
+pan class=3D"cm-property">log</span>(<span class=3D"cm-variable">todoStore<=
+/span>.<span class=3D"cm-property">report</span>());</span></pre><pre class=
+=3D" CodeMirror-line " role=3D"presentation"><span role=3D"presentation" st=
+yle=3D"padding-right: 0.1px;">                        </span></pre></div></=
+div></div></div></div><div style=3D"position: absolute; height: 30px; width=
+: 1px; border-bottom: 0px solid transparent; top: 233px;"></div><div class=
+=3D"CodeMirror-gutters" style=3D"display: none; height: 263px;"></div></div=
+></div>
+                        <button class=3D"btn-run">Run code</button>
+
+                        <h3>Becoming reactive</h3>
+                        <p>So far, there is nothing special about this code=
+.
+                            But what if we didn't have to call <code>report=
+</code> explicitly,
+                            but that we could declare instead that it shoul=
+d be invoked upon each <em>relevant</em> state change?
+                            That would free us from the responsibility of c=
+alling <code>report</code> from any place in our code
+                            base that <em>might</em> affect the report. We =
+do want to be sure the latest report is printed.
+                            But we don't wanna be bothered by organizing th=
+at.
+                        </p>
+                        <p>
+                            Luckily that is exactly what MobX can do for us=
+. Automatically execute code that solely depends on state.
+                            So that our <code>report</code> function update=
+s automatically, just like a chart in a spreadsheet.
+                            To achieve that, the <code>TodoStore</code> has=
+ to become observable so that MobX can track all the changes that are being=
+ made.
+                            Let's alter the class just enough to achieve th=
+at.
+                        </p>
+                        <p>Also, the <code>completedTodosCount</code> prope=
+rty could be derived automatically from the todo
+                            list. By using the <code>observable</code> and =
+<code>computed</code> annotations we can introduce observable properties on=
+ an
+                            object.
+                            In the example below we use <code>makeObservabl=
+e</code> to show the annotations explicitly,
+                            but we could have used <code>makeAutoObservable=
+(this)</code> instead to simplify this process.
+                        </p>
+                        <textarea spellcheck=3D"false" class=3D"prettyprint=
+" id=3D"code3" rows=3D"8" style=3D"display: none;">class ObservableTodoStor=
+e {
+  todos =3D [];
+  pendingRequests =3D 0;
+
+  constructor() {
+    makeObservable(this, {
+      todos: observable,
+      pendingRequests: observable,
+      completedTodosCount: computed,
+      report: computed,
+      addTodo: action,
+    });
+    autorun(() =3D&gt; console.log(this.report));
+  }
+
+  get completedTodosCount() {
+    return this.todos.filter(
+      todo =3D&gt; todo.completed =3D=3D=3D true
+    ).length;
+  }
+
+  get report() {
+    if (this.todos.length =3D=3D=3D 0)
+      return "&lt;none&gt;";
+    const nextTodo =3D this.todos.find(todo =3D&gt; todo.completed =3D=3D=
+=3D false);
+    return `Next todo: "${nextTodo ? nextTodo.task : "&lt;none&gt;"}". ` +
+      `Progress: ${this.completedTodosCount}/${this.todos.length}`;
+  }
+
+  addTodo(task) {
+    this.todos.push({
+      task: task,
+      completed: false,
+      assignee: null
+    });
+  }
+}
+
+const observableTodoStore =3D new ObservableTodoStore();
+                        </textarea><div class=3D"CodeMirror cm-s-xq-light">=
+<div style=3D"overflow: hidden; position: relative; width: 3px; height: 0px=
+; top: 19px; left: 19px;"><textarea autocorrect=3D"off" autocapitalize=3D"o=
+ff" spellcheck=3D"false" style=3D"position: absolute; bottom: -1em; padding=
+: 0px; width: 1000px; height: 1em; outline: none;" tabindex=3D"0"></textare=
+a></div><div class=3D"CodeMirror-vscrollbar" tabindex=3D"-1" cm-not-content=
+=3D"true" style=3D"bottom: 0px; width: 18px; pointer-events: none;"><div st=
+yle=3D"min-width: 1px; height: 0px;"></div></div><div class=3D"CodeMirror-h=
+scrollbar" tabindex=3D"-1" cm-not-content=3D"true" style=3D"display: block;=
+ right: 0px; left: 0px; height: 18px; pointer-events: none;"><div style=3D"=
+height: 100%; min-height: 1px; width: 603px;"></div></div><div class=3D"Cod=
+eMirror-scrollbar-filler" cm-not-content=3D"true"></div><div class=3D"CodeM=
+irror-gutter-filler" cm-not-content=3D"true"></div><div class=3D"CodeMirror=
+-scroll" tabindex=3D"-1"><div class=3D"CodeMirror-sizer" style=3D"margin-le=
+ft: 0px; margin-bottom: 0px; border-right-width: 30px; min-height: 608px; m=
+in-width: 575px; padding-right: 0px; padding-bottom: 0px;"><div style=3D"po=
+sition: relative; top: 0px;"><div class=3D"CodeMirror-lines" role=3D"presen=
+tation"><div role=3D"presentation" style=3D"position: relative; outline: no=
+ne;"><div class=3D"CodeMirror-measure"><pre class=3D"CodeMirror-line-like">=
+<span>xxxxxxxxxx</span></pre></div><div class=3D"CodeMirror-measure"></div>=
+<div style=3D"position: relative; z-index: 1;"></div><div class=3D"CodeMirr=
+or-cursors"><div class=3D"CodeMirror-cursor" style=3D"left: 4px; top: 0px; =
+height: 15px;">&nbsp;</div></div><div class=3D"CodeMirror-code" role=3D"pre=
+sentation" style=3D""><pre class=3D" CodeMirror-line " role=3D"presentation=
+"><span role=3D"presentation" style=3D"padding-right: 0.1px;"><span class=
+=3D"cm-keyword">class</span> <span class=3D"cm-variable">ObservableTodoStor=
+e</span> {</span></pre><pre class=3D" CodeMirror-line " role=3D"presentatio=
+n"><span role=3D"presentation" style=3D"padding-right: 0.1px;">  <span clas=
+s=3D"cm-property">todos</span> <span class=3D"cm-operator">=3D</span> [];</=
+span></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span rol=
+e=3D"presentation" style=3D"padding-right: 0.1px;">  <span class=3D"cm-vari=
+able">pendingRequests</span> <span class=3D"cm-operator">=3D</span> <span c=
+lass=3D"cm-number">0</span>;</span></pre><pre class=3D" CodeMirror-line " r=
+ole=3D"presentation"><span role=3D"presentation" style=3D"padding-right: 0.=
+1px;"><span cm-text=3D"">=E2=80=8B</span></span></pre><pre class=3D" CodeMi=
+rror-line " role=3D"presentation"><span role=3D"presentation" style=3D"padd=
+ing-right: 0.1px;">  <span class=3D"cm-variable">constructor</span>() {</sp=
+an></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span role=
+=3D"presentation" style=3D"padding-right: 0.1px;">    <span class=3D"cm-var=
+iable">makeObservable</span>(<span class=3D"cm-keyword">this</span>, {</spa=
+n></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span role=
+=3D"presentation" style=3D"padding-right: 0.1px;">      <span class=3D"cm-p=
+roperty">todos</span>: <span class=3D"cm-variable">observable</span>,</span=
+></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span role=3D=
+"presentation" style=3D"padding-right: 0.1px;">      <span class=3D"cm-prop=
+erty">pendingRequests</span>: <span class=3D"cm-variable">observable</span>=
+,</span></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span =
+role=3D"presentation" style=3D"padding-right: 0.1px;">      <span class=3D"=
+cm-property">completedTodosCount</span>: <span class=3D"cm-variable">comput=
+ed</span>,</span></pre><pre class=3D" CodeMirror-line " role=3D"presentatio=
+n"><span role=3D"presentation" style=3D"padding-right: 0.1px;">      <span =
+class=3D"cm-property">report</span>: <span class=3D"cm-variable">computed</=
+span>,</span></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><=
+span role=3D"presentation" style=3D"padding-right: 0.1px;">      <span clas=
+s=3D"cm-property">addTodo</span>: <span class=3D"cm-variable">action</span>=
+,</span></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span =
+role=3D"presentation" style=3D"padding-right: 0.1px;">    });</span></pre><=
+pre class=3D" CodeMirror-line " role=3D"presentation"><span role=3D"present=
+ation" style=3D"padding-right: 0.1px;">    <span class=3D"cm-variable">auto=
+run</span>(() <span class=3D"cm-operator">=3D&gt;</span> <span class=3D"cm-=
+variable">console</span>.<span class=3D"cm-property">log</span>(<span class=
+=3D"cm-keyword">this</span>.<span class=3D"cm-property">report</span>));</s=
+pan></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span role=
+=3D"presentation" style=3D"padding-right: 0.1px;">  }</span></pre><pre clas=
+s=3D" CodeMirror-line " role=3D"presentation"><span role=3D"presentation" s=
+tyle=3D"padding-right: 0.1px;"><span cm-text=3D"">=E2=80=8B</span></span></=
+pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span role=3D"pr=
+esentation" style=3D"padding-right: 0.1px;">  <span class=3D"cm-variable">g=
+et</span> <span class=3D"cm-variable">completedTodosCount</span>() {</span>=
+</pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span role=3D"=
+presentation" style=3D"padding-right: 0.1px;">    <span class=3D"cm-keyword=
+">return</span> <span class=3D"cm-keyword">this</span>.<span class=3D"cm-pr=
+operty">todos</span>.<span class=3D"cm-property">filter</span>(</span></pre=
+><pre class=3D" CodeMirror-line " role=3D"presentation"><span role=3D"prese=
+ntation" style=3D"padding-right: 0.1px;">      <span class=3D"cm-def">todo<=
+/span> <span class=3D"cm-operator">=3D&gt;</span> <span class=3D"cm-variabl=
+e-2">todo</span>.<span class=3D"cm-property">completed</span> <span class=
+=3D"cm-operator">=3D=3D=3D</span> <span class=3D"cm-atom">true</span></span=
+></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span role=3D=
+"presentation" style=3D"padding-right: 0.1px;">    ).<span class=3D"cm-prop=
+erty">length</span>;</span></pre><pre class=3D" CodeMirror-line " role=3D"p=
+resentation"><span role=3D"presentation" style=3D"padding-right: 0.1px;">  =
+}</span></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span =
+role=3D"presentation" style=3D"padding-right: 0.1px;"><span cm-text=3D"">=
+=E2=80=8B</span></span></pre><pre class=3D" CodeMirror-line " role=3D"prese=
+ntation"><span role=3D"presentation" style=3D"padding-right: 0.1px;">  <spa=
+n class=3D"cm-variable">get</span> <span class=3D"cm-variable">report</span=
+>() {</span></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><s=
+pan role=3D"presentation" style=3D"padding-right: 0.1px;">    <span class=
+=3D"cm-keyword">if</span> (<span class=3D"cm-keyword">this</span>.<span cla=
+ss=3D"cm-property">todos</span>.<span class=3D"cm-property">length</span> <=
+span class=3D"cm-operator">=3D=3D=3D</span> <span class=3D"cm-number">0</sp=
+an>)</span></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><sp=
+an role=3D"presentation" style=3D"padding-right: 0.1px;">      <span class=
+=3D"cm-keyword">return</span> <span class=3D"cm-string">"&lt;none&gt;"</spa=
+n>;</span></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><spa=
+n role=3D"presentation" style=3D"padding-right: 0.1px;">    <span class=3D"=
+cm-keyword">const</span> <span class=3D"cm-variable">nextTodo</span> <span =
+class=3D"cm-operator">=3D</span> <span class=3D"cm-keyword">this</span>.<sp=
+an class=3D"cm-property">todos</span>.<span class=3D"cm-property">find</spa=
+n>(<span class=3D"cm-def">todo</span> <span class=3D"cm-operator">=3D&gt;</=
+span> <span class=3D"cm-variable-2">todo</span>.<span class=3D"cm-property"=
+>completed</span> <span class=3D"cm-operator">=3D=3D=3D</span> <span class=
+=3D"cm-atom">false</span>);</span></pre><pre class=3D" CodeMirror-line " ro=
+le=3D"presentation"><span role=3D"presentation" style=3D"padding-right: 0.1=
+px;">    <span class=3D"cm-keyword">return</span> <span class=3D"cm-string-=
+2">`Next todo: "${</span><span class=3D"cm-variable">nextTodo</span> <span =
+class=3D"cm-operator">?</span> <span class=3D"cm-variable">nextTodo</span>.=
+<span class=3D"cm-property">task</span> : <span class=3D"cm-string">"&lt;no=
+ne&gt;"</span><span class=3D"cm-string-2">}". `</span> <span class=3D"cm-op=
+erator">+</span></span></pre><pre class=3D" CodeMirror-line " role=3D"prese=
+ntation"><span role=3D"presentation" style=3D"padding-right: 0.1px;">      =
+<span class=3D"cm-string-2">`Progress: ${</span><span class=3D"cm-keyword">=
+this</span>.<span class=3D"cm-property">completedTodosCount</span><span cla=
+ss=3D"cm-string-2">}/${</span><span class=3D"cm-keyword">this</span>.<span =
+class=3D"cm-property">todos</span>.<span class=3D"cm-property">length</span=
+><span class=3D"cm-string-2">}`</span>;</span></pre><pre class=3D" CodeMirr=
+or-line " role=3D"presentation"><span role=3D"presentation" style=3D"paddin=
+g-right: 0.1px;">  }</span></pre><pre class=3D" CodeMirror-line " role=3D"p=
+resentation"><span role=3D"presentation" style=3D"padding-right: 0.1px;"><s=
+pan cm-text=3D"">=E2=80=8B</span></span></pre><pre class=3D" CodeMirror-lin=
+e " role=3D"presentation"><span role=3D"presentation" style=3D"padding-righ=
+t: 0.1px;">  <span class=3D"cm-variable">addTodo</span>(<span class=3D"cm-v=
+ariable">task</span>) {</span></pre><pre class=3D" CodeMirror-line " role=
+=3D"presentation"><span role=3D"presentation" style=3D"padding-right: 0.1px=
+;">    <span class=3D"cm-keyword">this</span>.<span class=3D"cm-property">t=
+odos</span>.<span class=3D"cm-property">push</span>({</span></pre><pre clas=
+s=3D" CodeMirror-line " role=3D"presentation"><span role=3D"presentation" s=
+tyle=3D"padding-right: 0.1px;">      <span class=3D"cm-property">task</span=
+>: <span class=3D"cm-variable">task</span>,</span></pre><pre class=3D" Code=
+Mirror-line " role=3D"presentation"><span role=3D"presentation" style=3D"pa=
+dding-right: 0.1px;">      <span class=3D"cm-property">completed</span>: <s=
+pan class=3D"cm-atom">false</span>,</span></pre><pre class=3D" CodeMirror-l=
+ine " role=3D"presentation"><span role=3D"presentation" style=3D"padding-ri=
+ght: 0.1px;">      <span class=3D"cm-property">assignee</span>: <span class=
+=3D"cm-atom">null</span></span></pre><pre class=3D" CodeMirror-line " role=
+=3D"presentation"><span role=3D"presentation" style=3D"padding-right: 0.1px=
+;">    });</span></pre><pre class=3D" CodeMirror-line " role=3D"presentatio=
+n"><span role=3D"presentation" style=3D"padding-right: 0.1px;">  }</span></=
+pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span role=3D"pr=
+esentation" style=3D"padding-right: 0.1px;">}</span></pre><pre class=3D" Co=
+deMirror-line " role=3D"presentation"><span role=3D"presentation" style=3D"=
+padding-right: 0.1px;"><span cm-text=3D"">=E2=80=8B</span></span></pre><pre=
+ class=3D" CodeMirror-line " role=3D"presentation"><span role=3D"presentati=
+on" style=3D"padding-right: 0.1px;"><span class=3D"cm-keyword">const</span>=
+ <span class=3D"cm-variable">observableTodoStore</span> <span class=3D"cm-o=
+perator">=3D</span> <span class=3D"cm-keyword">new</span> <span class=3D"cm=
+-variable">ObservableTodoStore</span>();</span></pre><pre class=3D" CodeMir=
+ror-line " role=3D"presentation"><span role=3D"presentation" style=3D"paddi=
+ng-right: 0.1px;">                        </span></pre></div></div></div></=
+div></div><div style=3D"position: absolute; height: 30px; width: 1px; borde=
+r-bottom: 0px solid transparent; top: 608px;"></div><div class=3D"CodeMirro=
+r-gutters" style=3D"display: none; height: 638px;"></div></div></div>
+
+                        <p>That's it! We marked some properties as being <c=
+ode>observable</code> to signal MobX that these values can change over time=
+.
+                            The computations are decorated with <code>compu=
+ted</code> to identify that these can be derived from the state and caches =
+as long as no underlying state changed.
+                        </p>
+                        <p>
+                            The <code>pendingRequests</code> and <code>assi=
+gnee</code> attributes are not used so far,
+                            but will be used later in this tutorial.
+                        </p>
+                        <p>
+                            In the constructor we created a small function =
+that prints the <code>report</code> and
+                            wrapped it in <code>autorun</code>. Autorun cre=
+ates a <em>reaction</em> that runs once, and after
+                            that automatically re-runs whenever any observa=
+ble data that was used inside the function changes.
+                            Because <code>report</code> uses the observable=
+ <code>todos</code> property, it will print the
+                            report whenever appropriate. This is demonstrat=
+ed in the next listing. Just press the <em>run</em> button:
+                        </p>
+
+                        <textarea spellcheck=3D"false" class=3D"prettyprint=
+" id=3D"code4" rows=3D"6" style=3D"display: none;">observableTodoStore.addT=
+odo("read MobX tutorial");
+observableTodoStore.addTodo("try MobX");
+observableTodoStore.todos[0].completed =3D true;
+observableTodoStore.todos[1].task =3D "try MobX in own project";
+observableTodoStore.todos[0].task =3D "grok MobX tutorial";
+                        </textarea><div class=3D"CodeMirror cm-s-xq-light">=
+<div style=3D"overflow: hidden; position: relative; width: 3px; height: 0px=
+; top: 19px; left: 19px;"><textarea autocorrect=3D"off" autocapitalize=3D"o=
+ff" spellcheck=3D"false" style=3D"position: absolute; bottom: -1em; padding=
+: 0px; width: 1000px; height: 1em; outline: none;" tabindex=3D"0"></textare=
+a></div><div class=3D"CodeMirror-vscrollbar" tabindex=3D"-1" cm-not-content=
+=3D"true" style=3D"width: 18px; pointer-events: none;"><div style=3D"min-wi=
+dth: 1px; height: 0px;"></div></div><div class=3D"CodeMirror-hscrollbar" ta=
+bindex=3D"-1" cm-not-content=3D"true" style=3D"height: 18px; pointer-events=
+: none;"><div style=3D"height: 100%; min-height: 1px; width: 0px;"></div></=
+div><div class=3D"CodeMirror-scrollbar-filler" cm-not-content=3D"true"></di=
+v><div class=3D"CodeMirror-gutter-filler" cm-not-content=3D"true"></div><di=
+v class=3D"CodeMirror-scroll" tabindex=3D"-1"><div class=3D"CodeMirror-size=
+r" style=3D"margin-left: 0px; margin-bottom: 0px; border-right-width: 30px;=
+ min-height: 98px; min-width: 502.984px; padding-right: 0px; padding-bottom=
+: 0px;"><div style=3D"position: relative; top: 0px;"><div class=3D"CodeMirr=
+or-lines" role=3D"presentation"><div role=3D"presentation" style=3D"positio=
+n: relative; outline: none;"><div class=3D"CodeMirror-measure"><pre class=
+=3D"CodeMirror-line-like"><span>xxxxxxxxxx</span></pre></div><div class=3D"=
+CodeMirror-measure"></div><div style=3D"position: relative; z-index: 1;"></=
+div><div class=3D"CodeMirror-cursors"><div class=3D"CodeMirror-cursor" styl=
+e=3D"left: 4px; top: 0px; height: 15px;">&nbsp;</div></div><div class=3D"Co=
+deMirror-code" role=3D"presentation" style=3D""><pre class=3D" CodeMirror-l=
+ine " role=3D"presentation"><span role=3D"presentation" style=3D"padding-ri=
+ght: 0.1px;"><span class=3D"cm-variable">observableTodoStore</span>.<span c=
+lass=3D"cm-property">addTodo</span>(<span class=3D"cm-string">"read MobX tu=
+torial"</span>);</span></pre><pre class=3D" CodeMirror-line " role=3D"prese=
+ntation"><span role=3D"presentation" style=3D"padding-right: 0.1px;"><span =
+class=3D"cm-variable">observableTodoStore</span>.<span class=3D"cm-property=
+">addTodo</span>(<span class=3D"cm-string">"try MobX"</span>);</span></pre>=
+<pre class=3D" CodeMirror-line " role=3D"presentation"><span role=3D"presen=
+tation" style=3D"padding-right: 0.1px;"><span class=3D"cm-variable">observa=
+bleTodoStore</span>.<span class=3D"cm-property">todos</span>[<span class=3D=
+"cm-number">0</span>].<span class=3D"cm-property">completed</span> <span cl=
+ass=3D"cm-operator">=3D</span> <span class=3D"cm-atom">true</span>;</span><=
+/pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span role=3D"p=
+resentation" style=3D"padding-right: 0.1px;"><span class=3D"cm-variable">ob=
+servableTodoStore</span>.<span class=3D"cm-property">todos</span>[<span cla=
+ss=3D"cm-number">1</span>].<span class=3D"cm-property">task</span> <span cl=
+ass=3D"cm-operator">=3D</span> <span class=3D"cm-string">"try MobX in own p=
+roject"</span>;</span></pre><pre class=3D" CodeMirror-line " role=3D"presen=
+tation"><span role=3D"presentation" style=3D"padding-right: 0.1px;"><span c=
+lass=3D"cm-variable">observableTodoStore</span>.<span class=3D"cm-property"=
+>todos</span>[<span class=3D"cm-number">0</span>].<span class=3D"cm-propert=
+y">task</span> <span class=3D"cm-operator">=3D</span> <span class=3D"cm-str=
+ing">"grok MobX tutorial"</span>;</span></pre><pre class=3D" CodeMirror-lin=
+e " role=3D"presentation"><span role=3D"presentation" style=3D"padding-righ=
+t: 0.1px;">                        </span></pre></div></div></div></div></d=
+iv><div style=3D"position: absolute; height: 30px; width: 1px; border-botto=
+m: 0px solid transparent; top: 98px;"></div><div class=3D"CodeMirror-gutter=
+s" style=3D"display: none; height: 128px;"></div></div></div>
+                        <button class=3D"btn-run">Run code</button>
+
+                        <p>Pure fun, right? The <code>report</code> did pri=
+nt automatically, synchronously and without leaking
+                            intermediate values. If you investigate the log=
+ carefully, you will see that the fifth line
+                            didn't result in a new log-line. Because the re=
+port did not <em>actually</em> change as a result
+                            of the rename, although the backing data did. O=
+n the other hand, changing the name of the first
+                            todo did update the report, since that name is =
+actively used in the report.
+                            This demonstrates nicely that
+                            not just the <code>todos</code> array is being =
+observed by the <code>autorun</code>, but also
+                            the individual properties inside the todo items=
+.
+                        </p>
+                        <h3 id=3D"reactive-reactjs-components">Making React=
+ reactive</h3>
+                        <p>Ok, so far we made a silly report reactive. Time=
+ to build a reactive user interface around this very
+                            same store. React components are (despite their=
+ name) not reactive out of the box.
+                            The <code>observer</code> HoC wrapper from the =
+<code>mobx-react-lite</code> package fixes that by
+                            basically wrapping the React component in <code=
+>autorun</code>. This
+                            keeps the component in sync with the state. Thi=
+s is conceptually not different from what we did
+                            with the <code>report</code> before.
+                        </p>
+                        <p>
+                            The next listing defines a few React components=
+.
+                            The only MobX specific code in there is the <co=
+de>observer</code> wrapping.
+                            That is enough to make sure that each component=
+ individually re-renders when relevant data changes.
+                            We don't have to call state <code>useState</cod=
+e> setters anymore,
+                            nor do we have to figure out how to subscribe t=
+o the proper parts
+                            of the application state using selectors or hig=
+her order components that need configuration.
+                            Basically, all components have become smart. Ye=
+t they are defined in a dumb, declarative manner.
+                        </p>
+                        <p>
+                            Press the <em>Run code</em> button to see the c=
+ode below in action. The listing is editable so
+                            feel free to play with it. Try for example to r=
+emove all the <code>observer</code> calls, or
+                            just the one decorating the <code>TodoView</cod=
+e>. The numbers in the preview on the right highlight
+                            how often a component is rendered.
+                        </p>
+                        <textarea spellcheck=3D"false" class=3D"" id=3D"rea=
+ct1" rows=3D"44" style=3D"display: none;">const TodoList =3D observer(({sto=
+re}) =3D&gt; {
+  const onNewTodo =3D () =3D&gt; {
+    store.addTodo(prompt('Enter a new todo:','coffee plz'));
+  }
+
+  return (
+    &lt;div&gt;
+      { store.report }
+      &lt;ul&gt;
+        { store.todos.map(
+          (todo, idx) =3D&gt; &lt;TodoView todo=3D{ todo } key=3D{ idx } /&=
+gt;
+        ) }
+      &lt;/ul&gt;
+      { store.pendingRequests &gt; 0 ? &lt;marquee&gt;Loading...&lt;/marque=
+e&gt; : null }
+      &lt;button onClick=3D{ onNewTodo }&gt;New Todo&lt;/button&gt;
+      &lt;small&gt; (double-click a todo to edit)&lt;/small&gt;
+      &lt;RenderCounter /&gt;
+    &lt;/div&gt;
+  );
+})
+
+const TodoView =3D observer(({todo}) =3D&gt; {
+  const onToggleCompleted =3D () =3D&gt; {
+    todo.completed =3D !todo.completed;
+  }
+
+  const onRename =3D () =3D&gt; {
+    todo.task =3D prompt('Task name', todo.task) || todo.task;
+  }
+
+  return (
+    &lt;li onDoubleClick=3D{ onRename }&gt;
+      &lt;input
+        type=3D'checkbox'
+        checked=3D{ todo.completed }
+        onChange=3D{ onToggleCompleted }
+      /&gt;
+      { todo.task }
+      { todo.assignee
+        ? &lt;small&gt;{ todo.assignee.name }&lt;/small&gt;
+        : null
+      }
+      &lt;RenderCounter /&gt;
+    &lt;/li&gt;
+  );
+})
+
+ReactDOM.render(
+  &lt;TodoList store=3D{ observableTodoStore } /&gt;,
+  document.getElementById('reactjs-app')
+);
+                        </textarea><div class=3D"CodeMirror cm-s-xq-light">=
+<div style=3D"overflow: hidden; position: relative; width: 3px; height: 0px=
+; top: 19px; left: 19px;"><textarea autocorrect=3D"off" autocapitalize=3D"o=
+ff" spellcheck=3D"false" style=3D"position: absolute; bottom: -1em; padding=
+: 0px; width: 1000px; height: 1em; outline: none;" tabindex=3D"0"></textare=
+a></div><div class=3D"CodeMirror-vscrollbar" tabindex=3D"-1" cm-not-content=
+=3D"true" style=3D"bottom: 0px; width: 18px; pointer-events: none;"><div st=
+yle=3D"min-width: 1px; height: 0px;"></div></div><div class=3D"CodeMirror-h=
+scrollbar" tabindex=3D"-1" cm-not-content=3D"true" style=3D"display: block;=
+ right: 0px; left: 0px; height: 18px; pointer-events: none;"><div style=3D"=
+height: 100%; min-height: 1px; width: 627px;"></div></div><div class=3D"Cod=
+eMirror-scrollbar-filler" cm-not-content=3D"true"></div><div class=3D"CodeM=
+irror-gutter-filler" cm-not-content=3D"true"></div><div class=3D"CodeMirror=
+-scroll" tabindex=3D"-1"><div class=3D"CodeMirror-sizer" style=3D"margin-le=
+ft: 0px; margin-bottom: 0px; border-right-width: 30px; min-height: 788px; m=
+in-width: 599px; padding-right: 0px; padding-bottom: 0px;"><div style=3D"po=
+sition: relative; top: 0px;"><div class=3D"CodeMirror-lines" role=3D"presen=
+tation"><div role=3D"presentation" style=3D"position: relative; outline: no=
+ne;"><div class=3D"CodeMirror-measure"><pre class=3D"CodeMirror-line-like">=
+<span>xxxxxxxxxx</span></pre></div><div class=3D"CodeMirror-measure"></div>=
+<div style=3D"position: relative; z-index: 1;"></div><div class=3D"CodeMirr=
+or-cursors"><div class=3D"CodeMirror-cursor" style=3D"left: 4px; top: 0px; =
+height: 15px;">&nbsp;</div></div><div class=3D"CodeMirror-code" role=3D"pre=
+sentation" style=3D""><pre class=3D" CodeMirror-line " role=3D"presentation=
+"><span role=3D"presentation" style=3D"padding-right: 0.1px;"><span class=
+=3D"cm-keyword">const</span> <span class=3D"cm-variable">TodoList</span> <s=
+pan class=3D"cm-operator">=3D</span> <span class=3D"cm-variable">observer</=
+span>(({<span class=3D"cm-def">store</span>}) <span class=3D"cm-operator">=
+=3D&gt;</span> {</span></pre><pre class=3D" CodeMirror-line " role=3D"prese=
+ntation"><span role=3D"presentation" style=3D"padding-right: 0.1px;">  <spa=
+n class=3D"cm-keyword">const</span> <span class=3D"cm-def">onNewTodo</span>=
+ <span class=3D"cm-operator">=3D</span> () <span class=3D"cm-operator">=3D&=
+gt;</span> {</span></pre><pre class=3D" CodeMirror-line " role=3D"presentat=
+ion"><span role=3D"presentation" style=3D"padding-right: 0.1px;">    <span =
+class=3D"cm-variable-2">store</span>.<span class=3D"cm-property">addTodo</s=
+pan>(<span class=3D"cm-variable">prompt</span>(<span class=3D"cm-string">'E=
+nter a new todo:'</span>,<span class=3D"cm-string">'coffee plz'</span>));</=
+span></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span rol=
+e=3D"presentation" style=3D"padding-right: 0.1px;">  }</span></pre><pre cla=
+ss=3D" CodeMirror-line " role=3D"presentation"><span role=3D"presentation" =
+style=3D"padding-right: 0.1px;"><span cm-text=3D"">=E2=80=8B</span></span><=
+/pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span role=3D"p=
+resentation" style=3D"padding-right: 0.1px;">  <span class=3D"cm-keyword">r=
+eturn</span> (</span></pre><pre class=3D" CodeMirror-line " role=3D"present=
+ation"><span role=3D"presentation" style=3D"padding-right: 0.1px;">    <spa=
+n class=3D"cm-operator">&lt;</span><span class=3D"cm-variable">div</span><s=
+pan class=3D"cm-operator">&gt;</span></span></pre><pre class=3D" CodeMirror=
+-line " role=3D"presentation"><span role=3D"presentation" style=3D"padding-=
+right: 0.1px;">      { <span class=3D"cm-property">store</span>.<span class=
+=3D"cm-variable">report</span> }</span></pre><pre class=3D" CodeMirror-line=
+ " role=3D"presentation"><span role=3D"presentation" style=3D"padding-right=
+: 0.1px;">      <span class=3D"cm-operator">&lt;</span><span class=3D"cm-va=
+riable">ul</span><span class=3D"cm-operator">&gt;</span></span></pre><pre c=
+lass=3D" CodeMirror-line " role=3D"presentation"><span role=3D"presentation=
+" style=3D"padding-right: 0.1px;">        { <span class=3D"cm-property">sto=
+re</span>.<span class=3D"cm-variable">todos</span>.<span class=3D"cm-variab=
+le">map</span>(</span></pre><pre class=3D" CodeMirror-line " role=3D"presen=
+tation"><span role=3D"presentation" style=3D"padding-right: 0.1px;">       =
+   (<span class=3D"cm-variable">todo</span>, <span class=3D"cm-variable">id=
+x</span>) <span class=3D"cm-operator">=3D&gt;</span> <span class=3D"cm-oper=
+ator">&lt;</span><span class=3D"cm-variable">TodoView</span> <span class=3D=
+"cm-variable">todo</span><span class=3D"cm-operator">=3D</span>{ <span clas=
+s=3D"cm-variable">todo</span> } <span class=3D"cm-variable">key</span><span=
+ class=3D"cm-operator">=3D</span>{ <span class=3D"cm-variable">idx</span> }=
+ <span class=3D"cm-string-2">/&gt;</span></span></pre><pre class=3D" CodeMi=
+rror-line " role=3D"presentation"><span role=3D"presentation" style=3D"padd=
+ing-right: 0.1px;">        ) }</span></pre><pre class=3D" CodeMirror-line "=
+ role=3D"presentation"><span role=3D"presentation" style=3D"padding-right: =
+0.1px;">      <span class=3D"cm-operator">&lt;</span><span class=3D"cm-stri=
+ng-2">/ul&gt;</span></span></pre><pre class=3D" CodeMirror-line " role=3D"p=
+resentation"><span role=3D"presentation" style=3D"padding-right: 0.1px;">  =
+    { <span class=3D"cm-variable">store</span>.<span class=3D"cm-variable">=
+pendingRequests</span> <span class=3D"cm-operator">&gt;</span> <span class=
+=3D"cm-number">0</span> <span class=3D"cm-operator">?</span> <span class=3D=
+"cm-operator">&lt;</span><span class=3D"cm-variable">marquee</span><span cl=
+ass=3D"cm-operator">&gt;</span><span class=3D"cm-variable">Loading</span><s=
+pan class=3D"cm-meta">...</span><span class=3D"cm-operator">&lt;</span><spa=
+n class=3D"cm-string-2">/marquee&gt; : null }</span></span></pre><pre class=
+=3D" CodeMirror-line " role=3D"presentation"><span role=3D"presentation" st=
+yle=3D"padding-right: 0.1px;">      <span class=3D"cm-operator">&lt;</span>=
+<span class=3D"cm-variable">button</span> <span class=3D"cm-variable">onCli=
+ck</span><span class=3D"cm-operator">=3D</span>{ <span class=3D"cm-variable=
+">onNewTodo</span> }<span class=3D"cm-operator">&gt;</span><span class=3D"c=
+m-variable">New</span> <span class=3D"cm-variable">Todo</span><span class=
+=3D"cm-operator">&lt;</span><span class=3D"cm-string-2">/button&gt;</span><=
+/span></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span ro=
+le=3D"presentation" style=3D"padding-right: 0.1px;">      <span class=3D"cm=
+-operator">&lt;</span><span class=3D"cm-variable">small</span><span class=
+=3D"cm-operator">&gt;</span> (<span class=3D"cm-variable">double</span><spa=
+n class=3D"cm-operator">-</span><span class=3D"cm-variable">click</span> <s=
+pan class=3D"cm-variable">a</span> <span class=3D"cm-variable">todo</span> =
+<span class=3D"cm-variable">to</span> <span class=3D"cm-variable">edit</spa=
+n>)<span class=3D"cm-operator">&lt;</span><span class=3D"cm-string-2">/smal=
+l&gt;</span></span></pre><pre class=3D" CodeMirror-line " role=3D"presentat=
+ion"><span role=3D"presentation" style=3D"padding-right: 0.1px;">      <spa=
+n class=3D"cm-operator">&lt;</span><span class=3D"cm-variable">RenderCounte=
+r</span> <span class=3D"cm-operator">/&gt;</span></span></pre><pre class=3D=
+" CodeMirror-line " role=3D"presentation"><span role=3D"presentation" style=
+=3D"padding-right: 0.1px;">    <span class=3D"cm-operator">&lt;</span><span=
+ class=3D"cm-string-2">/div&gt;</span></span></pre><pre class=3D" CodeMirro=
+r-line " role=3D"presentation"><span role=3D"presentation" style=3D"padding=
+-right: 0.1px;">  );</span></pre><pre class=3D" CodeMirror-line " role=3D"p=
+resentation"><span role=3D"presentation" style=3D"padding-right: 0.1px;">})=
+</span></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span r=
+ole=3D"presentation" style=3D"padding-right: 0.1px;"><span cm-text=3D"">=E2=
+=80=8B</span></span></pre><pre class=3D" CodeMirror-line " role=3D"presenta=
+tion"><span role=3D"presentation" style=3D"padding-right: 0.1px;"><span cla=
+ss=3D"cm-keyword">const</span> <span class=3D"cm-variable">TodoView</span> =
+<span class=3D"cm-operator">=3D</span> <span class=3D"cm-variable">observer=
+</span>(({<span class=3D"cm-def">todo</span>}) <span class=3D"cm-operator">=
+=3D&gt;</span> {</span></pre><pre class=3D" CodeMirror-line " role=3D"prese=
+ntation"><span role=3D"presentation" style=3D"padding-right: 0.1px;">  <spa=
+n class=3D"cm-keyword">const</span> <span class=3D"cm-def">onToggleComplete=
+d</span> <span class=3D"cm-operator">=3D</span> () <span class=3D"cm-operat=
+or">=3D&gt;</span> {</span></pre><pre class=3D" CodeMirror-line " role=3D"p=
+resentation"><span role=3D"presentation" style=3D"padding-right: 0.1px;">  =
+  <span class=3D"cm-variable-2">todo</span>.<span class=3D"cm-property">com=
+pleted</span> <span class=3D"cm-operator">=3D</span> <span class=3D"cm-oper=
+ator">!</span><span class=3D"cm-variable-2">todo</span>.<span class=3D"cm-p=
+roperty">completed</span>;</span></pre><pre class=3D" CodeMirror-line " rol=
+e=3D"presentation"><span role=3D"presentation" style=3D"padding-right: 0.1p=
+x;">  }</span></pre><pre class=3D" CodeMirror-line " role=3D"presentation">=
+<span role=3D"presentation" style=3D"padding-right: 0.1px;"><span cm-text=
+=3D"">=E2=80=8B</span></span></pre><pre class=3D" CodeMirror-line " role=3D=
+"presentation"><span role=3D"presentation" style=3D"padding-right: 0.1px;">=
+  <span class=3D"cm-keyword">const</span> <span class=3D"cm-def">onRename</=
+span> <span class=3D"cm-operator">=3D</span> () <span class=3D"cm-operator"=
+>=3D&gt;</span> {</span></pre><pre class=3D" CodeMirror-line " role=3D"pres=
+entation"><span role=3D"presentation" style=3D"padding-right: 0.1px;">    <=
+span class=3D"cm-variable-2">todo</span>.<span class=3D"cm-property">task</=
+span> <span class=3D"cm-operator">=3D</span> <span class=3D"cm-variable">pr=
+ompt</span>(<span class=3D"cm-string">'Task name'</span>, <span class=3D"cm=
+-variable-2">todo</span>.<span class=3D"cm-property">task</span>) <span cla=
+ss=3D"cm-operator">||</span> <span class=3D"cm-variable-2">todo</span>.<spa=
+n class=3D"cm-property">task</span>;</span></pre><pre class=3D" CodeMirror-=
+line " role=3D"presentation"><span role=3D"presentation" style=3D"padding-r=
+ight: 0.1px;">  }</span></pre><pre class=3D" CodeMirror-line " role=3D"pres=
+entation"><span role=3D"presentation" style=3D"padding-right: 0.1px;"><span=
+ cm-text=3D"">=E2=80=8B</span></span></pre><pre class=3D" CodeMirror-line "=
+ role=3D"presentation"><span role=3D"presentation" style=3D"padding-right: =
+0.1px;">  <span class=3D"cm-keyword">return</span> (</span></pre><pre class=
+=3D" CodeMirror-line " role=3D"presentation"><span role=3D"presentation" st=
+yle=3D"padding-right: 0.1px;">    <span class=3D"cm-operator">&lt;</span><s=
+pan class=3D"cm-variable">li</span> <span class=3D"cm-variable">onDoubleCli=
+ck</span><span class=3D"cm-operator">=3D</span>{ <span class=3D"cm-variable=
+-2">onRename</span> }<span class=3D"cm-operator">&gt;</span></span></pre><p=
+re class=3D" CodeMirror-line " role=3D"presentation"><span role=3D"presenta=
+tion" style=3D"padding-right: 0.1px;">      <span class=3D"cm-operator">&lt=
+;</span><span class=3D"cm-variable">input</span></span></pre><pre class=3D"=
+ CodeMirror-line " role=3D"presentation"><span role=3D"presentation" style=
+=3D"padding-right: 0.1px;">        <span class=3D"cm-variable">type</span><=
+span class=3D"cm-operator">=3D</span><span class=3D"cm-string">'checkbox'</=
+span></span></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><s=
+pan role=3D"presentation" style=3D"padding-right: 0.1px;">        <span cla=
+ss=3D"cm-variable">checked</span><span class=3D"cm-operator">=3D</span>{ <s=
+pan class=3D"cm-variable-2">todo</span>.<span class=3D"cm-variable">complet=
+ed</span> }</span></pre><pre class=3D" CodeMirror-line " role=3D"presentati=
+on"><span role=3D"presentation" style=3D"padding-right: 0.1px;">        <sp=
+an class=3D"cm-variable">onChange</span><span class=3D"cm-operator">=3D</sp=
+an>{ <span class=3D"cm-variable-2">onToggleCompleted</span> }</span></pre><=
+pre class=3D" CodeMirror-line " role=3D"presentation"><span role=3D"present=
+ation" style=3D"padding-right: 0.1px;">      <span class=3D"cm-string-2">/&=
+gt;</span></span></pre><pre class=3D" CodeMirror-line " role=3D"presentatio=
+n"><span role=3D"presentation" style=3D"padding-right: 0.1px;">      { <spa=
+n class=3D"cm-variable-2">todo</span>.<span class=3D"cm-variable">task</spa=
+n> }</span></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><sp=
+an role=3D"presentation" style=3D"padding-right: 0.1px;">      { <span clas=
+s=3D"cm-variable-2">todo</span>.<span class=3D"cm-variable">assignee</span>=
+</span></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span r=
+ole=3D"presentation" style=3D"padding-right: 0.1px;">        <span class=3D=
+"cm-operator">?</span> <span class=3D"cm-operator">&lt;</span><span class=
+=3D"cm-variable">small</span><span class=3D"cm-operator">&gt;</span>{ <span=
+ class=3D"cm-variable-2">todo</span>.<span class=3D"cm-variable">assignee</=
+span>.<span class=3D"cm-variable">name</span> }<span class=3D"cm-operator">=
+&lt;</span><span class=3D"cm-string-2">/small&gt;</span></span></pre><pre c=
+lass=3D" CodeMirror-line " role=3D"presentation"><span role=3D"presentation=
+" style=3D"padding-right: 0.1px;">        : <span class=3D"cm-atom">null</s=
+pan></span></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><sp=
+an role=3D"presentation" style=3D"padding-right: 0.1px;">      }</span></pr=
+e><pre class=3D" CodeMirror-line " role=3D"presentation"><span role=3D"pres=
+entation" style=3D"padding-right: 0.1px;">      <span class=3D"cm-operator"=
+>&lt;</span><span class=3D"cm-variable">RenderCounter</span> <span class=3D=
+"cm-operator">/&gt;</span></span></pre><pre class=3D" CodeMirror-line " rol=
+e=3D"presentation"><span role=3D"presentation" style=3D"padding-right: 0.1p=
+x;">    <span class=3D"cm-operator">&lt;</span><span class=3D"cm-string-2">=
+/li&gt;</span></span></pre><pre class=3D" CodeMirror-line " role=3D"present=
+ation"><span role=3D"presentation" style=3D"padding-right: 0.1px;">  );</sp=
+an></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span role=
+=3D"presentation" style=3D"padding-right: 0.1px;">})</span></pre><pre class=
+=3D" CodeMirror-line " role=3D"presentation"><span role=3D"presentation" st=
+yle=3D"padding-right: 0.1px;"><span cm-text=3D"">=E2=80=8B</span></span></p=
+re><pre class=3D" CodeMirror-line " role=3D"presentation"><span role=3D"pre=
+sentation" style=3D"padding-right: 0.1px;"><span class=3D"cm-variable">Reac=
+tDOM</span>.<span class=3D"cm-property">render</span>(</span></pre><pre cla=
+ss=3D" CodeMirror-line " role=3D"presentation"><span role=3D"presentation" =
+style=3D"padding-right: 0.1px;">  <span class=3D"cm-operator">&lt;</span><s=
+pan class=3D"cm-variable">TodoList</span> <span class=3D"cm-variable">store=
+</span><span class=3D"cm-operator">=3D</span>{ <span class=3D"cm-variable">=
+observableTodoStore</span> } <span class=3D"cm-string-2">/&gt;,</span></spa=
+n></pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span role=
+=3D"presentation" style=3D"padding-right: 0.1px;">  <span class=3D"cm-varia=
+ble">document</span>.<span class=3D"cm-variable">getElementById</span>(<spa=
+n class=3D"cm-string">'reactjs-app'</span>)</span></pre><pre class=3D" Code=
+Mirror-line " role=3D"presentation"><span role=3D"presentation" style=3D"pa=
+dding-right: 0.1px;">);</span></pre><pre class=3D" CodeMirror-line " role=
+=3D"presentation"><span role=3D"presentation" style=3D"padding-right: 0.1px=
+;">                        </span></pre></div></div></div></div></div><div =
+style=3D"position: absolute; height: 30px; width: 1px; border-bottom: 0px s=
+olid transparent; top: 788px;"></div><div class=3D"CodeMirror-gutters" styl=
+e=3D"display: none; height: 818px;"></div></div></div>
+                        <button class=3D"btn-run">Run code</button>
+
+                        <p>
+                            The next listing nicely demonstrates that we on=
+ly have to alter the data, without doing any further bookkeeping.
+                            MobX will automatically derive and update the r=
+elevant parts of the user interface again from the state in the store.
+                        </p>
+
+                        <textarea spellcheck=3D"false" class=3D"" id=3D"pla=
+y1" rows=3D"8" style=3D"display: none;">const store =3D observableTodoStore=
+;
+store.todos[0].completed =3D !store.todos[0].completed;
+store.todos[1].task =3D "Random todo " + Math.random();
+store.todos.push({ task: "Find a fine cheese", completed: true });
+// etc etc.. add your own statements here...
+                        </textarea><div class=3D"CodeMirror cm-s-xq-light">=
+<div style=3D"overflow: hidden; position: relative; width: 3px; height: 0px=
+; top: 19px; left: 19px;"><textarea autocorrect=3D"off" autocapitalize=3D"o=
+ff" spellcheck=3D"false" style=3D"position: absolute; bottom: -1em; padding=
+: 0px; width: 1000px; height: 1em; outline: none;" tabindex=3D"0"></textare=
+a></div><div class=3D"CodeMirror-vscrollbar" tabindex=3D"-1" cm-not-content=
+=3D"true" style=3D"width: 18px; pointer-events: none;"><div style=3D"min-wi=
+dth: 1px; height: 0px;"></div></div><div class=3D"CodeMirror-hscrollbar" ta=
+bindex=3D"-1" cm-not-content=3D"true" style=3D"height: 18px; pointer-events=
+: none;"><div style=3D"height: 100%; min-height: 1px; width: 0px;"></div></=
+div><div class=3D"CodeMirror-scrollbar-filler" cm-not-content=3D"true"></di=
+v><div class=3D"CodeMirror-gutter-filler" cm-not-content=3D"true"></div><di=
+v class=3D"CodeMirror-scroll" tabindex=3D"-1"><div class=3D"CodeMirror-size=
+r" style=3D"margin-left: 0px; margin-bottom: 0px; border-right-width: 30px;=
+ min-height: 98px; min-width: 535px; padding-right: 0px; padding-bottom: 0p=
+x;"><div style=3D"position: relative; top: 0px;"><div class=3D"CodeMirror-l=
+ines" role=3D"presentation"><div role=3D"presentation" style=3D"position: r=
+elative; outline: none;"><div class=3D"CodeMirror-measure"><pre class=3D"Co=
+deMirror-line-like"><span>xxxxxxxxxx</span></pre></div><div class=3D"CodeMi=
+rror-measure"></div><div style=3D"position: relative; z-index: 1;"></div><d=
+iv class=3D"CodeMirror-cursors"><div class=3D"CodeMirror-cursor" style=3D"l=
+eft: 4px; top: 0px; height: 15px;">&nbsp;</div></div><div class=3D"CodeMirr=
+or-code" role=3D"presentation" style=3D""><pre class=3D" CodeMirror-line " =
+role=3D"presentation"><span role=3D"presentation" style=3D"padding-right: 0=
+.1px;"><span class=3D"cm-keyword">const</span> <span class=3D"cm-variable">=
+store</span> <span class=3D"cm-operator">=3D</span> <span class=3D"cm-varia=
+ble">observableTodoStore</span>;</span></pre><pre class=3D" CodeMirror-line=
+ " role=3D"presentation"><span role=3D"presentation" style=3D"padding-right=
+: 0.1px;"><span class=3D"cm-variable">store</span>.<span class=3D"cm-proper=
+ty">todos</span>[<span class=3D"cm-number">0</span>].<span class=3D"cm-prop=
+erty">completed</span> <span class=3D"cm-operator">=3D</span> <span class=
+=3D"cm-operator">!</span><span class=3D"cm-variable">store</span>.<span cla=
+ss=3D"cm-property">todos</span>[<span class=3D"cm-number">0</span>].<span c=
+lass=3D"cm-property">completed</span>;</span></pre><pre class=3D" CodeMirro=
+r-line " role=3D"presentation"><span role=3D"presentation" style=3D"padding=
+-right: 0.1px;"><span class=3D"cm-variable">store</span>.<span class=3D"cm-=
+property">todos</span>[<span class=3D"cm-number">1</span>].<span class=3D"c=
+m-property">task</span> <span class=3D"cm-operator">=3D</span> <span class=
+=3D"cm-string">"Random todo "</span> <span class=3D"cm-operator">+</span> <=
+span class=3D"cm-variable">Math</span>.<span class=3D"cm-property">random</=
+span>();</span></pre><pre class=3D" CodeMirror-line " role=3D"presentation"=
+><span role=3D"presentation" style=3D"padding-right: 0.1px;"><span class=3D=
+"cm-variable">store</span>.<span class=3D"cm-property">todos</span>.<span c=
+lass=3D"cm-property">push</span>({ <span class=3D"cm-property">task</span>:=
+ <span class=3D"cm-string">"Find a fine cheese"</span>, <span class=3D"cm-p=
+roperty">completed</span>: <span class=3D"cm-atom">true</span> });</span></=
+pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span role=3D"pr=
+esentation" style=3D"padding-right: 0.1px;"><span class=3D"cm-comment">// e=
+tc etc.. add your own statements here...</span></span></pre><pre class=3D" =
+CodeMirror-line " role=3D"presentation"><span role=3D"presentation" style=
+=3D"padding-right: 0.1px;">                        </span></pre></div></div=
+></div></div></div><div style=3D"position: absolute; height: 30px; width: 1=
+px; border-bottom: 0px solid transparent; top: 98px;"></div><div class=3D"C=
+odeMirror-gutters" style=3D"display: none; height: 128px;"></div></div></di=
+v>
+                        <button class=3D"btn-run">Run code</button>
+                        <button id=3D"runline-btn" class=3D"btn-run">Run li=
+ne-by-line</button>
+                        <p>&nbsp;</p>
+
+                        <h3>Working with references</h3>
+                        <p>
+                            So far we have created observable objects (both=
+ prototyped and plain objects), arrays and primitives. You might be wonderi=
+ng,
+                            how are references handled in MobX? Is my state=
+ allowed to form a graph? In the previous listings
+                            you might have noticed that there is an <code>a=
+ssignee</code> property
+                            on the todos. Let's give them some values by in=
+troducing another =E2=80=9Cstore=E2=80=9D (ok, it's just
+                            a glorified array) containing people, and assig=
+n tasks to them.
+                        </p>
+                        <textarea spellcheck=3D"false" class=3D"" id=3D"sto=
+re2" rows=3D"8" style=3D"display: none;">const peopleStore =3D observable([
+  { name: "Michel" },
+  { name: "Me" }
+]);
+observableTodoStore.todos[0].assignee =3D peopleStore[0];
+observableTodoStore.todos[1].assignee =3D peopleStore[1];
+peopleStore[0].name =3D "Michel Weststrate";
+                        </textarea><div class=3D"CodeMirror cm-s-xq-light">=
+<div style=3D"overflow: hidden; position: relative; width: 3px; height: 0px=
+; top: 19px; left: 19px;"><textarea autocorrect=3D"off" autocapitalize=3D"o=
+ff" spellcheck=3D"false" style=3D"position: absolute; bottom: -1em; padding=
+: 0px; width: 1000px; height: 1em; outline: none;" tabindex=3D"0"></textare=
+a></div><div class=3D"CodeMirror-vscrollbar" tabindex=3D"-1" cm-not-content=
+=3D"true" style=3D"width: 18px; pointer-events: none;"><div style=3D"min-wi=
+dth: 1px; height: 0px;"></div></div><div class=3D"CodeMirror-hscrollbar" ta=
+bindex=3D"-1" cm-not-content=3D"true" style=3D"height: 18px; pointer-events=
+: none;"><div style=3D"height: 100%; min-height: 1px; width: 0px;"></div></=
+div><div class=3D"CodeMirror-scrollbar-filler" cm-not-content=3D"true"></di=
+v><div class=3D"CodeMirror-gutter-filler" cm-not-content=3D"true"></div><di=
+v class=3D"CodeMirror-scroll" tabindex=3D"-1"><div class=3D"CodeMirror-size=
+r" style=3D"margin-left: 0px; margin-bottom: 0px; border-right-width: 30px;=
+ min-height: 128px; min-width: 447px; padding-right: 0px; padding-bottom: 0=
+px;"><div style=3D"position: relative; top: 0px;"><div class=3D"CodeMirror-=
+lines" role=3D"presentation"><div role=3D"presentation" style=3D"position: =
+relative; outline: none;"><div class=3D"CodeMirror-measure"><pre class=3D"C=
+odeMirror-line-like"><span>xxxxxxxxxx</span></pre></div><div class=3D"CodeM=
+irror-measure"></div><div style=3D"position: relative; z-index: 1;"></div><=
+div class=3D"CodeMirror-cursors"><div class=3D"CodeMirror-cursor" style=3D"=
+left: 4px; top: 0px; height: 15px;">&nbsp;</div></div><div class=3D"CodeMir=
+ror-code" role=3D"presentation" style=3D""><pre class=3D" CodeMirror-line "=
+ role=3D"presentation"><span role=3D"presentation" style=3D"padding-right: =
+0.1px;"><span class=3D"cm-keyword">const</span> <span class=3D"cm-variable"=
+>peopleStore</span> <span class=3D"cm-operator">=3D</span> <span class=3D"c=
+m-variable">observable</span>([</span></pre><pre class=3D" CodeMirror-line =
+" role=3D"presentation"><span role=3D"presentation" style=3D"padding-right:=
+ 0.1px;">  { <span class=3D"cm-property">name</span>: <span class=3D"cm-str=
+ing">"Michel"</span> },</span></pre><pre class=3D" CodeMirror-line " role=
+=3D"presentation"><span role=3D"presentation" style=3D"padding-right: 0.1px=
+;">  { <span class=3D"cm-property">name</span>: <span class=3D"cm-string">"=
+Me"</span> }</span></pre><pre class=3D" CodeMirror-line " role=3D"presentat=
+ion"><span role=3D"presentation" style=3D"padding-right: 0.1px;">]);</span>=
+</pre><pre class=3D" CodeMirror-line " role=3D"presentation"><span role=3D"=
+presentation" style=3D"padding-right: 0.1px;"><span class=3D"cm-variable">o=
+bservableTodoStore</span>.<span class=3D"cm-property">todos</span>[<span cl=
+ass=3D"cm-number">0</span>].<span class=3D"cm-property">assignee</span> <sp=
+an class=3D"cm-operator">=3D</span> <span class=3D"cm-variable">peopleStore=
+</span>[<span class=3D"cm-number">0</span>];</span></pre><pre class=3D" Cod=
+eMirror-line " role=3D"presentation"><span role=3D"presentation" style=3D"p=
+adding-right: 0.1px;"><span class=3D"cm-variable">observableTodoStore</span=
+>.<span class=3D"cm-property">todos</span>[<span class=3D"cm-number">1</spa=
+n>].<span class=3D"cm-property">assignee</span> <span class=3D"cm-operator"=
+>=3D</span> <span class=3D"cm-variable">peopleStore</span>[<span class=3D"c=
+m-number">1</span>];</span></pre><pre class=3D" CodeMirror-line " role=3D"p=
+resentation"><span role=3D"presentation" style=3D"padding-right: 0.1px;"><s=
+pan class=3D"cm-variable">peopleStore</span>[<span class=3D"cm-number">0</s=
+pan>].<span class=3D"cm-property">name</span> <span class=3D"cm-operator">=
+=3D</span> <span class=3D"cm-string">"Michel Weststrate"</span>;</span></pr=
+e><pre class=3D" CodeMirror-line " role=3D"presentation"><span role=3D"pres=
+entation" style=3D"padding-right: 0.1px;">                        </span></=
+pre></div></div></div></div></div><div style=3D"position: absolute; height:=
+ 30px; width: 1px; border-bottom: 0px solid transparent; top: 128px;"></div=
+><div class=3D"CodeMirror-gutters" style=3D"display: none; height: 158px;">=
+</div></div></div>
+                        <button class=3D"btn-run">Run code</button>
+                        <p>We now have two independent stores. One with peo=
+ple and one with todos. To assign an <code>assignee</code>
+                            to a person from the people store, we just assi=
+gned a reference. These changes will be picked
+                            up automatically by the <code>TodoView</code>. =
+With MobX there is no need to normalize data first
+                            and to write selectors to make sure our compone=
+nts will be updated. In fact, it doesn't even
+                            matter where the data is stored. As long as obj=
+ects are made <em>observable</em>, MobX will be
+                            able to track them. Real JavaScript references =
+will just work. MobX will track them automatically
+                            if they are relevant for a derivation. To test =
+that, just try changing your name in the next
+                            input box (make sure you have pressed the above=
+ <em>Run code</em> button first!).
+                        </p>
+                        <hr>
+                        <p style=3D"text-align:center">Your name:
+                            <input>
+                        </p>
+                        <hr>
+                        <p>By the way, the HTML of the above input box is s=
+imply: </p><pre>&lt;input onkeyup=3D"peopleStore[1].name =3D event.target.v=
+alue" /&gt;</pre><p></p>
+
+                        <h3>Asynchronous actions</h3>
+                        <p>Since everything in our small Todo application i=
+s derived from the state, it really doesn't matter <em>when</em> state is c=
+hanged.
+                            That makes creating asynchronous actions really=
+ straightforward.
+                            Just press the the following button (multiple t=
+imes) to emulate asynchronously loading new todo items:
+                        </p>
+                        <hr>
+                        <p style=3D"text-align:center">
+                            <button>Load todo</button>
+                        </p>
+                        <hr>
+                        <p>The code behind that is really straightforward.
+                            We start with updating the store property <code=
+>pendingRequests</code> to have the UI reflect the current loading status.
+                            Once loading is finished, we update the todos o=
+f the store and decrease the <code>pendingRequests</code> counter again.
+                            Just compare this snippet with the earlier <cod=
+e>TodoList</code> definition to see how the pendingRequests property is use=
+d.
+                        </p><p>
+                            Note that the timeout function is wrapped in <c=
+ode>action</code>. This isn't strictly necessary,
+                            but it makes sure that both mutations are proce=
+ssed in a single transaction, making sure any observers are only notified a=
+fter both updates have completed.
+</p><pre>observableTodoStore.pendingRequests++;
+setTimeout(action(() =3D&gt; {
+  observableTodoStore.addTodo('Random Todo ' + Math.random());
+  observableTodoStore.pendingRequests--;
+}), 2000);</pre>
+                        <p></p>
+
+                        <h3>Conclusion</h3>
+                        <p>
+                            That's all! No boilerplate. Just some simple, d=
+eclarative components that form our complete UI. And which are derived comp=
+letely,
+                            reactively from our state. You are now ready to=
+ start using the <code>mobx</code> and <code>mobx-react-lite</code> package=
+s in your own applications.
+                            A short summary of the things you learned so fa=
+r:
+                        </p>
+                        <ol>
+                            <li>
+                                Use the <code>observable</code> decorator o=
+r <code>observable(object or array)</code> functions to make objects tracka=
+ble for MobX.
+                            </li>
+                            <li>
+                                The <code>computed</code> decorator can be =
+used to create functions that can automatically derive value from the state=
+ and cache them.
+                            </li>
+                            <li>
+                                Use <code>autorun</code> to automatically r=
+un functions that depend on some observable state.
+                                This is useful for logging, making network =
+requests, etc.
+                            </li>
+                            <li>
+                                Use the <code>observer</code> wrapper from =
+the <code>mobx-react-lite</code> package to make your React components trul=
+y reactive.
+                                They will update automatically and
+                                efficiently. Even when used in large comple=
+x applications with large amounts of data.
+                            </li>
+                        </ol>
+                        <p>
+                            Feel free to play around a bit longer with the =
+editable code blocks above to get a basic feeling how MobX reacts to all yo=
+ur
+                            changes. You could for example add a log statem=
+ent to the <code>report</code> function to see when it is called.
+                            Or don't show the <code>report</code> at all an=
+d see how that
+                            influences the rendering of the <code>TodoList<=
+/code>. Or show it only under specific circumstances...
+                        </p>
+
+                        <h3>MobX doesn't dictate architecture</h3>
+                        <p>
+                          Please note that the above examples are contrived=
+ and it is recommended to use proper engineering practices like
+                            encapsulating logic in methods, organize them i=
+n stores or controllers, view-models etc.
+                            Many different architectural patterns can be ap=
+plied, and some are further discussed inside the official docs.
+                            The above examples, and the examples in the off=
+icial documentation show how MobX <em>could</em> be used, not how it <em>mu=
+st</em> be used.
+                            Or, as somebody on HackerNews put it:
+                            </p><blockquote><em>
+=E2=80=9CMobX, it's been mentioned elsewhere but I can't help but sing its =
+praises.
+Writing in MobX means that using controllers/ dispatchers/ actions/ supervi=
+sors or another form of managing dataflow returns to being an architectural=
+ concern you can pattern to your application's needs,
+rather than being something that's required by default for anything more th=
+an a Todo app.=E2=80=9D
+                            </em></blockquote>
+                        <p></p>
+
+                        <div style=3D"text-align:center;">
+                            <span><template shadowmode=3D"closed"><div clas=
+s=3D"widget"><a class=3D"btn" href=3D"https://github.com/mobxjs/mobx" rel=
+=3D"noopener" target=3D"_blank" aria-label=3D"Star mobxjs/mobx on GitHub"><=
+svg viewBox=3D"0 0 16 16" width=3D"14" height=3D"14" class=3D"octicon octic=
+on-star" aria-hidden=3D"true"><path fill-rule=3D"evenodd" d=3D"M8 .25a.75.7=
+5 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4=
+.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4=
+.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25zm=
+0 2.445L6.615 5.5a.75.75 0 01-.564.41l-3.097.45 2.24 2.184a.75.75 0 01.216.=
+664l-.528 3.084 2.769-1.456a.75.75 0 01.698 0l2.77 1.456-.53-3.084a.75.75 0=
+ 01.216-.664l2.24-2.183-3.096-.45a.75.75 0 01-.564-.41L8 2.694v.001z"></pat=
+h></svg>&nbsp;<span>Star</span></a></div></template></span>
+                            <iframe id=3D"twitter-widget-0" scrolling=3D"no=
+" frameborder=3D"0" allowtransparency=3D"true" allowfullscreen=3D"true" cla=
+ss=3D"twitter-share-button twitter-share-button-rendered twitter-tweet-butt=
+on" style=3D"position: static; visibility: visible; width: 73px; height: 20=
+px;" title=3D"Twitter Tweet Button" src=3D"cid:frame-8D9AC33916C250D420C4F4=
+AB63EF1F3D@mhtml.blink"></iframe>
+                        </div>
+
+                    </section>
+
+                    <footer>
+                        <p class=3D"copyright">MobX is maintained by <a hre=
+f=3D"https://twitter.com/mweststrate">mweststrate</a></p>
+                    </footer>
+                </div>
+              </div>
+            </td>
+            <td class=3D"right">
+                <div class=3D"right-content">
+                    <h3>React preview</h3>
+                    <div id=3D"reactjs-app">
+						<p style=3D"text-align: center">Read on and press any <em>run</em> bu=
+ttons you encounter!</p>
+					</div>
+                    <hr>
+                    <h3>Console log
+                        <button id=3D"clear-btn">clear</button>
+                    </h3>
+                    <div id=3D"consoleout"></div>
+                </div>
+            </td>
+        </tr>
+    </tbody></table>
+    <link rel=3D"stylesheet" href=3D"https://cdnjs.cloudflare.com/ajax/libs=
+/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.min.css">
+   =20
+   =20
+    <link rel=3D"stylesheet" href=3D"https://mobx.js.org/assets/getting-sta=
+rted-assets/javascripts/codemirror/lib/codemirror.css">
+    <link rel=3D"stylesheet" href=3D"https://mobx.js.org/assets/getting-sta=
+rted-assets/javascripts/codemirror/theme/xq-light.css">
+   =20
+
+   =20
+   =20
+   =20
+   =20
+   =20
+   =20
+   =20
+   =20
+   =20
+   =20
+
+
+
+<iframe scrolling=3D"no" frameborder=3D"0" allowtransparency=3D"true" src=
+=3D"cid:frame-EC607FB8A8A47384B1D76A89C4138149@mhtml.blink" title=3D"Twitte=
+r settings iframe" style=3D"display: none;"></iframe><iframe id=3D"rufous-s=
+andbox" scrolling=3D"no" frameborder=3D"0" allowtransparency=3D"true" allow=
+fullscreen=3D"true" style=3D"position: absolute; visibility: hidden; displa=
+y: none; width: 0px; height: 0px; padding: 0px; border: none;" title=3D"Twi=
+tter analytics iframe"></iframe></body></html>
+------MultipartBoundary--8eyw3KXcGX90ofgh8W3GtTevXeVDWAKlusfDralZ2f----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://mobx.js.org/assets/getting-started-assets/style.css
+
+@charset "utf-8";
+
+body, html { padding: 0px; margin: 0px; height: 100%; font-family: "PT Seri=
+f", serif; }
+
+.root { height: 100vh; width: 100%; border-spacing: 0px; }
+
+.left, .right { padding: 0px; width: 50%; vertical-align: top; }
+
+.left-content-wrapper { height: 100vh; overflow: scroll; }
+
+.left-content { margin-left: auto; margin-right: 0px; }
+
+.right { background: rgb(59, 100, 175); color: white; }
+
+.right-content, .left-content { max-width: 600px; padding: 40px; }
+
+.right-content { }
+
+h1, h2, h3, h4 { font-weight: bold; font-size: 2em; }
+
+h1 { size: 40pt; }
+
+hr { border-right: none; border-bottom: none; border-left: none; border-ima=
+ge: initial; border-top: 1px dotted rgb(153, 153, 153); width: 30%; }
+
+#project_title { font-size: 60pt; }
+
+#project_tagline { clear: left; font-family: arial; font-size: 18pt; text-a=
+lign: center; }
+
+textarea, body .CodeMirror { width: 560px; }
+
+textarea { border-style: none; white-space: pre; overflow: auto; padding: 2=
+0px; font-family: "courier new"; color: rgb(51, 51, 51); font-size: 10pt; t=
+ext-shadow: rgb(255, 255, 255) 1px 1px; margin: 30px 0px 20px; }
+
+body .CodeMirror { border: 1px solid rgb(153, 153, 153); height: auto; font=
+-size: 10pt; font-family: "courier new"; margin-top: 30px; margin-bottom: 3=
+0px; padding: 14px; }
+
+code { padding: 0px; margin: 0px; box-shadow: none; color: rgb(0, 126, 223)=
+; font-family: "courier new"; font-size: 11pt; background: none; }
+
+.right li { color: white; padding-left: 10px; }
+
+button { cursor: pointer; }
+
+.btn-run { margin-left: 8px; float: right; position: relative; padding: 4px=
+ 10px; top: -22px; left: 7px; }
+
+.btn-run:hover { outline: rgb(255, 153, 85) solid 2px; }
+
+.right h3 { margin-bottom: 4px; }
+
+#reactjs-app { margin-left: -20px; padding: 20px; width: 100%; }
+
+#consoleout div { border-bottom: 1px solid rgb(204, 204, 204); padding: 4px=
+ 0px; font-family: "courier new"; font-size: 10pt; }
+
+.render-counter { position: relative; float: right; border-radius: 8px; bac=
+kground-color: rgb(187, 187, 187); font-family: arial; font-size: 8pt; font=
+-weight: bold; text-align: center; display: inline-block; padding: 1px 5px;=
+ color: white; top: 2px; }
+
+@keyframes blink1 {=20
+  0% { background-color: rgb(187, 187, 187); }
+  50% { background-color: rgb(255, 153, 85); }
+  100% { background-color: rgb(187, 187, 187); }
+}
+
+@keyframes blink2 {=20
+  0% { background-color: rgb(187, 187, 187); }
+  50% { background-color: rgb(255, 153, 85); }
+  100% { background-color: rgb(187, 187, 187); }
+}
+
+.render-counter.odd { animation: 1s ease 0s 1 normal none running blink1; }
+
+.render-counter.even { animation: 1s ease 0s 1 normal none running blink2; =
+}
+
+small { color: rgb(153, 153, 153); font-size: 10pt; font-style: italic; }
+
+#reactjs-app { font-size: 16pt; }
+
+#reactjs-app small { color: white; padding-left: 10px; }
+
+body .github-fork-ribbon { background-color: cornflowerblue; }
+
+#devtools { color: black; }
+
+pre { background-color: rgb(233, 233, 233); padding: 20px; }
+------MultipartBoundary--8eyw3KXcGX90ofgh8W3GtTevXeVDWAKlusfDralZ2f----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://fonts.googleapis.com/css?family=PT+Serif
+
+@charset "utf-8";
+
+@font-face { font-family: "PT Serif"; font-style: normal; font-weight: 400;=
+ src: url("https://fonts.gstatic.com/s/ptserif/v17/EJRVQgYoZZY2vCFuvAFbzr-_=
+dSb_nco.woff2") format("woff2"); unicode-range: U+460-52F, U+1C80-1C88, U+2=
+0B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F; }
+
+@font-face { font-family: "PT Serif"; font-style: normal; font-weight: 400;=
+ src: url("https://fonts.gstatic.com/s/ptserif/v17/EJRVQgYoZZY2vCFuvAFSzr-_=
+dSb_nco.woff2") format("woff2"); unicode-range: U+301, U+400-45F, U+490-491=
+, U+4B0-4B1, U+2116; }
+
+@font-face { font-family: "PT Serif"; font-style: normal; font-weight: 400;=
+ src: url("https://fonts.gstatic.com/s/ptserif/v17/EJRVQgYoZZY2vCFuvAFYzr-_=
+dSb_nco.woff2") format("woff2"); unicode-range: U+100-24F, U+259, U+1E00-1E=
+FF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+@font-face { font-family: "PT Serif"; font-style: normal; font-weight: 400;=
+ src: url("https://fonts.gstatic.com/s/ptserif/v17/EJRVQgYoZZY2vCFuvAFWzr-_=
+dSb_.woff2") format("woff2"); unicode-range: U+0-FF, U+131, U+152-153, U+2B=
+B-2BC, U+2C6, U+2DA, U+2DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+=
+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+------MultipartBoundary--8eyw3KXcGX90ofgh8W3GtTevXeVDWAKlusfDralZ2f----
+Content-Type: image/png
+Content-Transfer-Encoding: base64
+Content-Location: https://mobx.js.org/assets/getting-started-assets/images/mobservable.png
+
+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
+4Wyq4n8DQoa+M+hytCEAAAAASUVORK5CYII=
+
+------MultipartBoundary--8eyw3KXcGX90ofgh8W3GtTevXeVDWAKlusfDralZ2f----
+Content-Type: image/png
+Content-Transfer-Encoding: base64
+Content-Location: https://mobx.js.org/assets/getting-started-assets/overview.png
+
+iVBORw0KGgoAAAANSUhEUgAAAyoAAAJOCAYAAABY2/M/AACAAElEQVR42uy9T2yU59n/O4ssWLBg
+wYJFFiyyYMGCBQsWLJBSKZWolEqpRKW8UiqlanIO7Y+o5BxakVMi0YqcJhKtCDHFECdAYgg0piEJ
+Schbv/k5LWkMmGCocUiOg53EiZ23fsM45X3rpnOe7/i+nMs3z4zH9oz9zMznI92yPfPM88/z3Pf9
+va9/uRwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAADMj56BsZVqFwa/WtszlN9w4fr4nT3Xx+9TuzA4vjV5bcdUuz6+xd7TtsX28fga20dnoXAb
+dxQAAAAAAGbk3Kc3lp//+Mt1F4Zu3H9xaHxXz2C+I2m9SZtIWqEGbaxn8Eb3xcF8e/L79uTnJomZ
+KyMjS/lvAAAAAAA0GRICFwfH7ypaQa7nWxOBcDYRCqM1EiNzask5DSc/zyQ/W4rWmUTA8J8DAAAA
+AGggOgcKS4L71Y5k8t+ZTP5vZkmUzM4Ck+9AuAAAAAAA1KMwKRRukwvXxes3tgWrRL0KE4QLAAAA
+AEBdi5OBwpILQ/l7QlxJvkGFyUxN7mu7FezPNwIAAAAAYBG5eP3G+mIcR8ZiTDLQrilA//zQl3fw
+LQEAAAAAWACKKX4n402uIUgqal1J26ysZnx7AAAAAACqK06WKW1wmHQjPubWJnqGxk/1DN64m28U
+AAAAAMA8kBUgWE/GEBpVdg27Pn4fhScBAAAAAGbBuwPjKxQY3sAZu7JTr+X6+BYlI+BbBwAAjc7A
+wMCSvuGelWr9I1fW9432bnh/tHdj/8jl+9TeH+nd3j/au0Pt6silbfZ63+eX79K21z57b519Xvvi
+jgI0EQr+vjCY34NAWYSMYbJcDYwt41sIAAD1TP8Xl1ZJfFwd6d1ydbS3JREfnf0jvcNJK9SgTSSt
+L2mnkmM9/v7opQf6P3vvzisjV1bwnwBoIIHSMzjeVoyjQDQsZlNq592yaPGtBACALDNpFSlaPHb1
+j/Z2JIKkNwiHQkZaPmk9SWuXhUZWmUTALOU/B1AnvPfx32+/OJhvR6BkziXs5oXB/E5cwgAAICtc
++8/3bg/CpC1pAxkSJLO1wJyVuEK4AGQUBXGHyvF5hEGW2/gAWcIAAGAxkPtUMqnfJPet4F5VaMCG
+cAHIEirSmEyCexEB9WRhuXGa4pEAAFBrPhi5fEcxmH3SZarQhG0iuf4zV0cv3YtoAVhAipm8rt84
+zMQfdzAAAABjYKxnWTEIfaS3q0nFSal2MxEth5UYoLPQSTkBgFow6eaVf4BaKI3jDnZhKH8P32wA
+AJj73KDztqufXbr7/ZFLx4sTckTJTG20f+TyHqVU5tsDUCUuDH61tmfwRjeT+8Z0B1MyBL7lAABQ
+KVdHe9dOTrg18UaAzLFduzpyaScpkAHmgQoJks2r8euvXBwcv4tvOwAAlKNYWHGynglCo4quYUo0
+oLgevmEAlQqUgbFlyQS2g0l8E1lXhsZ3ycWPbz8AAHjk3tXEgfELmTms/f2RK2v4xgGUYdLVSylt
+mbw3X7vRnYjUlTwFAADNjeJPlFYYgbIIbbS3Q9YrvoUAEbh60SYTJlB3BQCgeQWKCjL2XkM0LG6T
+m52sWXwroek59+mN5T1D46eYpNNcKuMW0hgDADQPqvtRx9XiG7mdVQIDvqHQlJz/+Mt1ycR0iMk5
+7ZZ2Pd9DkUgAgMam/4tLq6h/kv0YFgXdq14N31hoGlRLA1cv2gyWlWHFLfG0AAA0Fqqa3j9yeVcI
+5EYM1Ektlqsjvffz7YWGJ5mEbkak0Cps+Z6h/AaeGgCAxuD9zy/fk0x6h5j416872LXP3lvHNxka
+U6QM5Xcw+abNsk1QzR4AoL5RvY7+kUunmeg3TGvt/7R/Od9saAhUJ+PCYH4Pk27aXMWKMsPxJAEA
+1Nv433mbKqGrwCCT+4ZrY0qEwLcc6l6k9AzljzPZplWjOCRPFABAfdA33LMymcx2M6Fv9Ha5TXFH
+fOOh7rgyMrI0mWB2McmmVTEjWCuV7AEAsk2oKj/GJL5pWh/V7aGueHdgfIXSzDK5ptWgdVBrBQAg
+e8jV6/2RS7uZuDdlu/n+6KUHeAog8xQtKYgUWi3bUP44lhUAgOyAqxcttHbqrkCGV1MKt+HuRVuo
+KvY8cQAAi09IO4yrF83iVgaoag/ZFCkEztMW1rKygycPAGCxxv3O21S5nIk5LbWq/UgvGTshO5CC
+mLZIbTNPHwDAwjJZYb63iwk5rVxTzBJPCyw6FHOkURQSAKBpRMqKZBLaw0ScVqFYOS7rG08OLI5I
+GcxvZrJMW2yxcvH6jfU8jQAAtaX/i0urlI6WCThtdmKlt5N6K7DgaCW7WDmciTJt8Vv+vcH8ap5K
+AIDaoFoZyaRzmIk3bY6tW9Y4niRYGJEy+NVaRAotY5nAhnsGxlbydAIAVNmSMnJlfTLRzDPZps23
+OKSscjxRUFOSyeCynsHxASbHtAy2LmqsAABU0ZIymX54gkk2rUptmEr2UFuhMpjvYEJMy6xlZWh8
+F08pAEA1LCmXNyNSaDVoeVnpeMKg+iLl+vgWJsO07LuBjd/F0woAMHeujl66lwk1rZZi5dpn763j
+SYOqQVwKrY7a6LsD4wTtAQDMgfdHezdiSaEthBsYMStQHUsKcSm0+mtniFcBAJgdBM7TFrZdHiAb
+2CKw9fn+5Q8d/fDe/3Xsg/saoR06+/n54+dHCjRaPbX9XZ92NMozuKX9g03/5wvkoQeAGoqUyTop
+o0yeaQudDYw6KwvIQ+0DK7cc/eBm0go0Go1WxTaKWAGAWhAqzlMnhbZYrWtgYGAJT+ICsKX9w21M
+qGg0Wk1a+web6GUBoKqWlE/7l1Nxnrb4FewvHe8sdOKyXWv+17EPdzChotFotWhyA6OXBYAqWlKW
+ajWbiTItC+3qaG8LT+UCC5UDXcOF05f/RqPRaLNue/74CUIFAGpnTRnpPcUEmZYpsTJyaSdP5gIK
+lb8M3CgAAMwFiRWECgDURKSM9m5lYkzLYuv7/DL10BAqAIBQAYBm5Opo71pqpdCyXGOFtMUIFQBA
+qABAkzEw1rNM9SuYDNMy3UZ7zxBcj1ABAIQKADQRyQSwg4kwrU7Eyg6eWIQKACBUAKAJuDrSu4UJ
+MK2O2kT/yJX1PLkIFQBAqACA41T/88tfvXr03tN9x+5rhNZ57dSj54a6/pm0Ao1WL6178H//55n+
+jh83ynP46l/bN3VeeWEpQgUAECoAMCdO97WvfLXv6M2kFWg0Gq3KbXTRxApCBQAQKgD1zat/bd/G
+ZIpGo9Ws/bV9E0IFABAqADAHi8qxHUymaDRarZrcwBAqAIBQAYB5C5XzH3cVro1eptFotDm1d67/
+EaECAAgVAKi+UPn4vwbokABgzkisIFQAAKECAAgVAECoIFQAAKECgFABAECoAABCBQAQKgCAUEGo
+AABCBQChglABAIQKAABCBQChAgAIFYQKACBUAAChAgAIFQAAhAoAQgUAECoIFZgtExMThYGBgamm
+vwEQKrAQPProo7ft27fvTv3kbiBUssqJEycKK1euLNnWrl1b+N73vld48sknC8PDw9wwAIQKzJez
+Z88Wvvvd7xaWLFlSSP6NU+22224rrF+/vvDMM88gWgChAjVl//79O3/3u98VktbK3UCoZBWNh36c
+LNc0pv7yl79c1LHdi6jvf//7mbiHsbgrheYffruhoSG+gAgVhEqz8dhjjxUFyUwdrjqMUqtD6vx8
+Z6LOcTE7N0CoQP2RCJTTQagUEtFyD3cEoVLvQsXaYomVzs7OaeexYcOGTNzD+P6UG/P9dvL0AIQK
+QqWJOHLkyKw6W5m0b968ect+1Pn57dQ5LmbnBggVqEuhMmBCJWljra2tt3NXECpZFypy8zJ36b6+
+vqJrmMbK2LIyOjqKUEGoIFQQKlApEhwrVqyY1gl85zvfKXR3dxc7A1lFZCmpZGUIoQIIFZgPe/fu
+XRoEys19+/adClaVTuJVECpZFyo/+MEPUsfX1atXT9su+V4jVBAqCBWEClTKyy+/PK0DWLNmTWoc
+ilaL/Ha33347QgUQKlDt+JQ1Qaj0Jm150obD31u5OwiVehMq4je/+U1F29V6QdInyMlKcH+lY7li
+Ukjwg1BBqDQpsoz4juKRRx4p2VHEnUpPTw9CBRAqUDX27du3KVhRjgfhclcQKhMSMdwhhEq9CZWs
+WjPqSagAQgWh0sQ8+uij0zoK/V2K2N9WsS0IFUCoQBUtKjuDUNnpYlZ2B7HSJ9cw7hJCpZ6Eityo
+/XZyBStHPp+viuVAi4sLbTnR8XTelWblqtVY7i0w88FKNVR6H+24pKNGqEANhcq//du/ldxWHbFc
+wx566KHCyZMnix1qNYSKHu6urq6KO5W5dm52nGvXrmE6RqhANoXKcYkSWVbstba2tiXJaz1BwLRw
+lxAq9SRUNK757UplqtR4qayauSj4XjGiaRP/UimHX3vttcIdd9wxzXpTLj3xunXrpl7X+J6GXrdt
+tH08mZd7WxxHsnz58sLDDz98yzxB2L7isbxUNs9K0hPrOJqb6Lh+n0uXLi388Ic/TBUP2o/fr44j
+lAxB98iXalDsbtq8Qft48MEHC8uWLbvFPf6JJ55groFQgfkSZ/zSgznbHOWWljiuv6Ig/VKpivXw
+SiTpYY47FXU2Y2Nj8+7cDAUvxp+z46R1ooBQgcUhxKYUYjevlpaW1QqwDyLmbu4UQqWRhIr2Va48
+gMbJeKKd5lJ24MCBVDezcu5nqp3m34uPoyxl/n1t78fx+PNxW7Vq1S2ZznIVZBeNx/5cmWB6jeNx
+0oK4aT4SX1va/0bZ2jQ/yFWQXlrWslgYxU3xvYgVhArM00Qad5BaMZnNBD62pKQ1b11RYF+8cpTW
+ucWdymw7N/HjH/94xrowdCIIFciMUCmKkTQXr0S8bAkuYKOkLEaoNIpQ0aJcvBpfasJbTqhov/FY
+XolQ0aq/f08JdsodR9sbcYyrWtq1xOdebaESe4aUarHHSPy/mamWXGxN0jwll+H6OQgVhErDEGf0
+Mj9auUjVQqj87Gc/S10xijuJ+XZucQdLJ4JQaXC3qXuSSfx9ISB9efL3vcnP9fUS15Gc66ogRAbK
+bGPFIE/zH0eoNIJQibOCffvb3y66Hr355pu3rNb7CXqp8U2eDTqGrAKVCBW5Q5cSIuLJJ5+c9r62
+twXH+PzkdlacjCZzh/i93t7eafckvi92fWmxJeWEihYa42Ppnmqbo0ePTptX6Hdv3Uk7B90b3Xu9
+p/9pqf9dfN903+Whos/JKuPLPuh/keYlglBBqMAsrCppqyB6zTqeclgAnVYb/OfVSVinYwUi9dOb
+VdVxmIjRecQ1XdRhz7Vz0+qJ307+stomNrPrmIBQqXNLxHZXJFHtWvS3XKoOS7xk+Bo2ziRCEtG1
+QhaV4B62hf88QqXehYqESakJvbJw+vfk2lVOqCgWw0+IbbGxnFDRmOzHw3iB0HslaDsby+XOXc7a
+EHszxAIobfGxFOWEirKP5qKC1J64DpxERKn/jeYC3sMivkb/v4v//z7uJ03I+P8dQgWhAnNAD1Wa
+X6Y6pkotDpUE08+UqjHu3LQyMtfOzYsv/e47oG9961tlUy0DQqXOrCmdkTDxguWmf621tXWdPrNv
+3747lf5Xk/+MCJWt4Rx3VyhobpKyGKFS70IlHqc8cZ0zxVWWGkvllVDKjXmmcdcvMsZZyfy47sXI
+TNev2FD/vgLOayFUtCBa7jxitzA/n5npf1Pu/ZmEilD8jtzLNY8hExhCBaqArBelfC61yjJT3Eol
+QmWmzi02M/uOeTadm64lNqd74pUqdXaAUKlji8poJFBMnKxSVfdQSLEvvLYxxQIzlkwsziqrliwV
+iyFgknNoDefyQAXb7jFLkbKC8Q1AqNSjUNGYWm6iHAsMH8g+m/osM22rcda/78d671blx2OfRlkt
+Dpiv5P5UQ6jMdJxyJRjmI1Tie6pFXbmMeYh/RahADVDnozR8aWJFKy3lVgUqESoL1bnFnchMqz3E
+qSBU6pXgDuVFR96KJEqkxGJG2zsLTG+KyFkUAaPj6JgtLS0bZto2pCw24bWHbwFCpR6FykwT5XIC
+o5pCRe5Q/n1lsxIa70u5TZVD7meyoGRBqMTvV0uoxJYoEyvaPwIFoQILQKksGmnZuGYjVMoh0SIf
+22p0bnHa5Zk6L8WvAEKlTq0pG2NxYQUSU8TMaCxawt/LJRCSn5s18Q9CZkEFjDvv5RW6u8lKNGFW
+Ir4JCJV6Fyqa6Pp0+3HMpo+/qKZQUXyof18LeUIxqv71mUoXyIVa9yEuVdCoQiUtrlZNruW4eiFU
+YAGQf2xa3IoewmoKFcXHxMWV5tu5xZ2TrsMPAHGWkFKDDCBU6kCobI1ExFD42RGLGQmQWLTMsO8F
+ETA6jn1+jtc+XKnAAYRKVoXKTK2c69F8hIrwNc0UKyp8RjK9XwpNyuPkNc0gVOza45jXXAjMj13B
+AKECNUCxHlbl1jc9/PMVKuoE0lIj10KozNQQKgiVOhYq7ZFYGAiFER9PmdDv9qJlHsesqoAJ+9I5
+n53DuZwJnz3FtwGhUs9CRWLAu0bHzVs0qi1UfHYsC5r37ltxNjBDVpc4a6g+H8e9NKpQEVbAOi6x
+oL/NOgUIFaghWjGIK8jHmUFmK1ROnjx5i7VGn49rrFRLqCBEECoNLFR60lITJwPk/bGY0WuVZtda
+SAGT/OwKf7fO9pgq/uiOsZlvBEIly0JFC3+znQjPVXzMZltvPdHYLHwMRloGTqU/jssNKN5TE/es
+BNMvhFAxZEGJ50q6J3ERTYQKQgVmifxK1Qkpo0haZyTifOK5qMbJbISK8sR7Ny89yHbcanVuCBWE
+SjOgYHkXp+FrpkylIfZiJhEFa71oWUAxVZGAmWttlORa7rZsZ8lxVvPNQKhkRahovCslErIkVBRA
+77eRCPGWEs0BYmKPCO9p0YxCRSjWNq6NIzcwqz+DUEGowCyJg+bNNzWNtIKOcxEqEkSl9lOtzi3O
+YoJQQag0IiGg3E/2+1zWr+WxmAnZsqZESwasQVMCJjmfbXv37l06j31ZeuMeUhYjVLIiVGKR4F2o
+NHnNzRCs7WMrfa2OagsVWUH8AqIvFaDX44m2JuTe1Sn2ssiKUHnssccWVKjY/zV2macEAkIFqtTZ
+xtVlPXG6wThOpRKhEmcXiY+3UOmJsbggVBpEqNwbCZWuOFDeiZm+WLQ00r2QyHFub4/z7UCoZEGo
+xKnw/URZ+MQuWnkvZ+WoVXritDFcGcbKzQviYpRzGWNzdVxHRSgRkGJx0q4trtUW/98RKggVqJDY
+LK0VklJp9aohVGaydFSrc4s7GNWG8Rw4cGDa++pUAKFSb2hCHrlOdcZB6SZmkp/HvWhp0Pux1oRY
+8vudfEMQKospVGSlUGVyv50mt57YTahc1XWl76+lUIljRHNl0vfH1x+PsT7mpdKxPK6rVolQid3S
+46ykcckDb9mYj1BRnK1/L3aNQ6ggVKCKxCZKCZI0ZNr128Wp92KhkpaaL+7cfKVd8cQTT8y6c1Nx
+qTR8fnP97oswycUtl5I3HhAqdTYxPxVZVM7EQelOzGz3oqWB78k2l6aZlMUIlUURKlrwiyfJPpC+
+3IReY5XGtVjkaIGtlkIlnnxb0+szLTrKPcwWJyXG4mQ5aWN5LEDkbjZboSI3qzjm1c5DC7FxRjL/
+2fkIFR3X71tzDCuUaS57zDEQKlAl4o5STSsrtrqhn7E1RQ9o7LMa5xLXZ9Thqtm2aZ2bCRqlOayk
+c4sLLFnnFp9PnNfdqs8rSDCuoxInBgCESj0Q6od4odIRfm6NxYwCzr1oadR7Ivc2syz5WjKAUKml
+UPG1uuLJsTWNcTESNHENMX0+TnWr1/yiXC2Eisb6tPNO87LQtmm1z2xsjWNR40VJIStM2ud17ZUK
+lTSriT+PctaW+bp+aU5RyXF1nygAiVCBeSAh4f1RK2myfFRqNvZuYKU6N9+Z5UoEHpYylZdyA4s7
+51KtXAcPCJUMi5TlkUhREP1pEyWxmGlpaVnpRUsj35uQstgq3T/AtwWhUmuhUq5pzPPWkJg44Dut
+xZ+vhVBJ87AoF0BeasxXTEvsVq45Rkwc51JqLJ9JqJSqEB8LSWU4raZQ0dwp9iRJa1hTECpQBaT2
+Y9euUs37yU77Al67dssqUFq8Suy7aU1m7mp2bmlWlUo6L0Co1ImL051eqIR6JAPh71WRmMnHoqUJ
+7s8mJ+BW8Y1BqCykUNFYuGbNmuJ4p7FxJjSZTVuNV12OI0eOzEt8zGZbeTH4bX2msbRFznh7zSNM
+SHgPCf3u3a+9VSJt8XI2QsXmH6VEg/4P5pZVTaEi8vl80ZU87RpWrVpFDRWEClQTuU4p4CsuWOQf
+9rQO0yNf1rSVDS9U1FnFploJEjON+ge+VOcmi85MnZsdSwNF7FJmqz5pnRcgVOoB1RyJLCqWnndC
+7k9ezAQRM020NInV6XC45m67J4BQqQaaoJaqIF8qbrKSMVhB2RJBCvout4imbf0xy7kWzWZbnfts
+r0Wu0zpnjfN+vJalw+8rbSy3Y8otTvuQe3iccKDS/Zi4kDjQvjQfKefWrf34/eo4s3m/1DXMdFyE
+CkIFqoAeMsWOWOdT7gEt1dmqo9WDq9/Tih1pBUSd0lzFggYKdWgSTzrXcvuJt53N9QBCJaOT8NYS
+QqUvRczs8aKlWe5RSFlsVqZdfGsQKgCAUEGoAABCpfZCpTty/Xo8DiB34mWzFy3NdJ9aW1vXhZTF
+EyouyTcHoQIACBWECgAgVGorVG6mCRVf7NDETJisT4mWJrxX2y1lcVtb2zK+PQgVAECoIFQAAKFS
+A1paWlZHbl9yb2oPQuX+WMxocu5FS7PdL8WnhDidhq4hg1ABAIQKQgUAECqLSjLZvielfso0IeLE
+zEAsWppU3K0MGcB0T7DKIVQAAKGCUAEAhEoNhMpOL1TC3zYJXx6JmY5YtDTxfbvXMp81Q4pmhAoA
+IFQQKgCAUFnomIuOyKKyOfwcjcWMfnrRwr2bcpE7S8pihAoAIFQQKgCAUKnuZHsgsqhsiVMPm5iR
+SPGipdnvXYjXGeB+IFQAAKGCUAEAhEr1J9remnLTWVRaYzET3L6mRAvT7+K9WW8pi/U7dwShAgAI
+FQAAhMo8CamGvVBREP3u8PvWSMzcjEUL0+8psbLL4nZIWYxQqVe+/PLLQn9/f+Grr76qy/P/5JNP
+pv09ODhY+Mc//sE/FqGCUGmWzuuLL77I7Dn+7W9/K7aFQJ14Z2dnsQFCpc4n2JvjivT79u07FVy/
+7o7ETHcsWmASxae4opnt3BGESj3x3//934Vnnnmm8JOf/KTw8MMPF37961/X5XX86Ec/mjYn2LZt
+G/9chApCpZH5+uuvC0eOHCk89NBDhV/84heFZDDO5Hm+8cYbxQ5K7cSJEzU91ueff1545JFHCm++
++Wbh0qVLfEkQKvUuVPakxKdcC3+visRMqxctTL2nc+DAgTssW1oi8jZxRxAq9YLGzccee2zKkiLh
+4hcqZZmIiV/TdmpCVgwtbtrfYnh4eNr2p06dKh5PVpB33nmnuP21a9emjq3XNd4a+Xx+2t8zCZXu
+7u7CsWPHpr2v1/yCq/bpFzh1bP+3rvHPf/7z1HsfffTRNGuTru+VV1655doAocJ/Z4FQR/KrX/0q
+1QysB1SdSmxWjTsvdQTWMUj4qDPyD7W9Fn9G+9ZP28bOIc2qo/M8dOhQcb8//elPb9mfOh51Nnau
+2k5/S2hoWzuOdUZ6z7/mUWeuzi5G2+tzsek57fhCHd6HH35YvLb4PvT19RXfA4RKrbHCha5tDD8n
+LIuViZkgYm6JX4Fp9/P+cH/GSFmMUKkXZEVJEyMSBr/97W+LC5ZPPfXUtPErtlZoAe/FF18s/v7a
+a68VFzgffPDBqf0+8cQTUyJA46ze08/Lly8X961z2L17d3HfOq4+r2bWHY3xO3fuLP70Qsrz85//
+fOp3WYg0j5ia1Ca/S8hcvHhx6rUnn3xy2niuMVj79wLOFj+1P+1f+9B2Gs91PidPnky9d4BQgQVA
+FhRNmtMm3up0bBXGkIjwKxo2sVcnJ2SFkGlZHZTt9+233y4cPHhw2meSwb7Y6Wk7TdjVkagj03HV
+saStBpkbln6PV1F0/M2bN0+JAnVY6owkarQ/L2y0H11D2sqNzlkdUylR197eXjzveHVF5+OPr05N
+16Z7YR27Ok/btzpm35kCQqWGFpW8FyrJ5HpD+L0vFjPJzzu9aGHqnY6q1Yd72EXKYoRK1tFYV8pF
+SuOujYUSEiYQNJZ7UaAxVWOajVsa0zWW6vNmkdBcwMZAjaWaQxj6nMZPQ5+xsd6Oqb9leXnrrbdS
+PSc0P/DnpEXWeBzW2O4XTjUue9Gj85CFxNA52lxF90hjt22v67PxGxAqCJVFQBYTTaStY/FoZUGr
+HkKTa1slUSfihYqsC/pbYsREhCb0+rx+Wkeoz3kkIDTZNwuEhIQ+o/3Y5zzqTGzlRO/HnYc6mLjT
+0j4liNL2petOQ52vOug01InqHPT52Bqi43uBI0uOxMj58+enOmt1jibotIq0UPE2CJXmFSqhurq3
+pgyn1UjxxR+9aGHqnU6I4xkK92w7dwShkmU08ffWEj/x9+OWRIBN8rW9f08LfxIyNm5pkVOTeo1v
+Gu80j5C1xC/syepi6Hcf86kx3L9v46j2r3E2zQ1d52bjqbaRpcPQ8XX+EiaGzi/ej8ZhEyaaf2gu
+op9q8bxA9yD23gCECkJlAZEVw1tLDK0myGrgJ/Zm9tREW6sqvrNR5+BNvzLzSiCYONH73nohFy91
+Dh6JFgkVfT62dKgD8asi6gDV8fqVHr0fW220TSx6TJzFosY6unICQp20zl2dqXfxsuO3trZO6wx1
+b9Qx23npnmgVSecQXz8gVGrkpnR3JFROJ69tC0Lk8UjMDMeihal32Xt7p7nQKa6HO4JQySqlFuA0
+Rno3KI2NNrZpDmBjl17TQp3GQBvDNVba2Ky/tXjnPR3iBT3tS3MDQ6LGvy/XahsXNaZ6y4mfJ5hQ
+0bG8O5YsJRIWirU1NAeJ5wW6DnMzlwiR21v8e9oCKSBUECqLgB50vyLhBYxffVGH4VdRbJKvib35
+nep3m+ibEFGnInGh1zzmrxqvlKiD8ZN9Q52ZF04SNN5dTZ+RCIhFia5PFg2PttGx044jC1Ipty91
+ojo/7U/HjwcBHd/fS3WGWmXScUxU6fMSYboebxIHhEoN3b62e6EicZL8PBx+vz8SM6dj0QIzipXH
+LWXx3r17lyJUECpZRONamquzH5+8e5jGbk3abZyyoHVz1dIYrvflAWGTewkhG28lYLQv762heYN3
+yZIo0ufNjVpCw/ZlHgkx5nlhIsIj4aN9+Ne1sBoLNL84q/mAEvXY4qKuz88Z5KpWysMCECr8dxaA
+eEXDP5zmwymhYeZQWQLU4VlnIrGgzsuEi/alTkAPuk341aHFHYom9BIL5i5mQkUuZGnnE5uttW8L
+aNc5SQCos/H7EzpPc1+zzlHbqtNN839Vh+R9aOMOUh2nhJoP9i91fIkzdcD6qW10H201StcTx9gA
+QqXGsRSW8eteS7FrVgATM5p0e9GCDKlICG50sT+rESoIlaxhoiANi8mIFyg1RmkOYGO9BI3ctGwx
+TuOnxnUvgPRZGxs1XsaLgX7BUuOyxkMfHyIPBBuXNZ6mjdEmVPQZvzCosVbjs/brFxJ1ft4ionmD
+t7Do+CaUTJh5d3Edp17TOCNUECoNgaweaZk19HBb5+EfVFtVsQdZJmO5NtnkXh2ZhIqEiz38WrGI
+J+XqDCSSLF4jzWriUQdmnZIsG94kbG5g2ia2nqgT9tnM7PzlfpUWB6MOLI6lMXSdcnmLY2PM71bn
+Z5lFdC3WCds5SbDpvHVsdYjedQ0QKjWcSPdFQmWNslV51y4TM0HEbPduYVAyRmWJK5qpdoageoRK
+FtFYnBbvobHUx3NobDTrgkSGRIEsDPKmsHHfxjON8drWu0B7lyuNk36M02KdH9+1KBh7Jmi8tPFX
+Y3E8ngu9r3PR3MO7fUnUaPyVRcX2693T/KKnxclo7uPnEhJzsdu3eYn4FMyAUEGoLBDqpGyF36OH
+WhNym+BrQm8rGxIWFhxuxaMkUuzBV6em7X3HYDErfv/qHOPUwOpkvHDx+A5SHY3fTh2wzsU6ViPN
+5UwCQZ22zjG2vlhHWyqHu65T52EdeXx8dax2fHXCuhf+GiVk1LmqI9V5kZoYobJAk2kfn6JYitvD
+76OxmJGI8aIFOZKOLCfJPeqxe6qYH+4KQiWraMxJy6Spcdm7Out3G8NsEVPjtxbjZKnQ+CiLRFom
+LY2r3utBC5Z+LNWCp4//0LY+sN6sPuYpIQGRJg600CcR5M9bn5UI0txC47MJFbmPxS7mGqfNy0LX
+b1YfiZ60+ZDNYQioR6ggVBYBc9OKiR9YdS4mEtRRqfPQwy/BYNYW37l5tyh1IJZRwx83LUhO+yyV
+BlCrN9bpqYOylRR1NGbG9Z2sXYcPmNd5WedmQe2xQItN077Yozp6fcZ/Ttdvx9ex7Ph6LRZCsiDp
+fCUA5eKWVrcGECpVjp9YGwmVXktNrMxekZiZCJXXp0QL0+5UC9UDLtnANd1j7gpCJcto4cwHzHvr
+gnlHmHVF46CNnbYAp2Yu4BrT0zJpaaHR3MW1r9g7Il5gjGu66HdL76/fvXXGo3HV6pp4IaY5heYp
+mq+YUNF8Il5Y1GctbkaLj2bBkWhKyxBqQoUaKggVhMoioAc07cH06XQtXZ9VdjWBofdtJULva9Kt
+9+NMVprsx2IozeSrTkBuWvHrvlOzDsn7vVoQvc5ZViAvVPSavz5ZUSSq1KGqE42FioSMnavElDo0
+n90sTajo+BJYOpY6WTu+pW2MV4t0nyRuSuWzB4RKlYXK/ZFQaQ8TbQmR45GY6Y1FC9PuaQJludI5
+u3vZSvA8QqUe0IQ9zdXZu2VLAJj1QWO0XteYqDFfk3jvAq5t47mD9uXrpsVJevS3BaWbS5ZHx7CF
+Re27VAC7jmPFGP1iqq5RY7PO11zO0soI+PmI5gFmFSoVNK85kOYfcdFrQKggVBYAmXPThIEedntd
+wsA6J72uibkFpKvD8CsrcbYN6/BiK4lWduL4DHWQ6hh9DnbD0hGqQ/H1XGTZUQcikaBzU+flXa18
+4J/OWeJAIkXbSlDFHZjPz24dlAkzHVPnrc9a3ndLpajrtuPrnMxi4js2b6XSCk+aGR4QKjUQKtsi
+obLZVZ0vhFgVc2Fq96KFKfe0+3inq5kypjo03BWESr2gscuPw+adoDHcBIxEgnkQaDzWWKmx1xYq
+ZS0xF3BN6mPho9fMm0JzBu9ZYWLCXMAt9sWjOYfOUyJH84tSwkDHNcuPXYtPqWxuWuZi7rOOmbu6
+kKjyViadc5rVJLYEAUIFobKA6IH32S/MN9QLFXUuZhrVa1r10KRdlgZ1RHqIbVuJgjhjllkbPOoQ
+7VgmELS6ok4szdwrsaOOwmcHEeo47fxtHx6JKgtu1zl4NzBtG3ekui5/fCtkZSJMAkX3xjpr/W3H
+t3tiHWB8HRZAb+dFpVuEykIQ4lEUHL9DlhS9Fty79qQE2W8xC0zye+fevXtXNPukW/fKpR8uVqHX
+PUWOIFTqCQkQTeY19siiYOOPXtfioOYCJhwseNyS4djin1WMtzE8Htc1N9B8QPtMK3mgRT3bl97X
+IqCOa5YRjbVa9NTYaccuNW/xsS6aG/jsYLKSKMuXFiK1YKhjaaw2IaPr1Xgtq43NAbS4qPFbcxlz
+X7Pq9brWOJ4WECoIlQVCbllacVAHpIfRRIYecP0tgeAtDOpYLAjN4iu0ImEWBu3HB8cJWREswF7i
+RA+8Og99zlZkZGHQ3+qw0oSKjqvmLSBmjrXXdF5x3IsPjFfnbC5bWlXROaRlO1NHqY5Nna3ugXWI
+6gglpMzCFB9fosaOr+uJA/is+KMdIy2bCSBUFhqJkWTA3iTLi9yY4porsh4oliURLi0SMkm7q1kE
+zIEDB+6wNM5yhdO9wR0OoVLPYkVjri3emSjR2OQn8hoX0xbSJFJs3NcYGU/etS/NGUplzfSB8VrM
+M2uOjdF6TZ+dycVKIsRbPjT2+7FcY7TOxRZSNe7rvMyyou11zX6hUsfUaz7JjrbT54klRaggVBb7
+C5A89Ho4NXH2JlI9rHq4fQcQZ/Oyzs86LImUOEuHBdxrX+oY9Hl1ir7D1OqG9qHjp61cqFNKExW+
+PorFfpTqGON4ER8k71GnqVUVrdLo3M1UbZ2azt86Yr9PnZ8dX5+J3cr0vt077cvfa0CoZEm4KOWu
+LCrKChaJlqYRMMGyZAHzA1SdR6gAAEIFoQIACJUMoQDykCVMcS17Gl3AtLW1LYsKZB4mYB6hAgAI
+FYQKACBUEDCLRrieIXe+m/hPI1QAAKGCUAEAhAoCZlEEjOJOkuPuDHEoxfoyyTWs5L+JUAEAhApC
+BQAQKgiYkgJG2cpqFcQuQaLjWMC8BAsB8wgVAECoIFQAAKGCgKlIwNTCDSs51r0+YD5p6/mPIFQA
+AKGCUAEAhApUImAGglC5s1r7VsC8ils6IdSu17jrCBUoj7JrphVFBECoQFVQul7lFI8LHS4GSs+r
+fOdKj5yFc1EqYtU/mW1hJ6VWVkpjCkIhVKAmgqVo8aiWkFCaYRM/Yd98LxAqUCGqNaL6YXFVegCE
+CswbFVtUQUIVdbTCh4spDFQ0UZVh40r2i8GxY8eKhS1VsVY1VCpBNWBU6VeFI1VYUnViAKECVY0f
+WR0ExbX57ktxJ6GY5UTYZ7cKOnKXESpQOSrerEU9X1xZ47lqh2nRzi+K+r+1mGe10FRjLK2IoqrR
++5pp+qlj+XppWmTV/EXjrxWKtPmNr00WV7bXMeM6a4BQQahkDAmDuBq6LBp66PW6dRzqHLxpV5YC
+3+FoO3US3iqjTsl3JtZxqGNIszSoMKRESoz2rXPyn9GxfeFGnatdh37q/OMilNpeBSutwqyuSfv1
+12HoPa0Q6dg6Z4kOQ9eklSMdI60Kr9rmzZundcYqZuk7Se3Tn59WpNRpalurmtvf3z91P3WeQv8D
+O39AqDQjIYakoLom8xQ8K5P9dLkK87sImEeowOzZtm1bcVzUmOnHNL2uhTuNaUILf97qovmHjW0P
+PvhgcfzX5/x4qn0mz2Xhpz/9aXFc1uKfFg537tw5Nb/Q3EP70rYvvvji1BxB+7Qiy/rbj8snTpwo
+PPbYY0WPCUCoIFQyiibZWvmPJ/TqSLQy8tvf/nbKBUsPvzoZ/5D7DkEd0sGDB6dNxlXFXRN0j/ar
+Tuehhx66ZfVEx7Pq7obOTRYNdU6PPPLI1Gc0kfcd2lNPPVWcwKsjU4em93Q+hib4OkedswkanZ8E
+iDpSdXQebSOLigklnbOh89G5qqOMRZ6t7ug9Q52qddp2/joP66DtvqjT1f3T/VeH2traOrUipQ7X
+rDwnT57ky4tQaWa3r91BXGyd6z4UhK8MYmE/Q4p7yejlqqjkmqQtQahAFtHimib8GqM1DvvxXOOj
+zS80Nmsc894SGns1vmlc1Jhn472JC42HGs9tLiA0rmvs1Pjox1AJDo3phuYImt9owc8W+yRmbLFR
+oiae+wBCBaGSMTSh1oOchh5irfobmnh7oaLfbZKuDiPNN1XCwu9DHZI6plJo+0uXLk17TZ2fuaSp
+g7JjSgB5kaDz1f4lrGSGVuekn37lJnZt+9WvflXS7KsOzzpLWWLs2rXCo2tIM1EbEj2HDh2a+lsi
+R+cmMWJWIN0zM1HrNb8Spc5ZHb+he2LCR52475wBodKEQqVrroH0qiaffK7NBcx3ZDRgXjVj2pM2
+kbRC0jYgVCCLaFzVAprGORMFtvjmPSz0nsYxc6PW4qG5iuk9ExFaxLNFSI19Xvz48VSLjH4c1vzA
+extoDNY2dk7ary2u6hziRVRAqCBUMogmyBIqsfuS/vaCwqwUXqjofX3eto0n7vo7FiXqMLTKUgrt
+X+5fsXixfavj8aLFXLY0sTeLhz4vi4M6IeuIJDh0/t5XVZgpOQ2JGNteYsusM9bZlkMrRtZhasVG
+x9F90rX4a/XCxlt/JET8ypCuw6w7sspkIekBQgUWUajMKZA+EShrFdfiAuYfyOgl6rquBYFi7Z5o
+G8XR7EhaW9K2h78RKrDgaKzSQpsW3/zcwserCC1magy3sU5jpH1GC5I2xslbwxY+NZb7OE+NpzqW
+FhhjAaPjeY8OiRTt0xb2bJFP47rG5DSXb0CoIFQyiB56uRd59DB7QaH3ZZ2wybVfCZFwiDsMEwe2
+QuIn3OWygqhT8UHr6nT85F7HMYuL37f8X62TU6epib86KeuI9J63cJj4kBgpZWny1hgd01ZidP52
+rFLIGmKWJJmYdS/1OVslkjjy+9c5e2uPTNi+c5bfrq5JnbRc5gCh0qzMJZBecSfJM7TNBcz3JG1V
+hi9zmxMop4NIWRreUwzN487SYk1/349QgYVGC3ea+PtMnZpDaHzVOGbuVRIK8oKweYTGZItd0Rhn
+Y6DEiy1Yalst/NkcRXMPHU/NixKN9d4rQQuDGiu1T9uvLajqPH3MKSBUECoZR8IgzrClFQ1vFjVT
+rD3cWgkxQSHxYJ1NLEriCb0m57FfqUedke9stF8fXC/RIncprdZ4cWSxHCYS9LcJC1tZiWNJtG91
+djrP2E9VHZuPA5FwMAuJOs6ZXK/8NWhfum4dy6w3Olcv2Lyosv+Jd4Gz99VJe5cwQKg0G7MNpE/6
+gttDsUgrEPl4HQTMnw3iozvF0nImEiixWLkdoQILhcY0eWVIlHhLv8Z+LSZq7LPxVUJBAsKEirwg
+bEFPngKWrEdjpX7X5xS3ojmAzTG0YKfjxXMLve7nChqjJYw0/kosmcCx+cxMi42AUEGoZAg94LGJ
+VpNhi8+wlRBNnM2KYS5YFq+R5ookIREHxmuFQyKiVMpe65gsk4cm7LatxIlZEyQ6vJDS+VtnqG3U
+zG3L3Nt8hjAh87M6TJ1P7BIm4eaFjbbROdn5STCVKm6ljtjfT3WICiD0Yk4iyISIzit2JfMWGe1P
+x5SwUUfsXcIAodKEbl8VB9Inz8vdLmB+uJrFIWvMQBAe7e41WYD6nCgZC5aX+52wKWTZqoJQaTzk
+giXBobHUzwMkXPxim8YziRFbcJTAsfHcksVoHDavAf2uOUhs+ZDI0Hwk9szQmO2zd2mM1YKr5ina
+VguNJk40vmp819xHnyPmE6GCUMk4Mp/6gHrLzOFjN9RxqDPxKyGybGjyLpOvOhdNoNURmCDQZ3zs
+iyb23tJQCnVw1nHoOGZO9u5oOo4FwasDtPPSOUpM+fgPdUhpZl7LspWGjuPf03noGtVx+owkaeg9
+f3ztS0LHZxXT+xZ3IzEXr+7o3pnwspUhc6WjLgtCpcmFyoyB9AqY379/f4uzopxSRfs6usxeZyHZ
+GQTJmBMjfUG4GLe797YjVGChkKeFFi41ptnims0hfNyqxjlzd9bY62NMNEbbYp1iQG381GJkXL/M
+rCuxUImFkY6lMdeEis7R5hUaX61MgsZWrCsIFYRKxtHKhQ+o1wTdT+z1QFt6QOuMTHCoE9BEXJNq
+SwUosSDxE1sJ5HOaFssSo2OYtUb7s85OnYl1TuqUTEhpFcVeV0el43ihoM/FVgit/MhKEVtSDK34
+2OqQrkedmXWcM6UGVifq0yarw9T5WeYRHdOnOo7dvPR/8ILOu+HpvChOhVBpcqFSNpA+EShrkvf7
+gki5mbTNdXiZj5dx7zoTXMA863Olg+4RKlAzNL5pzNUYae7XaQlnZLmwsVNCRWOkeRn42FT9buNn
+mlu5XjPx4bHkPn6xT3MVja06rsZcm0v4hdmZFh4BoYJQyQBxLZU4LkQrIWbJkADQ+9ap+DgUH5yu
+beK4F+/GVQ5ZDXRMCQUfOG6pDzXR952gOhpzw5JoUafj4zjSarP4gL40vIiRydhMyj6YvxQSRdZh
+q2OUi5kXKjpXn+FLnba3XsVJCPS79qd9pWVoA4RKszBTIL3cwXzAvLav00tV4HxXikhpyU0G03t3
+MGUuGw7v30zacoQKLBQaozWmaXy3OE4Jl3hx0HtK6DMSOBYMbzVYLCDeBIcWTH3AvMZAC7r3QkXb
++LmCvD0s46jGXY3bNjfRvs0FTXMebVcq8ycgVBAqGUGTeJ/9SgLDdwISIlrVN6GiDsmyaGg721ad
+k2XW0jZxAUVfRbYU6jDUcaijUQdjlh39bemFJWDsOJq0e+uPBIDviEwI+Nzu8Xmn4Vdc1KFaoHvs
+zpaGr5Wi42p1SMcysSSRZIJNbm1eFNr/w67PKtxrf7KkmGULECrNSKlA+r17965IXj/jaqPsbmtr
+q/cCiRIkm4I42ZNLr6PSGQmZHVm+IIRKYyGBYIt6slqYxUTjl69nYuOYH0f9nEPvaTFOi3I2LvsY
+FkNjoOYiGiO9S5jGVJ+lVH/bYp/GYI2bdm4SJ3JL00/tx2cVBYQKQiWDmHXCWxxsBd+wwDMTKn6y
+LouKrZxoPzYBj/OZW0dVytXK0P7MPcxbFrzbl1734shbaazz81YK/R4Hy0kclLOMaFVH5y+BZPv0
+KZlLEVuBZImRYNP52nlK5Nn9VYceiyhdq1lwdEzbn17zKY0BodKEbl+3BNInv29M2mh4XT83NtEt
+OR4EylDSMu/ihlBpLDSWmfeCBIQtsGmhUJ4Oes2yVXp3Zo2jtvip97UwqPmD5hI2R9D4LEEhgWGp
+irXop7mI5gDmPq2/NUZqH7aQ50sIaHzVez75jeYVOm+dR1wEGhAqCJUMdTBqWpXwRZq0KqHOQQ+2
+iQG/EqJtvcuUHn69r4deTQLGXMksQ5U+q5UQvabjxZYMuYypA1JnpA7OjmVFJnWe6sTMv1Svm7uX
+xccIvW/npu1NAKjzVCfpq9rLaqN96L20CvMSBNpeHZp9RiLK36tS1il/fyS6JHh0bfZZWZW0b1lT
+4kBB60QtgYB+WnyMztWnXAaEShMKlalAellMkt/3OCvKaVlWGuAydQ0KiO8IQkQWFQmzO3Pf1FLx
+rl91496GUGksLB5VaFFPzRYQNc7LBdwyecU1VszrQO9rrI6zaGrRzzwfLIbE5gb6TDmBoTmF7V/z
+kbg0gb0WZwIFhApCJUNoRV8iQhPrmawcPtBMv3tLiXUKfht1SrIiqPNRRyVhoQ7BxFEcuKYOSasr
+WjmJ3aokcCQQ4te1D+3L+5bqOqzj0efsMzofdUq6Vttev+vzsXuaoWuM3dfUkVpHXAod09dDsd/1
+urdS6XdLGJC2D4+dswRVXO8FECpNJlSKgfQtLS0bkp+9FjC/f//+LQ1yiWtz07N7xc3cv9YH4VJX
+IFQAAKECAIBQaThcIP1EyOal33uV5auBLrOnjEhRoLzF3XSE15RU4C6ECgAgVBAqAIBQgUXCAumt
+qU6K6qU00CWucqKkLfwtEabv52huMguY4a0uqrWyEaECAAgVhAoAIFRgcYTKFguYV8X5BrzEu1Jc
+vHLBiiJryi73t34fcNv3IlQAAKGCUAEAhAosTnzK8qTd19raenuDXuI6JzzO5r4Jkt8QXoutJkpf
+fNp9BqECAAgVhAoAIFQAqs5tIeakEFlKusPvadm99oT38ggVAECoIFQAAKECUMs4laFc6YB6CZnD
+ucnCjntCfIpeP4NQgVqhjJPKlBmnEAZAqCBUAAChAs3FsiBEygmWuN2FUIFaoHT5Kq7Y3t5eLBUA
+gFBBqAAAQgWai1LZy9YH0dIZ3LtigaLsXw/Uy0UiVOoP1VuLizSr/peKNqremNUCU20wFXr0BZRV
+h0z1wlTHzNc8E3pN+zBUI0z1z/zfVu9M29lxrC6aXreizoZe8/t4++23pz5vBSf1u52TP1fVg9P+
+fK0yHdPXfdM1zFRLDRAqCBUAQKhAPcehpImSliA6tlfgGrYhNAXfL6mni0eo1B/btm27xeVLhZx/
+/vOfFx5++OHCK6+8UnxNv7/55puFJ554YmpSL4Hz05/+tPDb3/72lqLQP/nJT4pWGkOfPXTo0NTf
+Kpasz2/evLmwb9++KYEgQaFizE8++eS0z2v7Bx98cOp8JDK0z507dxZ27949ta32qXPXOVkR5o8+
++qi4P7331FNPTTsnbVvqHAGhglABAIQKNBLrQlyJCjvuTprSLK/ITQbNy0KyrZEvHqFSf/zoRz8q
+fPHFF9NeO3jwYHHSbkhESBDYT89DDz1U+PLLL6e9JquG9ivBY0hMXLp0adp2EjsSH2ZN8bS2tk6z
+bsh6on3G+9B+JW48Eh9efEm0yMVNSFjZ8SRavFCJrxsQKggVAECoQCOxdYZYE9VHuaOC/ciSshyh
+ArVGE3fvTiV+9atfTZvoS3jI0iBXrWPHjk0TMLK0pIkMWVTMHcuOY2JhahKavK9jxWi//jhClhzt
+M3bNkkXICx25e2k7e03bmxXIRIy5hOmc/HuPPPJI0foCCBWECgAgVKAR2Z37JlNXuTactONJ25Kb
+rE4fsyFs15e0lQgVqBWyNvggerltaQLvkcuULA2//vWvpwkYCReJEo+sKxID2lbuWvaaBEWMjhsL
+EiFRZJ8VspjIkiMh4ZHg+MUvfjHtNVlcdE1px5B4kauZ0HVonyZUYoEDCBWECgAgVKARUYyKsnTt
+zE0Gyd+sQLgokP50iGGRu9gp994yhArUijfeeGOaVUEB5xIVigUxC4hiSNQUO+JRIL4C7D36nESN
+FxAKbPexIYbiRnzAvQkIHSs+jvah7GQexcVoH54XX3xxKo7FhJiC/m3ftg+do/ara5cLWixwAKGC
+UAEAhAo0A2eD4JBo6chNBtVXmpa4F9cvqCWyVihOxESJLBCyNEgA2GsSHYoPiTN76XVvYZE1Qq/J
+OuFFhSwaXjwYim/xmblMvPh96pjap/30KLtXbJGRJcdnC9MxLAZHMTMmthSPor8V46L3T548eUv2
+M0CoIFQAAKECjY4sK11Ju9O9pir0SjvcnrSBMkLlAYQK1Bof+yGrgly6DLmCyeXKB50LCQxzozJk
+lZCVQqLCby/h47OCmXUj3qdeiy0vEhMSEEqV7C0/4sSJE9OC33WuOicTVLomCRVDIsUsQBJSikfR
+axIquu44HTIgVBAqAIBQAZiMQ9mUm6xGL8vLmXoTKQiV+kWCwSbpEi0SBV48yNoQiwql/o0D4eWy
+pQB5CQDbXqIhjnkxa0gsSiQa4mD5xx57rPiaXMRioaLPe9cxf1yh92RhMSS4dD0SWbIQSdjomLIq
+KSmAr7ECCBWECgAgVAAaCIRKfSIhoUm+Tdg9iu9QfEgsVBTb4mNWFDBvdU4UDG/bK6NYWuyHXLYU
+T+I/L3csj85HFhJZTSSCYqEiq4hPTawUxl78+HOU1cQEk87JXNPMyhLvGxAqCBUAQKhAo6MCkMrs
+1RNcvJTFqy1YS1YhVGCxkfVEVhSrCB8Hssu9yty0vMUhrjmi2Ba9pn0oE5gJBrltpcWnKDZE23rh
+EqcGVhFHvS6xpP3F8Sh23n4fsv4YOrbFnXjRot9NFOk1/e4znwFCBaECAAgVaAaO58oHy4/mJgPs
+JWbWBWGDUIEFQ5N0s2xokh8XPJSlQa5SijPxLmE+7kRB9MoUZnVTJA5MMEiQWIX42IpjQe6ypsSF
+JHVMHwgvK40XPDqXOLhe5+oLQppQ0fmZ25eQ6LHrlFCRFSkuGgkIlbJCpf3dkaJYodFotNm2A13D
+CBXIAnfnKs/uZU2pjHtDnMpKhArUArk+aaIuMaEYEAs+V8yJXKJ8rIjFoSgbl1lAJCoU4yEri6wT
+Cr738SoKqDdRIauHBISEhsSALCASBnIT0+f1We1D2+lvizkxdy9Dx1dci6HPedczHUPnZKmVhc5X
+Qknno+MbvrCj3ovrswBCZUahQqPRaNVqCBVYJNpz36QYXhasJbKadOW+qZ1Srq7KbQgVqAWapMtN
+SgLBu05JJEgMSASYeJG1Q8h6Ege6G0pj7KvOy9phn5PblgL1FT9ir8XIehIHsqvgo09drHP26ZH1
+XiXFGZU1TNfkt/UuZrKy+HTIgFBJ5aGjH2xnQkWj0WrRHjr64b3MmWER6A2iY0/0+q7cN6mHV4Wf
+bcENzITKaVy/AAChkhWLytEPVjOhotFoNWg3tz7fv5w5MywCXS4O5W5nIdkUXj8bbb8xNxl0rxor
+yxEqAIBQyYhQMbEiy4rcwOq9/T9/uN7y9J8+m2j702cFGq2e2sG3P/vy//r9h/9vIzyHW9o/3PZQ
++8BK5suwSGyN3Lm2htdXutc2uu2Xh9fa6/WCESoA0LBCpdG4eD3/QM9gvkCj1VGbuHj9xnqeXoCq
+sMRZVdT8s9UTXpsIrmH3BXcv23YJQgUAECoIldqKlcF8O5NfWh217Ty1ALPitgre35abrJ/ixcc9
+ufKZv+oyTTFCBQAQKnXElZGRpcnk7xoTYFodtDOdhcJtPLUAs7KYKDuXYk0ez03GoSybxecfCBaV
+WKjsqNcbglABAIRKndHz8fiai4P5m0yEaVltyfdz+N2B8RU8rQCzYkMJi4iyfbUkTdnmVs6wjzuS
+tjNpZ3KTsSl31/MNQagAAEKlDiFehZbluJQL18fv5CkFmDX35yor4jgQRIgsKGsa+YYgVAAAoVKv
+YoV4FVoW21B+B08nwJxZFqwgqo0iF7CbFQiXsaR15CZjV1QAckmj3IxYqPQOv1sUKzQajTaXdv7j
+LoTKQhHiVXqZHNMyJFKOE5cCUFUkOjYkrTs3c/V5HzzfmZt0AVvdSEKFRqPRqtkQKjVGcQAE19My
+0roknnkqAaqKhP/hIEB2hdfk7rUlaceTNjyDaNlUzxf/6tWj25lM0Wi0mrWrR+9lmKkx5wZurFLw
+MhNl2qIFzw/l+xApADVhS+6b+iilqssrgF6rgm25ybTFXqisrOeLf/mvR1czmaLRaDVqN0/1P7+c
+YWYBuDD41dpkwphn0kxb+DY+QIYvgNp5PwXBMZqrvBaK3L6UKWxnI9yAoli5enS73MAaof1p4I2+
+dz76Y4FGq7f2vz985UyjPIev/rV92+m+9pUMMQtIz1B+gzIuMXGmLWQaYln0ePoAasYpZx1RyuH1
+FQqVuremNCoDYz3L+kcuD/SP9BZotPppl07z9ML8LStD+XsQK7QFavnzH3+5jqcOoKZszJXO8iW3
+sDjL19JgfSmE9yGDXB3tXZtM/iaY/NLqpA31f9qPixRUybJyfXwLk2gatVIAGob7gjgpFTCv+JXe
+YEkZda+TzSbLYmWkdwsTYFodtERQX1nPEwvVtawM5ncymabVTKQM5e/hKQOjra1tSWtr67rk5zLu
+Rs3Qvd2qtahcZUUhh8NnIMP0j/Z2MBGmZbqN9lIbDWrDxes3tjGppiFSoNb87ne/O5O0QtLGkrbj
+0UcfpZZObbk9aUqp2RKEiy8KqTorSlt8B7cp+xCvQsu4SDnTWeikP4caWlaGbtxPzAqtWjEpStjA
+UwWeffv2bQsiJR9+qt23f//+e/bu3UvK6uqgGJSZ7uWyCraBDEK8Ci2jbfjKyBUyesJCiJVigD2p
+i2nzyu7V8/H4Gp4miETK2kSUTEicJMKkM4iU4aT1hN97W1paVnOn5oxcLnxsin4/m7Q9waKyklvU
+GLw/eukBJsa0DLU8cSmwoFy8fmM9YoU212KOpCCGGFlLEiFyLQiSLhMsSTvtLCtmaSGoe/Zsy1UW
+i9IbtiUepd7FykjvdibItCwEz7//+WVcvGHhoYI9bdbter6HYo6QRiI+WoMQkVgZcCLlZrCw3JO0
+FhMs+/btayN2ZVZcc2JEmbyGZhAssrY8wG2rd7FyaTcTZdpitqsjvffzJMKi0TMwtlIr5EzCaRW0
+risjI/i8wy0komOTs5Z0mZtXaPq9NWVbNSxzlTMcBMh295qexw3BgnIql56yeDu3rn5R4HIiVo43
+2uT3r59eLHSd7yy8de7fiz//cuXtYrvwwV8K7310rnDp+nlEQiZEyqVtPIWw6GiF/OJg/iwTcVqZ
+mJT2zkKB1W+4hZaWlpUhu5ePS5Fg6Qi/D/gg+mSbLeH10eT1FYpZIci+Io7nZq4ur2d0vdvWaqrg
+Blb3YqW3s5EmwGfefq0QuYSWbE+3PV149vAzhUNHni0ce/Fosb348u8Lfzj9YuGl108WXn/r1WJ7
+++J/IC6q2GTN4+mDDHWEhduSCeluJuW0OP2wCobyhEAact1yFpQeEyxJOxxiVCZUT8W2lwXFXMGS
+ttGlMR7w28EtrMt9E6NSaUDrbidWuLd1zpWRK0uTyWN3o0yC3/zT6xULldm0dy53ITKqI1KO89RB
+JukZvHF3MjkdY4JO6xkcH7gw+NVangooRTIx2O4ye5mb1xmLUdm/f//OSNRY9q9Wl8bY2oS2J24l
+lRYnOhSb0pabrDJfznVuV+6bWJUl3MKGECsrkklkXyNMhK98crHwzKG2qgsVuZIhNKiVAo0uVgbG
+ViaCpZuJelO3juR7gLsIlBMp681q4iwjQ4nYOG4WFi86kr93mfWkpaVlg8sKtjG8Z393E7tyC325
+8hXnO5Imy6dShuueLwuvy+3rbm5f4/DByOU7VM+imVy/ZtMU74LYmFfrkvWOJw0yD65guHoBlKKt
+rW2Zy+zV5QTL7vDaTS82vKjZt2/fnS6N8e5omwEX47KZOz2F6qd05qZXnC/VVIl+IPy+A2tK49H/
+xaVV9W5ZUUyJnvXW1tZi/Ila+wvPFZ47emTq77kIlT+99xZiA5ECTWVdwRUMVy+AW60p7S4V8ZCl
+G1aAfHh9SmSE+ipTrmAujXFP7OalbcN+LIXxKQXcZ0CYLUnO/a4aH0aFMO+YYRvdL8WbbA1WlLEK
+hIusKioK+XiwrmApbQCCG1hPo8WoHHz6QOHw84eKAfMKlj/d+XJR1MgCI7cuNcWhSJDY33pf2+P6
+Nb+YlIGBARY1oE7FilIYkxUMVy+AXDFr171m9UiExFnnrmWFHU9HomZKmPjPlnPvUs0VJ3pGk+Ms
+mvtSiK05E4RTLesJnM5948rVnvvGlasSgaN6KYedJaVcI91o44gVBdh31WXa288uFY60H56zi1cs
+aGSNQajM8X8x2ttCTArUPcEVbDPWlYZrQxeG8lSchYo4cODAHUFk+IrzeRd/Mtba2nq7bS+BYa5g
+ski4rGAzFiLUfqKq9q2LkcY4Oe4OOwcVrKzhoUpZR/JBxEhgbMjN7Mq1MmmbcpMB+D0p+yMDWEON
+zfVZZ4UYlcwEzu/gKYKGQjVXeq7fOMwEv/5jUS4Oje+igCPM0rLQ7SwoJlh22O+yhNj2ctkyq0io
+nWJpjDtmKRQ2u5TGC5rGOMTTTDhXtLM1OtTyXOWuXIpT0Xkoq9fG3GTRx3IsC9tp+64cMSsNKVb6
+Ry7vqacJ8slXXyw+U2YRsfoo841RIT1xxW0i+c4QBwiNy8XrN9ZT0b5+K8yfG7hBViWYrWXBrCZD
+FgyvDF/O/etwNMk/5SwvlsZ4SIH4czj2KpfaeEHSGAehNWxB/2YxWoBbLXcvWZzk/lWJK9dEsLiQ
+3avJ0ep4vUyULaZE1egrSWWsavVqVsE+jlGRwMH1q3KR8v7nl/GkgGZYxSnclgiWbcnEN8/kvy6q
+yw/3DI3fyzcXZotLJzzhqs8PuAn8gBcgcu2yiX0iWDbZZ7WfuZ5DsOgsSBpjH5diMTfmtrYIwf0r
+k6bnVq5cvTOIlrO58pXrodHFysjlzZOr5dmeLKvKvJ6nng/frcr+ZJVBqFTUxvpHrqznSYGm4r2P
+/357z1D+OGIgu25eFwbzewiWh7mQDP7LLbNXmLxbKuLNJhq8APFxLAo+dymHd1XpfGqextjFpei6
+5ZaVM8vRfMRWldBzLOvJ40GYTORurauynG9uM4uVK+uTCelQlifMCobX8yRrSTX290Kw0LxTgYWm
+iVt333APCxnQvCRiZUMyKe5EGGQsm9fH42v4dsI8Ju0dYdLe51yhdoW/JUYe95YI7wrm0hh3V9NV
+q5ZpjF1citrUyqMC6ePUyxlBokTpikedWGnhm9vkYuXT/uX9I5dOZ3HC3PfZe5PJKVr3L4orWZOm
+H95NZi8AJ1guDt44jUhYxKKNg+Nt7w3mV/NthHmKlCkXLhcj0uUm7T2qMeK23+Hcwjab1aOlpaUm
+q3jVTmPs41KSfW2LjrUlHGdPRv9duscWjD/AtxfE1ZFL27LmCqZYEz1LCpiv1j4tPXF3/1mESeTq
+dfWzS8SvAaQKlo/H1xRX9BEOCxWDclMC5fzQl3fw7YMqiJRVLrPXGSdYNruUw1PWumRiv9ZcwYLL
+l2UCq2lcVLXSGKfFpURC5a5wPZ1VvoT7QqtGvE177hurCkCRrLmCvdv3p+KzevREe9X2aVnCJIIQ
+J7h6AcxBsIy3Ta70IyhqI1Dyu5U6mm8bVANZSbwFxQmWB1y8ylbbPlSf73MZsiyNcfsCCqt5pTFO
+i0vxBGtL0XJT5VPvy02PLzme+6bY42xdNQ6H/QzxLQbPwFjPsv7R3o4sTKDfvvgfRVHx+5eOI1Rw
+9QLIDlrp77mebw0Ta0TG/NuoaqEgUKAGk/7dcSpiWSqUjtisCj7mRO5Q5gpWKhPYAp33nNIYl4pL
+Sdm/CbZqBasvz5XP4mXFHrfnZi72uCQIHX2ug28xpHF1pHfLYruCdf7lzaKoePmNP1RtnwcOTgbn
+//XTi7h64eoFMD9UZLDn+vh9yUT7DGJjTtaTjp7BG3d3DhQo3AZVx1ycwqTdijRecy5fYz7mJPl7
+o3MF22IT/oUszOiZbRrjcnEpKULFLEXVSu8pobItV3mxR2X4smKPmozIzVP/i7VJO+W2u49vMngK
+nZ233Th3bv1X58/vGOu98JePhi59vViTadU90XOkn9Xap7l+NnmV+cNXRq6wcAlQTYqpjQfz2yke
+OaNAOXvxev6Bc5/eIO0o1IyQing4ikuZCEHrt8ScRKmLd7nft2fgWmZMYzxTXEqMyzT2QI1OWwkw
+ZlPsMa1dy1F9HhJGrlxZ+lV39/3j3d2nvzp3Lj9+7lzBt5G+C4UPhi8t+ITaap78x7tvIlSq4ubV
+20ttFIAF4MLgV2sVayGXJsSJ2vjAhcH8ToLjYQEn96edC9eUlcGKPMr1y2/vXcFcJfquWleNr5SZ
+0hjPFJeScn+2WhzOAl3CyqRtylVW7NFiXFbxTW5eZDlJRMnG8fPn2xMxcjMWJ3HLXzhX+OTDi4X3
+P1+4ifWJP7xQfB7/fOl/ZzaLWJ20vLK6EYsCsMCo4n3PR19ulGhpMkvLRNFyMjS+6+L1G6yOwILi
+0u8q3W+vs6psTZvMJ7/f5zKB7UpzC8vQtd2SxrjSuJRIqGys1PpSI6zYo1y/TgXxIguKxbFgcW1S
+xt99d814d/fuRHyMziRO0trfLp0vDHy8MNaV56ucSrhJhUr7tf9873a++QAZQMHiyQR+U9Jaksn8
+tYYSJ9fzPZNWpBt3K3aH/zYs0kR+jWXMMutJmNhvtFgPxa7Y9hIjzhVsp/v9nqxeY0oa43wlcSme
+cN367DDfGlhs/v7OO7cnImNb0nrnIk7S2udXewrXPqutYKl2hq4LH/yluL8j7YebQaBc6/v88l18
++wEyTM/A2MrJYHylPB4fqKtYk6F8nwTXhaH8Pcl1LOO/CYtNSEXc61IR3wwT+E3u9akih3LrMjET
+3L0sy1ZrPVxvlMb49Bw+XxQ4C53RDMC4ce7cqkRUtCVtoloCxbcbF85PuoN9VpvJdrXjSVSNXvtT
+dfoGFijDytg2MDBA/BlAvaEA8/Mff7nuwtCN+3sGbzweikz2LmLdlnzRUjKUP64YE1mDFH+DxQSy
+iKsyf82lIt6TiJDHw+99UfV57wp22D47lyKLiyhWVslCNJdzNmG2WFnNoHmRe1f+3LmOWoiTUvEr
+n17rqapg6R08XxQVT7c9jVCp0ILy/uilBxAoAI0qYgZurFK8y4XB8a2TrmPjbRcHb5xOxESn4kEm
+LTJFq8zEjOLjm2279PmeofFT2l8iRvYkf2++ODh+l7KYcdehXlCshqUWTn4/G37v9SmKffX54CI2
+4Qo7FrdRVfpmuWcqYhmumxTAsCDku7s3LKRASRMsn73fU5UMYbVw0+q60FncZ8crv28ogdI/cvk+
+AuUBYBrFGi9yLQtNgf3cFWhEQszGaBSXcrOlpWVDWprhyEWs3aUx3tpk4m5bcHt7nG8R1FqgJEKh
+c7EEyi2C5fz5wmf98xMs79TA+vHWuX8v7lNpjxtAoPRQsBEAAJoe58I1ETJ3FULmr/YwET/r0wx7
+VzAnbM40230zK5Tic/gWQS1QYcbx7u7urAiUWwWLarD0FD785BvBkkyuC396762idUOuWAqU7/vs
+vQURFarHon2+9PrJeq6F0olAAQAACISK7B2+xkhI41vMiOXTDAcri7l5WV2SUVllmlDgrQrXP8C3
+CKrJ+LvvrkgEyuGsCpRSaY0//vBi4a2/nCm4jHpT7eDTBwqHnz9UtKBInOinXj/d+XKmK90vTLs8
+cHXk0s4PRi5TKw0AACANxZ0EgbLKLCuJGLnf3ld2K3MFCwUeLStY067+2T2opwQCkF1UpDF//vzm
+ZOI/Vk8ixbfhP/+p0Pb0wSmBohTE+1v3p4oXtT+efaPqQkUxKuWsORlpY0lrpZI8AADA7CbfG501
+ZbV7vd1Vq++L0xU36b3qCWJtLd8cmA9/P39+XZbdvGbTBv7jPwqt+yfFydk/vlYYGHqvcPnjC8UA
+esWmyO3rja7ThTNvv1a48snFqk3+//jOGxVZc2TF0TksgjiZSNqp9z+/fA/ZuwAAAOY2+V7uaqKo
+Vsh93hXMFUvs9emKm5FgWZKF6V6+OTAXxnp6luXPnWttBIHi25U3JkWDBEvfm28Wvrx4vjD8fk/h
++uB7hfc/r40QUHyMRMiLL/++cPRE+4zWHImmBbKctCu1cP+n/cv5xgMAAMwTCRBXV8UC7a2wYzEr
+mE9X3MSibke4H7v41sBs+aq7+/5kUj/aaCLF2jsvvzxp0ThwoHD9rbemBeErpkW1WT4qCpdLNRUL
+Zs0x1zC19heeK/z104vVD4b/rFdi7O/JdR14f+TKGr7lAAAANSJUpc87ly9LY7yFu1O0qJilqYO7
+AZUSrCgdjSpQfDtz4kRRGBx6+unCyNmzJdMd/+flC0XhMvDxpZpYXLrOd05ZV37/0vGqiRSdq6xE
+shZJfEmETV1bd/duxR3xjQcAAKgRBw4cuCOkMDbrwU2qsU+iGB5L1czdgEr46sKFtckkdqAZRIra
+je7uwh+ef37SivHss4X/+stfKqrTMvbe+cLolQtFATA08N6kgPlsfkH2aq/++6mii9hs96GaMbL+
+fPz/XSzWkPkiOTe5s814D7q7u2/29Kzkmw8AAFBDQhrjHlepfqevr9KM6PrNLa7Z43VgZpKJ65ak
+TTSLSLEmcSKRUqybkogWiZc5C58L5wt/671Q+PxqT+GTDy8WRczg9feKIkJB+x8O9xabLB0SJAqe
+L1qBW/cXg+29+LiWvK9tP/h0UoSoDX40uU9Zd0b/emHSSnJhftf/1blz+UR8beIJAAAAqP3EfJdN
+zpPWrXTGzXxPlFQguMPhjw6pNJOrV6n22Z/+VHT/0rPy77//fc2PN5aIo5PBkqMYmb92/nvhv3rO
+VWYFqVWBzHPnWgqdnSxoAAAA1Hhyvl6FDl0msM1NfC86QqIBVkzhForV5ZvI1atcU0C9REMx49bL
+L9dUFJkFR+JoqKsrS/ehN9/dvZonAwAAoIaoyKGrTl/MCCb3sCYUKruCRWUn3wrwJJPSbc3o6lWu
+KVWx1VhRCuNq7/+jRAyZ5ebYoUMlA/gXs8kVLPl5H08IAABAjQmZr0aDYBlttkr1ITOahMpxvg0g
+lOlpvLv7MMIkvV14dTK4/UAiWFQcspoiyCw2p44erShwfzFb/tw5FjcAAABqTWtr6+2uEKRaqywu
+TSLU1lgBTL4JMHLlytJkEnoKQVK+db44GeT+zMGDhU/ffnve++t+5ZUpS41iYOYTsL8IcSukMAYA
+AKg1ilVR+uIwcR9ohjTGyvZlmdCaPQtaszP+7rsrvjp3rgshUlna4lePHZtKW/yf77wz5/2Y6FH7
+Sw1jX2roCnZcApcnCABqNVFZJveXZllBBphBrKxqtjTGqqOi61VdFb4Bzcnf33nn9mTS2YcImV3a
+4hNHjhQFxovPPVf4cpZWEH3+5aNHp9zI5PpVr/dCAhexAgBVRxOwffv2nTXXDxXH464Az0VzpTG2
+zF9asOC/33zcOHduVTLZHEZ8zL6Nnj1bOByC31974YVZfe6FQ4emMntVM9ZlEVufrHI8UQBQzQnK
+HueXrzaWTFbu4s4ANE8a43379j0ernEH//WmEylKPzyG6Jh7U4yKBcH/+aWXZtz+466uKXEjtzGl
+I26g+zEk4cuTBQDVmITdF1ZR/9nR0VE4fPiwiRWtIm/nDgE0Rxpj6wuS1s5/vHn4qrv77pBqFsEx
+z/bBH/84FQx/8bXXSm53LdnORI3cxeYa25LxNiwBzBMGAHMmmWyttaDhEydOFE6fPl1sx44dk3Ax
+wdJB3ArAJI2cxjj0B7quHv7TzUG+u3sDNVKq2yRQ9BxJsEi4pL1vYuaNZNytl8xec621gmUFAOaE
+VoOTjnJIneVzzz33tYkUa7KutLa2/itMXPoa2TcfYDY0ahpjXUO4npv8lxufry5cWIslpTZNrl96
+lmQ18WmL3/7DH6ZcrCtxD2sUy8rNnp6VPHEAUDEKEt6/f39nMf/7M8/8z6uvvlqIhYraqVOnCm1t
+bQXnm7+RuwcwSSOmMXaxOCxMNDAEzte+Kahez5LiUBR/cjr8LWvKpddfb7b7QYA9AMxqMrK7mArx
+wIF/vPzyy6kixdorr7xSOBJSLxJoC3DLs9RQaYwVexNicO7mv9uYhDop1xATtW1KU6z4ExMnZmH5
+sLOzKe9H/ty5s6QuBoAZSSZS94ZJ1dd/+MMfyooU33zciiYzqrvC3QRorDTGlvkr+bmN/2zjESrO
+9yIkFqYpSF4ZvYou1s88U5Xq9XXdurtPU8EeAMqJlDXBhatw/PjxikVKFLdilpVrFIYD+IZGSGOc
+nPMDZP5qTJIJ4hIqzi98k9tX9yuvFGumcD+Sdv48fQsApE5Altsk6siRI1/PVqT4uJWnQ+53TcYo
+DgfwDfWexlhxNmYV4r/ZUCLltkSkHGeiTMuIZWU3TyUATBFcU85oAtLW1vaPUsHzlbY4bqXe/fIB
+qk29pjGWS6ctQvBfbBy+On9+DxNkWsbaVp5MACgS/OcrCp6fTXvhhRd8vZXTxK0AfENaGuN6EPTJ
+eQ7rfFtaWlbyX6x/8ufPb2JSTMtgm1AdH55QAFZ277HgecWYVEuk+LiVA6HCrlzLFAfDXQeY9gxu
+cdbHzLtKOnFFOvI658vz5++gVgotw23oxrlzy3lSAZoUBbtb8LysH9UWKdZkpfH1VpRZjLsPMDXx
+3xGeDRVYXV4H57s7nC+uGXWMgueTiWAPk2Fa1jOB8bQCNCHB1/xaseDU4cNf10qkWFPci49bUZpT
+4lag2UmegztD2mK19XUirB4Iz3Ab/8H6JX/uXAsTYVqdNNKhAzQTIXj+dLWC52fTlPbYxa2cqYcV
+ZIBaoGxfFu9RT3VJWlpaNoRzPst/sU5FCnEptDqLV/nqwoW1PLkATYKycBWr4ba2VjV4vtKmQpI+
+biWZ8NABQTMuFpyxRBP1dO4hlbnOe6wZ/lefJtc7un//vSO/+919jdC+OHTo//7y9ddv/tfrrxdo
+tLppp0+Pfv700/9HozyHI/v2bRrZu3cpoyHArZOMjbUMnp9j3MrNpN3Hfwea6Dmsq7iUlPMvplau
+pxowc2G4pWVlMqm4mbQCjUajVbmNIlYApk8uVlnw/LFjxxZNpPi4leeee67g0rPuIW4FGp16jEvx
+HDhw4I7kvHtDlrK7Gvl/NbJv3zYmUzQarWZt375NjIoAucmK2MnEoi9Unv/nYosU306cOKEJz7/C
+xKez0Vdpoamfw7qIS9GCgbIChvTlsv60J60nWD99MdeGzuA3mlw7kykajVbDhjcJQFjFPaWJxdNP
+P/0PVY7PklBJiVsZIm4FGo0sxqVoAUPPmlwvQ+HXDlvQKNOGQjKOXXsb3G0hFipfvv564atz52g0
+Gm1ObezUKYQKQIz5wyt4/lTykGRNpPi4lWeffdYmQxPJBOp+/nvQaM/hYsSl6HghW9cDoQ7K6XAe
+5QRJXxAuu2Q5kaDZ22T+1LFQudnfXwAAmCsSKwgVAId8yLMQPD+buJXnn3/eT5ZaiVuBemeh4lIS
+MbJSz7yq3SetJTlWlwW+l2g3g0uXXLu2y9VLLl88cwgVAECoANSUEPQ6lpXg+dnGrbS2tv7L6jUQ
+twL1SrXjUoIL2apkX3drf8nvh5PWbYkySrQxPUcS/qoor+x/6h/47yBUAAChArAYk6Ollpnn8OHD
+/6wnkWLtpZdeKhw8ePBfYaI1nAiXdfxnoZ6YT1xKW1vbkv37969JBMYm1T5K2vHwTE+UESTD4Xh7
+krZZlhxEPkIFABAqAJkiTGoyGzxfadO5+7gVTb7470K9UElcSiJIlkmEKyYraY+HxBcDM8SPXNN2
+Yfv79XnthzuOUAEAhApA1idH20Pq0IksB8/PNW4lmZi1abWZ/zRkmTguRZaN8NpmWTyUittcwko0
+fa5Xiw6yqATLyhq++wgVAECoANSrJeUucw2ph+D52bTf//73U3Er8slPfr+d/zhkER+XEgLWx8oI
+knyIMTmsmBPFnigGhbuIUAEAhApAw6CMP5bh5+jRow0lUny9FR+3opSr/Ocha4S6JLEg0bPZpWxc
+ISvXXYhthAoAIFQAmmEFd2lIM6qYjq8bUaR4V7BDhw5Nucdo0sc3ALKE4kX0vQx1S9YvdN0UQKhk
+hccee6ywYcOG1Pb973+/8MgjjxTefPPNwsTEBDcLECoADbyCqxSlsjbUdfD8bMSKrEZutfpwsxWj
+AwCEStb5wQ9+UEhu5YxtxYoVij9sSHH22muvpW73zDPPTNtOfwNCBaARRcrWEDz/T6X0bXSRUiZu
+pUfub3wjAAChUl9Cxdr3vve9hrvmUgLk0Ucfnbad/gaECkBD4TILFV588cWmEik+buXpp582sTKq
+e8I3AwAQKtmbtP/sZz8rdHZ2Fq0Mv/zlLwt33HHHLWKl3i0rCBVAqAAkKBC30YPnZ1NvxcetyMrE
+NwQAECrZnrTfvHmz8N3vfnfaNqtWrUKoAEIFoJ5RLYWQ0lQT9H8qZqOZhYqJlSNHjkzFraj+BDUn
+AAChku1J++joaGHJkiXTthsaGmp4oTIwMFC0LlnT34BQAWgIVPRQk/EDBw78o9FFigSICleqLoxi
+Uo4dO1YsAClRoqr1Bw8eVJxKao0K3MAAAKGS/Un7unXrpm2niXujXzMgVBAq0JCEytbF4HnFZzRK
+Fq8XXnihYgFSov1Pck+GQsXv9qTtePTRR2/jGwMACJVsT9r/7d/+bdp2GgfKIZexsbGxOZ3T8PDw
+nD6n4+Xz+UUVKpWeQ6X7ms22uueAUAEoiwocWvC8rAuNYjWRlaSMAPlHIliGk3Y2+f1o0nargreK
+6oX7sUp1K/h2AABCpT6Fyne+851p27388supk+WHH364sHLlyqntli5dWoxx6enpKXkOqtHy5JNP
+FtauXTvtGPr7wIEDZWu4yB3rhz/8YWHZsmVTn9PvOubZs2enbWtpiZVqORfF3KSlKq40PXFXV1fh
+29/+dvFa/TkoQ1pvb2/qZx566KFp+9b90XXqGOvXr5/az5o1awp9fX2p+zh58mThW9/61rTj3n77
+7cX/gdz1AKECMI0QPD+syXt7e3tDuXfJmhJctc4iQAAAodJcQiWe3Hd3d99iBdGEP1cirbEm05rQ
+p4mUWATlUlIip4kVnYMXKHG77bbbipP5Utea1vz1VxJMrwxo5fanc0gTdRInfjsTHWn7kGCL75mK
+cZY7rgQLMTUIFYAp5MIUJvFyi2q44HlZh4L15DT/bQBAqDSPUJGbVyw6YjejmSbONnmOP6d0yLkK
+6rdou5jVq1fP+DkJGXOhqrZQuXbt2i1JBtLa8uXLb3HjioWKt4qkNZ+8QNanSu6Z4orKWaMAoQJN
+RDKBbw3B8xONWHlesTZBqHzIfxsAECqNL1TkPvTEE0/cMhmXq5VHk2hZDvykW+JGblSxO5dcuQzF
+cvh9e+uDfvp9ajvvzvTmm2/eYnXQechNKq79oom90HtKAiA3rVxK7Rg1Hx8zk1B55JFHbhEGumZZ
+R2Lrkr/uUkJF+9M5pAkRn7wg3rcsUrofumfx/VZpBECoQJOzb9++++daeT7OmKUOLquZvSwgnv84
+ACBUGlOoaBKsGAkfZxJbKGKXIk3C/TaacPv4Df+eYkd8jEU84S4XF3PixIlpMR7+PU3UfWxJqWPO
+xt1tJqGi+BH/vo/Dia8tPoc01y9PLLa8UIn/J95aI/Hn/3dyJwOECjQxra2t69KC5+eTsjerQfga
+jHR+isXhPw8ACJXGEyrlmibPcYC6ePDBB6dt5wPS5XoU78OQtSZXxr0rtlj88pe/nHovthz4TFuy
+nOTKFKisllCJLU1xkL9/T25q5YRKnO653PuxJSZ279L16Nwkjry4A4QKNBl79+5dYcHz+/fvn2vK
+3ptJGwgpe3v0mgRNFoWKOj+dnwLp+e8DAEKleYRKWlyKEQeBx1mqYuuMn8yXK6hYTigo7iPnYkDK
+iQQdvxZCJRfFoczmHOYjVBTr499Tli+P/k/VSpGMUEGoQB2j7FcVCpD2SlL2Jtveq88ePnw4k0LF
+qsrL1Y3/PgAgVBpPqPh4jbh2inev8sTFIGPBEQuVSuqkaLIdH98LhXIiQJ/1Aii2AtVCqMTnUEuh
+IstSLCRlPZlr3RpAqECDIqGRiIst1aoZEj5f7DSzKFQUlBesRzv57wMAQqWxg+njgHXFhaQRCxEJ
+F18jJHaRKpc2V5m0dJy0tMOVCpX5XHM9CBW5eillc3x/dIw4bTQgVACqRiJUVkoIyH0s4ymK2/lv
+AQBCpbGFiibE3sVKLkeVCJWZWppQUUYvZRPzmb5KCRVZZJpZqNj/5sc//nFq3Zbf/OY3fLERKgDV
+R7VYzHUs4ymKu/lvAQBCpbGFiojdr9KKNsZCRdZ373oVtzjWRcH3XhDlQkV2uTOlCYWZREAzCBVD
+2cLSrE/6v1FDBaECUHUsOF/50LMmVHROQah8wX8KABAqjS9UlDUqN0PhxViozKYiem9v7y21VJTt
+S5PsUkIhziTWzELFjhVnQVNTNjZAqABUW6h0SwzIepFFq4plNJtrHA4AAEKlfoRKXJTRpxeuNJi+
+HHGtFCVtqUQoIFQKt7iCxbVlclGqaECoAFRDqHRkuZZKIlAsoH4N/y0AQKg0tlARcSV3X9gwbVId
+CxUrIGlNFeQtcN5/TttVKhS8eIpjZ7R/f7x4v40oVAylKvafU9A9IFQAqilU9kgIvPDCC5kUKocO
+HTKhcg//LQBAqDS+UClXeV4oCL7cpDp2DVPgvIgryMf7LScUVMTRv+fjMRajjopc1hZKqMjKJcuT
+RIjdSyMudjlbaxNCBaECUJaQ6jizRR91XqGWyjb+WwCAUGl8oRJn2VKgu0dZpvz7yfgw9Z4C530m
+LxWOLCUElMXKo3iYUkLh+9///rT3fFpe1U3x72nSX+6aS2XJmkmolBJgQudT7hzmI1R84oE4Zmi+
+iQYQKggVgLJkveijLD3BotLCfwsAECqNL1TMfctvJ7ctI3bhWr169VRldIkW/56q2JcSOCtWrJhy
+C9PEXKKmlFCIrTyW5UotvqbYUqO//fuKk5mLUClVkLKSc5iPUPEiTSLQx/XE16Yge0CoAFSNrBd9
+7OjosMxfZ/hvAQBCpTmESlwNXX974qxTSpmr2JFcFNztJ9WKdYnfV+yJrACagMeTdZ/FStaLuJCk
+hE6c5lj78aJKKH1yfFx9VsetNJhfKBNm2n7ic1BTdrNqCRXtK643o+Oqxcd97LHH+JIjVMCxO2md
+rt1daj4ebXcXt25KqGS66ONLL71kQuUa/y0AQKg0h1CJrSbxSr3crcoVa8wF96e4tkec9Svnqtu/
++eab015TXRXPE088MWNxSQWXx8jak1Z7JL7+mYRKufPPlXFpq0YwfSwc05q3bAFCBSbpjB6UPSW2
+G4u2m88X4T63n7YqXIM/rwUn60UfX331VRMq6rRv4ysPAAiVxhcqQqmJ/bbmpmUoFW6aFUVN7kpp
+k2ZZRmK3Mk2wFRej9/zraamR5T6WJjpkbZGwKFX0UIUr0z43W6Gia9I9TBNpOgcJpbRzqEbWr1LX
+rnPROY2NjfEFR6jADEKlK2WblSmdGELFkeWij2qy9uj8Dhw4cAdfeQBAqNQvEgMKwLZWbgU+3jau
+MG/xGbKEPPnkk0WLh9ysYkGT9hmNd3JT0k+/X3+8UvVZdM6q0K7jafKu3yuZpMefk0iRQDK0D3/s
+cvvUNao4pj+HOCNXnKCg3L2c6f34GnRMNZ1DueMCQgWhMn2iP5ayzd0IlRmFSqaLPj777LMWUI/L
+HgAgVAAAoQJ1KVTU4lX3HQiVGYVKpos+Pvfcc+b+9QBfeQBAqAAAQgXqTaiMhp9xQH1H9D5C5Vah
+kumij8eOHbNaKo/zlQcAhAoAIFSg3oTK6fBzR7TNtej9WKj4zGFrZni9PWl9bj/D4f326JgbkqZ0
+uvmkTSStO2mbUwRPbBFKOw8FkKvYYa8TXDreymrdxKwXfZSlJ1hUOvjKAwBCBQAQKlBvQuXx8NNP
+Zpe5yX1bCaHi97FhhtcHculp+Qbc5zYGcZK2nc9KtiNXOs2fP4/WEtsMheubN1kv+qjYmSBUevjK
+AwBCBQAQKlBvQuXe8NPX21gfXjtTJaGyJfeNK5laTxAcW5z1YzgSTw9Er61zVpdYrOwIzawlq3PT
+EwXsCtYZe21XNW5i1os+uhTFeb7yAIBQAQCECtSbUNmQ+6ZeyjInLPT37ioJlVyufIzK2kjEGNvL
+iItyMSr+c1vDa7e713qrJFQyXfRRbf/+/V8HsbKcrz0AIFQAAKEC9SZU7O/14f1WJ0wWQqjcmfsm
+zmR7hZ8pJ1SOlzgHs9BMVOMmZr3oo9ozzzzzL51fa2vrOr72AIBQAQCECtSbUNkdfrfAdXOTWrNA
+QqUUD8xRqPhzWOleHyjx+pzJetFHxc+EWir38rUHAIQKACBUoN6Eyv3hd1lSFC9yM1gdliySUFGq
+5NORGJmNUOl175111pqbNRAqmS762N7ebnEq2/naAwBCBeqZL774ovDOO+8UvvzyS24GQgWh0kRC
+xWJEZEmxQHSL41hIobImCAvbLj9HoTJQQqj4tqJKQiXTRR+PHz9utVTa+NoDAEIFskZ3d3dh27Zt
+hR/96EeFS5cuTXvv66+/Lvz85z8v/hweHi48/PDDhd27dxe312uAUEGoNIdQWRJ+l8VhU/i9fYGF
+ylonTGTN2eosPbMVKn3VtpyUESqZLvrY0dFhFpUuvvYAgFCBzE06v/qq8Oijjxby+fwt750/f76Y
+WVMocc1bb71V/F1CRdYVQKggVJpDqPjJvblcbV1godLj3r+zgs/MJUal6mS96KNiZ4JQGeZrDwAI
+Fcga//jHP4pCJY1f/epXhU8++WTKsqJtxRNPPIFQQaggVJpMqBx3VhX93LiAQsXXPems8DPlhMop
+956vVl/1YPqsF30MKYqLmb/a2tqW8NUHAIQKZIn+5Pvw1FNPlX39ww8/LBw6dGjqPQkV4lQQKgiV
+5hIq26PJ/4oFFCqb3HvHqyBUdrv37nGv+wKSValOn/Wij2oHDx78u84xOdfVfPUBAKECWeKNN94o
+vPjii7e8LjHSH74rr7zyStENzChlgQGECjSuULnbvTbqtq1EqFjqW1lh8iWEihcjcjNbHpp9zleS
+XxMsHt4d7HB0DT6Dlz6/NDcZaxPv70x4Lz5+Vchq0Ud16qdOnSrGqDz99NP/E9y/NvLVBwCECmSJ
+1tbWYkB9bE3ZuXPnNNGiWBaECiBUmleorIwm9zMJlQ73uoLfh8LP0RJC5Y7ICqI2EN5bGgRK/L4/
+dmd0DV0p29vxlGL5Wsr71jZX60YudNFHL0CUaezYsWPF+JgjR44Unn322X8mgul/9u/f/087J9+o
+pQIACBXIGhIdH3300S3WlD//+c/F3+MYFrl8KfMXIFQQKs0lVHJOLOyuQKjcFYSJvSehcmeZfYvH
+SwgVs+j4/R0PFpe0bcW6yHoTH29VbnpMijWrFVM1qlH0cQYBIovNvxKh8XWaACnRbiYtH9pE0gb2
+7t27gq8+ACBUIEts3rx5mrVEokVpiC1wXn/7GBalMFaNMECoIFQalzVhUq+2LJr8b8hNDzRf5baN
+J7prg3iRaFkyw77jz6jFrkir3P6MDa7F6Hw2uf3Fx1sSjqH37g1WnapTruhjBQKkaPaepQAZSERL
+Z/LzjNIOh+P3hnYtaUNBoEz77L59+zbx1QcAhApkhc8//7woSjwSJSdPnpz6WwUeT5w4MfW3xlSz
+tgBCBaECMLNQKRZ9VEaSKgmQ9qTtToTF46FOi1pr0v7/9u4mRqrz3vM4Cy9YsPCChRdesGDBwoss
+vPCChaVYiqVEsiVHciRbcjTJhZ4hlhFBIsgIIxFkhiARFAIkbQsGO4O5RpgbQkwIUguBYkRVuZEN
+t+PbY5kLQ/raIHf6BcMEoTPne+h/5elDddNAd3VV1/cjPequt3NONV3w/Pg/L+/k9x0ZCyQj9zpm
+fizmpxTXMnafH2RJBhW1DKojDPMKbOrY1dU1bkUvggkT7gPDvr7++mt/eAYVg4o0xaDy5n0GEPZe
+eSW/7wXmjeS3f5Tf/imBJIJIfv/oVIMIAYkqDZtOUrX5/e9/n/3xj3+sV3Xee+89g4okg4pazokT
+J8YN4+LfM/6TL8WqmlFBuXnzZrG3igwqBhVpisYm1C+PADK2ZPGSt956a3F+35MEkjSI5Lf/Pf/+
++nQFkXs1g4okg4paEf++nT59uvienemZr1KeWJ8GlXPnzhUVFhlUDCrSFP36179ekIeK18aGaP2p
+u7u7P799o1lBpFHj9TE3hs0oDSqSDCpqNSxBfOnSpXp1pVG1hH8jeQw7duy4K8jIoGJQkSYxVklp
+WhAhgDBxn2NxTComMTeG83HeCa7nBf+0JBlUNNuuXLlSzDVZtmxZfY+ULVu2FBPny3p6eornnDx5
+Mtu8ebM/PBlUpPsMKi8SBPbs2fNQQYTljXktO/S+//77RQD53e9+VwQdAshbb711P5Pzb6VzYwhT
+/klJMqioFbD08LVr14oWE+NjCNhdndI8xBBqqKakk+xlUDGoSFPA/iRjFYvbEw3DIoAwDIslFmOJ
+YoZkEW6SVbmm2v6WB4+PWG0sP+eu/OsbDOvK7/v2rl27nsi/Xzh2XQuYJ8OcmbFJ+y/m55vvn5gk
+g4okg4rUIfJw0EeIoAKSLlE80TCsCYZm/T3/eiFvH+ahYs9YAFmet+8yKb+7u/vxRgGEifosZZw/
+/q/5/ZX8vr/l7Wajc7iXiiSDiiSDitRZQeVXkwSQG3n7zzxIfJQHhf/FcsZMvh9bDWxpHjgWsXLY
+RAGE/VPy22zs+J95++Y+qy/l5odZkkFFkkFF6hRjSxSvYC4IIYOwQeggfNwjgPTk338+leWKp6M5
+oV6SQUWSQUXqvKrK8jSA5F/7p7KD/Ay2G06ol2RQkWRQkTo8pDQxgNycaLf72Gxyz549j/qnIsmg
+IsmgIhlU3piGAPL/8vBx2QAiyaCiVsRywo2wbDC7xw8MDIy7n2WIU+w+/5l//jKoSE0PKq9PEkD+
+0d3dPcBkegOIJIOKHdW26xhev56tXLmy2KBxw4YN4/Yz4fs1a9ZkO3fuzF599dUijODmzZvF/an9
++/dne/fuvev469atq7+OcMPrYn8VyaAiPSSWDiasGEAkyaAy19y+fbsIKZcuXSoCSf5vXf2xw4cP
+Z0eOHCm+Z3f5qJicP3++eA0hJxBA2Gm+HIK6urrq1ReqNgSXQGBJgxHXUq7cpHiMc6e3uaaLFy8W
+x+b1uHLlyl0VnzNnzmS1Ws0/cIOKJEkyqKgdUO2I6gidfYJF2LhxY70aQrUkgsrRo0eLoBLDxfr6
++orbBIYUz+cYabBgP7J4zYoVK4rXVSqV4r7jx49na9euzfbt29dwp/qtW7dmmzZtqt8+efJkcd/q
+1auL+7/88susv7+/OC6NKk8cd/v27dmxY8f8AzeoSJIkg4raARWKHTt21G8THGLYV3o/QSWCCJUX
+wk0EFR5LKyeBCgsbJKfniqoLIYPqDeEhhowdPHiwqOIQYtLKTgQqro0Qkzpx4kQRnALfE1AYnkZF
+h6+En/K1yaAiSZIMKmphhw4dKsJBzCGJoVlMoE+HclGRiLkldPypYBAEeA1zW2hlBAaCRKCyQQgB
+lRUe49wEFGzbtq14nHBBRSRFsCEMcYzyOc6dO1e/TTBimFf45JNPsu7ubv+gDSqSJMmgonbC3JOY
+u8HcDoZSRZWEeSvpMLCobPB9PI9QQPUjrZyEzZs314MJeF6EHY7B8Tl/BA0m9XN8wk9UdtLzU+FJ
+Q0kMB0vntaxfv37cCmYErkaT/GVQkSRJBhW1sFWrVhUBBcwVicBBhz8mp/M1ggpBgeFXEVQIH1RE
+0spJiOCRhoiiMzq20hhzSvhKBYXvY65M3B+Yd8JwMwLH559/ftf1x3VyLlYnI5zEeRmuls6TkUFF
+kiQZVNTi6MynQ6wIIFRImJ+STlonyBAUwFAthoRRCaFywdArhoWllZOY45IuYZwek7DDELO0msN5
+Y04Mw7U4ZmDoFhPzGRqWVksIPAxDCxyXifUMQ0sDDddB+JFBRZIkGVTUBqg2RHigKkEnn/BC6Ejn
+dZw+fbo+YZ0wQYWDigpLFxNiqH6kSxWDifNpJYMQkU6apxKTruxF4Im5Mpwrzsf1xDVSkUlfQxiJ
+yg4OHDhQP0Z5HosrfhlUJEmSQUVtgmpGrKJFkIiqCcGETn9Ih1wx1IqhWgQWns/8kPLmj6Dqkq4a
+RoCIifCEC6om5TkoUV1JKzSxqhdBiupPDPOKKky6ChhzYspzWOJ5zlMxqEiSJIOK2gQVkVjZi6pF
+TJ7n/tjoEbGiF8Ou4nuqKLyWEBABJ0UoidW8wLAtKjFId7kHwYcVvQg9MX8llhPmfFwL52GCfbqr
+PeEnKiU8n2OUKzsx9yb2b5FBRZIkGVTU4ggYVEoIHGmoSIMK4SKqFkxSZ7I9w69iuBfDqtJ9TALP
+TcMOlRjCBEPF+D7F/BPCC9J9Vbg2Ki1UVbgvnY8CriWqMISsmKxfRnWIKpEMKpIkyaCiFhdzUhiC
+xVCsdEgVwSOCCwEhhmlRlYjhWzGpnUpMeRhXBJWY50I4YeJ8DMNK55VE9YVhW4QiAlAcm9dHxYQ5
+L+XXUW2JFcvKw8DqHd+xCfeNKi0yqEiSJIOKWkxsoEhVgqFXKYIHq3IxZIqKRoQYQslnyZ9xzBtJ
+h3GFmGTPalsEnKh8UN2gCpMiYHA+5rrE8Rnixetj8jzXm64ExjVThYlr431wrYQsqiuEHV7DkDOr
+KQYVSZJkULGn1SboyH82wZ8XnX/CA5Ph01W20g0go1pBmJlITGKPkAKGmZX3QuE2FZh0/gnhJ+a0
+gPkr6RLIDCNLN3rkXDFkjffGtRFayueSQUWSJBlUJMmgIkmSDCqSDCqSJEkGFUkGFUmSZFCRZFCR
+JEkyqEgyqEiSJIOKJIOKQUWSJBlUVMdywOmmj+w9ki5NLBlUJEmSQUVNxeaJbNwY+6rEZorljSAl
+g4okSTKoqGnYSHHZsmXZ+fPn67e3bt1afE+V5eLFi8UGimCjRTZ5JNSwmeJkVRc2emSH+jgOzy+H
+H55T3pSRDRtj80fOF+fgeXHeqP7w+JdffvnPjm5+nXGt8TivoWIkg4okSTKoqI0cOnQoW716dbE7
+PI4fP17ch2PHjmWrVq3Kurq66sPB9u/fX9y3ZcuW7PDhw0WoWL9+/V3H3bBhQz1EsEP9gQMHiufF
+fQSgjRs3Ztu2bSuOHbZv317fzX7nzp3FNRBwOAbn5TWxSz3XyevDwYMHi93pwbWuW7euOMalS5f8
+gzaoSJIkg4rayebNm4vO/Llz5+rhIL7fsWNHdubMmSIopHNYCDZxmwoIz8Pu3buLigthhOOCikYE
+H4INQQg9PT3F7RMnTmRHjx6tV14YdkbIIKDEcdPzDgwM1G8TWqL6A8JTXDvBJkKLDCqSJMmgojab
+n7Jy5cqiShJzVNasWVMfKkVVJA0G4DHuDwzFopLBMCtCBpUZggdBI4JPDO86efJkPTzs27evCBVv
+v/12fdgZ10D4oALC13SoGOflWtNhXgQXKjDlkMNz+d4hXwYVSZJkUDGotKH+/v5i6BTVB0ICw7gY
+LpUGgTJCB5WTwLAtqiIMx2JSPsO2OCbHI7xwH19jqFZUVDZt2lScf+3atfXqDIHn3XffLR5L556A
+UEPoKd+OigrhJoagEZbS58qgIkmSDCpqIwQMwgNBhYBBo8KBTz75pOj4M/QrgkZURWIoF5h7wnAv
+7uP5BJRYNSwqJIGhXDE0ixDEuWJuDHg9Qak85CvOE1WaCD1UbhjuFdfF+4gqTjrvRQYVSZJkUFEb
+oWNPcOArHXvCAB3+CAKEAOaapEOweE4aAqIaw/OopBB2IpxQPaFCEhi6xdAshpMxQT8NMdzP6mMc
+Jw1CgSpLukIYlRTCFBWZuA5CTwxBY+6MDCqSJMmgYlBpQ3T+YyUv5o4QEmKFrHRieopqR6y6hRjm
+FSt4UfVgCFdUNiL4EE6Y/xLDtjhOOhGegMP5CRvlSfCx10ta2Yk5KBF2qMYQTggznIfnUnEhLDlX
+xaAiSZIMKmojMaeDYEAVg4oH80VibkmjfVLSJYZBuOD1BBS+Z3J7BBmeG1UQqjAxt4XnMlwsJsLH
+/BSOQ1CJIVzpvJh0Aj/7s7BUcVRWCCJRWeH1hCDCDUGFKk3syyKDiqQpyL4583g22LsoGz37rWyk
+8nTRhquvFG2o+lo2UnujaMPVPXn7xZ3bldeT53y3/jqOQ/vqwgJ/spIMKpoKQkgaHAgNMd+DYNBo
+bxRCDEO2UgQGwkLsp5IuXcxzo5rBfJSornBewkY64Z1zM5SLoJFO1gdLGaf3RRiJoJLOTyHsREWH
+6hBVIxlUJJXDyOjZx8bCxPIibAxXj+StL2/ZDLbL2VDtz3mw+VUReAg0w9Ul/mlIMqgoxZLAsQIX
+HX+GUDH/BGnHP8XQqrSyQdih8sKQL4IKwSTmpMScE8S8kahsEIo4Vgz9iqWFWWmMakw5XDA0LZ1I
+z232YImgQghi0n8ElRg6RsBJ58jIoCJ1XiDJeuZnox9/Ow8Ea7Lhyjt5q+TfD85wILnfdmssJH1w
+JzRVnssGex/1T0+SQaUzEVJi7xSCCqEidoRPJ9WneDytglB54XUEAoIH37PkcDmopMsFMySL6gnP
+j/klVD5iWWS+J7Sk81EYUhZ7rcTcmpg/Q1DhtVG5SSsqvI5rk0FF6qRg8sidSkkxNKsnbzdaLJRM
+vQ1Ve/P3ss3gIsmg0lm6u7vrq3lFUImVsmKJYDr96TwV5rGklQ2CTsxliWWJ0x3smdTOcK5040gq
+JgQhzk0Fhq+EolgWOaorsWwx1Rqex/XFDvacM6ozBJUYsgaCEq+nasN5nZ9iUJHmfjAZqj01VjH5
+MP860rbBZKrBhSFjznmRZFCZs9Id5wkaacWCaktMkC/vDsdAE6kAACLRSURBVJ8GEYJNBAoqHBEk
+0iDD0KuLFy+OO0ZUPwgoVE4IF+nSw0y0Zw5L0Xm9fv2ua09XI+P7eG4gDBGQ0muVQUWaY+GE+R0M
+5ZrDweSew8XyYDZUe8nQIsmgIsmgIs1mQLmzCte2vJM+0KHhZKI2UoS2odp3CHH+pkgyqEgyqEgz
+HU5YKrgY1lX91EAypXb1zvCw2lP+9kgGFYOKJIOKNJ3hhJW6GNLEUr53VsQygDxY6y9CnhPxJYOK
+QUWSQUV62IBSfc2hXdPebhRVltGzj/lbJhlUJMmgIk01oAz2Pjq2nPCgoWLG92vZkw3VFvtbJxlU
+JMmgIk0UUNgdfqi60YAyK4HlAxYn8LdQMqhIkkFFSgPKndW7bhgaZntvltqf2SDT30rJoCJJBhV1
+bkAphngZUFqzFXuyOCRMMqhIkkFFHRZSWMXLSfKtP+l+uPqmG0hKcy+oDJ88WYQVm81me5A29Kc/
+GVQ0BwPKcHVJ3k4ZAtqqXc5Gai/62yvNnaBis9ls09wMKmrjgPLVhQXF/867D0p7z1/Jg6a/zVL7
+yTsRr9uRstlsM9Wu/va3L/k3rdozpIxUXij+V97O/lxZIczhYFKb+a9du56wM2Wz2Wao3fjbb36z
+0L9p1V4BZbB3UTEp28793BwONlT7jr/lUtuFldcZBjYn2ltv/c/Bf/u3ocHf/z6z2dql/f3w4YFr
+v/3txrnyOfxq9+41A7t2LfJvWLVXSBmuPOd+KB3R3syynkf8jZc0G4ar1aWj1eqtvGU2W6u369Xq
+yFDNFTWl2Qsoead1bMlhO/Gd005l35x53N9+SbMh7wCusRNsa4c2UnNhGmn2QsqdoV4VO+4d2Qap
+ovkpkDQrYaVS+dCOsK2lQ0q1ustPqjRbIcWhXjYa1TSHgklqsuFqdWHeGbxsh9jWoq036+mZ7ydV
+anZAcaiX7a5ljPO/kN3VXlLzw4rzVWzOS5E0FlIc6mWbuI04FExSs43UaivsHNtaqN26XvHfQqn5
+IWX07LfyzuiAHXLbPaorr/lpkdRMeefwF3aQbS3S/DdQanpIGak8fed/zO2I26a2hLGfGklNDit7
+7CTbZnny/EY/iVLzQ8oLY7uT2wG33U/b4yR7SU37t6qn55G8o/iBHWabK3xJnfIX/1D1NUOK7SHa
+B9lXFxb4SZLUDF9duLDgerV6yo6zrcmT598nKPsJlJobUjba0bZNy+aQw9WFfqIkNcNgb++jeeex
+zw60rUkh5ZTLEEvNDCgsPzxU3WUH2zaNrS8bPfuYny5JzTB69uxj7rFia0L7lCqenzipmSFluPq+
+HWvbDDRWjFvip0xSMwxXq0vyjuSAnWnbDFVS+gnEftKkZgYVQ4ptpsOKlRVJhhVbe7c+Q4rU7JDi
+bvO2Zg0Dc86KpCa50du7yDkrtumck5IHYP8Nk5pcSVljB9rW1An2rgYmqUn4329XA7NNQzvinBSp
+6SGl8iM7zrZZWbrYfVYkNQkdzNFK5UM727YHapXKOy5BLDU7pLiZo22WN4X0Uyipaf/m5R3N0Vpt
+vx1v232GlG1+eqSmV1KqS/M2YmfZNsvtF34aJTUTHU874LYpttf8xEjNDylLDCm2lmlD/kMgqclh
+pVr9qZ1w2yTt1mit9pKfFKnZIWX07GNje1rYQba1UKs856dTUlPDSq32nbxDetVOua3Uvrj+8cdP
++gmRmh1Sil3na3+2U2xrwTaS/24u9lMqqZm+OXPmcVcEs0UbqVY/GOztfdRPhjQbQWWk9oYdYlsL
+DwHrdSUwSU3/t5FJ9tXqm3bUO3yol/NRpNkMKZWnXeHL1vJtxNVVJM0Oh4I51EvSbISU4erCvF22
+I2xzvookTcyhYA71ktT0oFL50M6vrY3aYDbYu8hPrqRZ+Tezp+eRvAO7cWw4kB16h3pJLfQX1GfL
+FmZ//ZeX8q+vzIn2f3/1r9mX/zuz2dqqDez9LOvv+m9z43O4/MXswv9Y4N+uUptVV2q1p0YrlYqd
++jnXeoar1SX+hqv9Qkpf16K8Y3Ejb5nNZrNNY7tqWJHas7rC/7znbdAOftu3AfdGUXv/hfTX5Wvs
+UNlstplpy1/0b1mpPY2ePfvYaKXyjp39Nh3mValscy6K2j+ofLbsDTtTNptthtor/i0rtbeRSuXp
+vOPbZ+e/bSbLf+SKXpq7QeXKziy7dsRms9nuv13ealCR5mJf4c5wsDXXq9URw0DLtqvXK5Uf+duq
+uR1Uhv6SSdIDIawYVKQ5i6WM8w7xHlcHa6l2g2Few9XqQn9DZVCRJIOKZGDJO8dFJ9mgMFtt8Hqt
+9gZzifyNlEFFkgwqkhJjE+63uUJYk4d45QHFifIyqEiSQUXSPdBpLv5338Ays0sNV6uvZT098/2N
+k0FFkgwqku4zsOSd6Z+OdaoNF9PQrler/SO12goDigwqBhVJBhVJD9u36Ol5JO9gf3e0VtvvPJYH
+CicjI9VqN0tD+9skg4pBRZJBRdIM+OrChQUsm5t3wHsMIffcpPHDkVrtRasnkkFFkkFFUhPd6O1d
+lIeW1xnOZDCpt17mnrh6l2RQaXkvv/xyxh9LtJUrV/pDkUFF0pzzTa32VN5Bf3Oso95RlRN2j8/b
+xpFK5Ql/EySDSttYsmTJuKCydOnSGTtXeh7aRBYtWjTueV988YV/UDKoSJo2xaphlcpzY0sd983R
+qsmbo7XadxgK55+4ZFBpO4ODg3eFh/nz52e3bt0yqMigIqljMAyKuRoj1equNh0m9imhi/DlfieS
+QWVOOHbs2F3hgdbb22tQkUFFUkcHl9GPP/42y/SOVV2OtECAuUX1Jw9TH+Rff5GHkuXD1erSvC30
+T0wyqMw5P//5zxsGlR07dhhUZFCRpHIfpqdnPvM88vZCHhbW5CHmnbHVxXrGgswX7OT+ILu/j722
+L47HcsHsEUOVJA8jS1iC2T8ByaDSMb73ve81DCo//OEPZzWoSAYVSXMBq47RRs+e/RZ7lIy1J7jv
+mzNnHvcnJBlUNIGFCxfWQ8MTTzwx7nuDigwqkiTJoKKm6+/vHxcaNmzYMO42E+3vhUn3n376adbT
+01PMaxkZGWl6ULlx40Zx7qlew2R4z6dOnSre0/2cl+fP1AIEMqhIkiSDSkd57733xoUGOtvp7RMn
+TkwaUJjfklZkaI888kj2/PPPFyFosoDSqN3vHJWBgYFiiBqrlM0rrVr2/e9/v+FrCBXpc59++uni
+/o8++ih79tlnxz32zDPPFGGkrK+vr3iP5fPysyDsGVgMKpIkyaCih8DGjtHJJhhgwYIF9fsIIhMh
+CEwWOh577LFxQWG6g8rVq1ezxYsX3/MaLl++fM+gwsIBBKxGxyj/DAhv6c+oUeOYhhWDiiRJMqjo
+AT311FP1zjWT6vHkk0/W76Nq0Mjhw4fv6pyXg0X59dMdVLq6uqZ0zPKiAOWgUq6KlBtVlXSoF+Fn
+KuedLOTJoCJJkgwqmmToVtpJX716dXE/Hft5yVCmRui8p51ygguY25FWJvieyseDzFGZLKgQGNKq
+BudhGBv3/+EPf7jrGtK5NuWgQqM6FHNbfvzjHzccGgaOnT726KOPFhUWzsvXNMTw2FTm+MigIkmS
+DCpKVCqVcZ3uvXv3Fvdv3bp10koGnfk0CJRXB5soxExnUCEQzZug6gEqORNdQzmoUEGayhyWRj+b
+n/zkJ+NeyzyXRj9TGVQkSZJBRVPEvIy0U01waVQ1OHjw4KSdcSoQKSoz6eN07qc7qBAAJgsM5dXL
+0muYLIjcb1Apv/eYu0NQevfddx9q9TEZVCRJkkGlI7388svjOt3RqSYQpPcz4T5FB3xeaUnjyUJC
++fHpCCrM/3jQa3iYoMLwrnmlFc4YciaDiiRJMqhomixZsuSuFb9COv9j6dKl4x4rVzPKIeFepiOo
+3CsMzVRQQboAQRrmXOXLoCJJkgwqekhM8k472rHiV0hX/mLCfdoJv1dImOtBhb1b0pA3L5nr0mjf
+FhlUJEmSQUVTdOzYsXGd7FjxK6Qrf9FYEcug8k+sZEa4K78XVvpijo8MKpIkyaCiB1Ce43GvxsR7
+g8rdfvnLXzbcKJL7ZVCRJEkGFd2nRtWAeVPcNNGgMh6rpTXa7LK8LLMMKpIkyaCie2Ajx/sJKule
+KZ0+mX6iOT/l8Mfmj2wEKYOKJEkyqGgK+vv7x3WoFy9e3PB5zLdInxe7rLfC8sStFlTAggP8LOdN
+sgeNDCqSJMmgogmUgwb7qTTy7LPPjnsee4igvOFjOiysUUhoxoaP5b1eZmrDRyokDOniZ8bGjmU/
++9nPHqraJIOKJEkyqHQsOvXzpjDxe926deOexwR8sDFkOoE8HRYGOvDzJpmrUQ4qE+3ePllQKYeJ
+8vLKP/jBDya8hocJKmzumD5GaDOoGFQkSZJBRdMg3SOFxmTwRlhmN33e888/X3+MTSDTx3bv3l3c
+z7LH7LsyL9m5naV8J5sfE9WOGFo2laBCuCmfh3ODys9k1/AwQYXzpkPimIeSVprK781d6w0qkiTJ
+oKIpYOhS2onn+4kmfNO5TzvddMInGj42UaOyca8hZfMmGAY2WVBBea+XiVoasKZjjspUl3Ym0ExU
+LZJBRZIkGVSUoHoyr7Sb+mTKk8PTsPDMM89M2lGn2nD58uV7VmoeNKiwQzznuNc1lF/3sEGFSfP3
+eu9UcVye2KAiSZIMKpoi5qPMm2QSell5rke6ihWVGOZkLFiw4K5OOlWMckBIMVSsvKrY/QYVcB/n
+arTpIpUbVjgrm45Vvwgrjd47jRBTnrsig4okSTKoaBaGk9Exp4N/6tSpu+aaTOV1tL6+vge+Bs7J
+ue/3GmbrvcugIkmSDCqSDCqSJEkGFUkGFUmSZFCRZFAxqEiSJIOKJIOKJEkyqEiSQUWSJBlUJBlU
+JEmSQcWgIsmgIkmSDCqSDCqSJEkGFUkGFUmSZFDR9PrHP/6RXbt2Lfvyyy+bet7bt29nV65cqV8D
+TTKoSJIkg4oK7777brZs2bJs06ZNTT3vxYsXs61btxbfHzlyJPvLX/wdkUFFkiQZVDRm48aNRUUl
+nDt3Lrt+/Xr99sjISHb8+PE7/cX8eZ988kk2NDRUf/zzzz/Pbt68Wb996dKl4isVmtOnT2dnzpzJ
+Pvvss+zrr78ed96enp7s8OHDxfc7duwojpsiuPT19dVvc444dlxXHHNgYKBenUlxneX7ud3f319/
+jxzn2LFjxftIcW5CHI/LoCJJkgwqavKwr5UrV94VXAgWgZBy4MCB4vtt27Zl69evz1599dUiNBAe
+VqxYUX8+x+vq6io69zx+6NCh4rm7d+8eFzqwf//+rFarFd+vWbNmXCDge44TQQYcKyowcfvgwYP1
+66K9/fbb44aQdXd3F2Gp/H55j3zlNu9v37592YYNG4oqT4QZ3idhKg1tMqhIkiSDipqAykJ5yBcd
+/jSo0GGPqgShJA0U58+fL4aNxbAtOvrr1q0bV12hWtLI5s2bi0oIQYCgUq6mcFyqO2mASoMK1xlB
+h5BBReTo0aNFdSQQRtLqD9dTPleEqJ07d9bDFPfx3mRQkSRJBhXNghMnThTDm1J79+6tBxW+0oGP
+YV9r164d91zmlhAgIqhwPF4fKpVKvepRtmrVqvoQq3KY2b59exGKCDIx7Gv16tXjggqVGkIIj/E9
+k/MJNrw2rrccSnicKkuKYEX44msMYePanNxvUJEkSQYVzRIqB1GVaBRU6NTHcChCRxpCQHAg6Jw8
+ebK4zdCr+B4M3UpvB+aWUFGJcJOGGea2UCGhRVigukGYiaBChSdCU1oVYj5MPIdQEiErMIQtvR6C
+CWGmHGAISQQfGVQkSZJBRbOAKgJDu9LOewQVhmSlFQw6+Qy3ijkfdOTp0DMJnspKHC+qIOmwqjKC
+B8emEkPIIASl5+F+gko6H4VhXVwruIYITQQd5ruAOSWEJRB+eE15uBmviyFlhDDuKy8owDWlw99k
+UJEkSQYVNUlMWCdIpKt2RVCh008ISOeIUKEgNEQnnzDBc6mccLwYzhV4vLzaVwQKjkPYIXzEal5U
+ULjN/ekwMwIS4SKCE5PfIzARhjgeCCwRuggg6UpiMUSM58dreS4/g/LwNAIO55BBRZIkGVTUZHTi
+G+2dQlBhYjod/QgZdPKZ3J4GmqheEFR4DccrD7UiGDRC1YTnE0h4TgzxopJCgKG6sWXLlvrzmRTP
+tRBUeA0BKCo3DN2KpYV5P4QejleeZ8J1ErbK18E1R0Wo3i9uML9FBhVJkmRQURNQBYkhU+WgQpUl
+DQoM1Sp38qk4sLRvBBWOl1ZgmGuSrgCW4tix90k6xIsgwusIMVE94XlRqeE+XsPE+pjrEgGKRqAh
+yHBNVGFShJHywgFRXSkHlQhHMqhIkiSDipqM1bEa7QZPlYQQEsOpopMfe6mkw7oINBFUCAbp5oqE
+m1iBqyxW6WLyO2EhAgnDsAg7TGyPoMJzInRwH8Ei5qGwEEDMW2GeS1R0WKK4HD6YjF9+v3Ffo6AS
+YUgGFUmSZFBRE1ExaLSbO2GAYV/psCnCRDrhPYaCMeGeVbcIJOXqCYGiHG4QmymCuSGx7wnfU+GJ
+wBHVD44Rc0i4NkJRBA4e49piOFhMkud6yvugMOclnTDPnBoCUaOgwntKFxKQQUWSJBlU1AQMr5po
+aBMd+nLAIFjwmrQjH8GEzj/HKk8+53ajpYmpgkTlgzDAMK/YMT7OQWCJ8EBoiiWUeX7snxK3CTqE
+mnQvFo6V7ijP9+UKCedluBpBpTwkjIpNGsxkUJEkSQYVNQGdcJYWJpSkK15FpSQmp0eo4T6qD+ky
+wLHvCEGFx9MVtsCclljNK8W8lgghhA4qGwSadE4JQSaGnnGdMamfc6ZzZ7h+Jr3z2pjozzm5Hiov
+XC/3x/slkMQ8GkIKFZh0kj3XRcCK4WgyqEiSJIOKmogKAx10WrqSV0xET/E4VQda7IlCcIhhVFRD
+CALlDRIJII3w/HhuhBuOlz6fpY+jIpKGJr5P92nheenjcV4qMFwrw884F9ca7yHCU5yPx6N6QqWo
+0b4vMqhIkiSDiiQZVCRJkkFFkkFFkiQZVCTJoCJJkgwqkgwqkiRJBhVJBhVJkmRQkWRQkSRJMqi0
+IJbsZWnddsdSwelyySn2e4n9VGRQ8W9ZSZJkUGlx27dvz7q6usZtetiu2KCxvEt8BDE2dmQPFhlU
+DCqSJMmg0gbYOX7Hjh3jqhLnz5+v36Zzz8aI6eNsiMgu7LHpIZsrcl+5YkGVJjZeBEEoNkQkPMQm
+iummizyeBopypYdrY0f4RthNnoYDBw7UX8vO9ewkDzZsZKPI9FoPHTpUPJ5uGsn7IfSk18/x2NCy
+vDklz+Ecx48fr/+MYhNI8POL1/D+OEYcl/P09PTUN8SM987xeA8yqEiSJINKR6JDTUc97aAvW7Zs
+3G2qLtEB37JlS9bd3V10ygke3MfjdLbXr18/LgCsXr163E71dPw3bNhQfE9Y4Dg8J84/NDRUVHfi
+NQQHbqcVEyo/nGuioEKA4rp4D3EcgliEISormzZtylatWlWEBa533bp12ebNm4uwAF4XtyM48HPg
++OWqDa/nmAwti9dzro0bN9aDFT8XzsUO9ytXrizOz88RhC6uj/v27dtXXDvH4b4zZ874C2pQkSRJ
+BpXORKc7/d9/bqdBhQ54BAkCwtatW8e9nvv43/+oYkTnmkpNGhbo8BMO6Iynr40KSISm9DWEGTrw
+UQkh1Ew2fItro+PP6zgOwYDnExQiVLz66qvjXsPzoxJz+vTp4j7CULmKxHXEHJi1a9fWHyNsEY5S
+3OZnESHmypUr9bDDsRvNn0lDCccntMmgIkmSDCodi//5JwQEOvV0yiMQROc/HiMElF8fVRQ66FFV
+4OuKFSvqoYNOOh3wtBpCaImQEyGJc8c5osMfzy0HgjKqFAwp47kRtrj2CEcMrYrqUBoSuCYCx4kT
+J+qVoHKYSQMW4SOCD+8xHTIW18Fr+NmlP6+jR482fA9UT+LPgGNGNUYGFUmSZFDpSFQI6GhHKOF/
+8al6UF2gGsHjVCAYtkRHmu/T+Rk8h+en1YWoznAMOuoRVHiM22mlguCThiQ66OkQKjrwEZIID1Rp
+JkMQouJBkIig8vbbbxchCceOHSvCQjlUcA28Jq6lXHUhpETAIghFhYZgU66QEFo4N+fivZQDSToU
+Lr3u+DPgZ2pQMahIkiSDSkej050OYyIU7Ny5swgZPEbHPTrldLzTSfdguFJ6X1qdYd4HHXVu03mn
+s58O3SIUMV8jnZBOQCCkRJWFx3kek9g53r0Qmngu18xrORdfYzUzqilpmIrHGfIVQ8wiQKWBinPH
+7fgZxfH4uZR/JhyT95KGsHg/6ST/uIao0ER45HnlKo0MKpIkyaDSMeh0p0OhCBasfkVQ4X/+CQwx
+cbxRp5yJ5VGhIAxQnaGjTVWAyeg8zvdUIwgDaaUg7fDHpHOqGwQVhkellQtuN1p2uIwOP0GAayKA
+cY604kEA4JqiOsKkd6oftHTlMX4GMeSMABXvK35GHD+qTenropJE6CGUpcs9R9Umfrbp/TGxPlAF
+SofEyaAiSZIMKh2F4JEugUunns4999GZplMd1YdGnfJ0PkkEjZifwjFiCFlUMfgaeDydr0Hnn/s4
+Tsx1iXDCkDEqFRwjnfSeovJCOKExeZ2vu3fvrj83gkKKoVuEAkJFOpmd6kmEpHRCPwhgXGOjoXBR
+jWEuDOdPlzYmeHA9ZfGeUgxVK1evZFCRJEkGlY5BBzmd3E7FgWBBUIhldQkAE3XKuY/nlye+c1wC
+Dx1zOv0xXyOtyKST9EF1hVBBQGKVMSofEZJi/giNDnyj/UWYv0Llg7DFNRE+GAoWQ6gIJWkFJ85J
+EOFaYl5MiDkuLMMcQYJhWpyDAMLPrTwxP62+EFTiZxNzdGKyfoqAVp43w+vSIXkyqEiSJINKR6E6
+EPMlqELEnBFCB53qqCpQbShPGo89T9JJ6VFdieV1CQCxTC+vTzeS5Fzp5HiCBUEkKjkME4slegkN
+MbeFoBKbRqZ4Hc+jcsF74fu0gsExy0GBayBc8HNIj8m5YuUvqjoRJHhOVFfS+wOPcyywX0xageJn
+Wa5IxTCvdHno+LMoDweTQUWSJBlUOkas6FUOIwQVOvlUNeJ2eXhS+r/+BJGYvJ5O0KfiEK9Lz1Xe
+zySW+aUSQeDg3Ol8lqhuxLyQRhPNYw8Wriv2UUkrNuVlmKn0xGpbVF7S+SQEqgg5XH9UW1gQIMIJ
+P6tyFSaGr0XFKFYb49iNKlIR8NKJ+1H9Ka8YJoOKJEkyqHSEdLJ6zBmJzjHBhOFWUQGhA16eM5EG
+lXTyORWNmIsS+66kq4el8z4icBAoolJBUEl3qweVG55LGCnvcRIYohXn4BoIBlGFiWWY06DAMLSo
+ipRDASEkJrxHUCFkEWiiysNzOGd5KFlUR/gZxHGppExUIeE605DENfI+7rUUswwqkiTJoDInJ9HT
+6abqEKEinTNCUOHx6OjT0SYs0BGPKgsdakID//tPyIhqSaO5GHT0I+gQUqi+EHJY9pdOOmEhjhtD
+uNJhUlQ3eC7hKZ30nqLaEZsy8v7S+SMMyeKYDLOKCfxcD9dA4Ij3SdjiPaZzYAgjnJ/70/fF/YQM
+jhnzfPiZRcAgLMUeMwS52J8mrcIwxCsCGj8HghN/Dum8IRlUJEmSQaWj0WmOigPVkvJwJCowdLJ5
+Xjp8ig57OhSLIBFVh7T6MlmFgKFfcQxCQ7qbe9xHgEkrD2VUbeK85fNxP9dOi/fF+yi/R+brlO/j
+Z0JwSOfXpPNiOGZcezrXhGuNoV+cK86fTrAv433zc5ZBRZIkGVQkGVQkSZIMKpIMKpIkyaAiyaBi
+UJEkSQYVSQYVSZJkUJEkg4okSTKoSDKoSJIkg4pBRZJBRZIkGVQkGVQkSZIMKpIMKpIkyaAiyaDi
+37KSJMmgIsmgIkmSDCqSZFCRJEkGFUkGFUmSZFCRJIOKJEkyqEgyqEiSJBlUJBlUJEmSQUWSQUWS
+JMmgIsmgIkmSDCqSDCoGFUmSZFCRZFCRJEkGFXWclStXZpcuXcpqtVq2du3a4r69e/dmBw4cKL4/
+cuRItnPnTn9QMqhIkiSDiprn3Llz2e3bt7Nr165ln3/+eXFff39/NjQ0VHxPiBkYGPAHJYOKJEky
+qEgyqEiSJIOKJBlUJEmSQUWSQUWSJBlUDCqSDCqSJMmgIsmgIkmSZFCRZFCRJEkGFUkGFYOKJEky
+qEgyqEiSpDkeVP5r352wYrPZbPfbruw0qEiSpBkKKjabzTZ9zaAiSZIeMKj8x7LX7UzZbLYZaX/9
+l5f8W1aSJD1YUPn3rifsUNlsthloN/K20L9lJUnSw4WVO5WVN9q+/cd/35hd3jGQXflNZrO1Vfvb
+b25n/+dnv5kTn8O/Ll+T9XUt8m9XSZKkNHgN1RZnw9WRvGU2W9u0oeprfnolSZLmelgZqb1o59fW
+Ru0DP7WSJEmdElaGqrvsANvaoH2RDfY+6idWkiSpU4JK1jM/Dyu9doRtLdxuZX//+Ek/rZIkSZ0W
+VpyvYnNeiiRJkloyrAxXX7FTbGvBdsRPpyRJUqeHlZHKNjvGthZqfXlzjxFJkiQVlZX37SDbWqAN
+ZKNnH/MTKUmSpDtBJet5JBuq/dmOsm0W29W8LfHTKEmSpPFh5asLC/KO4kd2mG2z0FjUYamfQkmS
+JDUOK6NnHxubI2Dn2da8ZYiHqt/10ydJkqTJw8pg76JiroAdaFtTliGuveSnTpIkSVMLK8PVJe6x
+YnOvFEmSJLViWFlqWLHNWBupbPNTJkmSpIcJK1ftWNumN6TU3vDTJUmSpIcNK0ucs2KbtonzI7UV
+fqokSZI0PWHF1cBs0xJSKi/4aZIkSdL0hpXh6sK8nbLDbXOfFEmSJLVWWLmzKeQRO962+2gD2ejZ
+b/npkSRJ0syGlaznkWy48o4dcNsUGsMFl/ipkSRJUvMCy3D1TTvitolbpcLcJj8pkiRJmoWwUnku
+75QO2im3lfdIofLmJ0SSJEmzF1YGexcV/3tuB91WhNbKc34qJEmS1BphhXkr/C+6HfXOHuqVh1Y/
+DZIkSWq9wOJQMId6SZIkSS0ZVhwK5lAvSZIkqSXDikPBOqF95FAvSZIktWdgGao9ZXVlDlZRRirL
+HeolSZKk9g4rVFeGqq85d2VOTJh/x71RJEmSNLcCS97BdUf7tm2f5m2pv8WSJEmau4FlpPJ03unt
+s/PfFm0kb2sc5iVJkqTOCCsMB6MDfKcjbCBoxTZU2599c+Zxf1slSZLUeYGF4WB3Vge7YThomdZD
+1cvfTkmSJBlY/hlYnHA/e+0D56FIkiRJjQLLYO+j2UjtDQNLkwPK6Nlv+dsnSZIkTSWwDFd/mrcB
+g8SMtFt525MN1Rb72yZJkiTdb2DJeuaP7cHSb7iYplW8hqq7DCiSJEnSdIWW4erSopM9XL1q4Ljf
+6knlwzycvETw8zdJkiRJmonAQpVluPLc2OTvWwaRiZYXrvYW1Sh3kpckSZKaHFqGqwuzkdqK/OtH
+hpOiXc7bL5wcL0mSJLVKaBmqLb4zn6XyYYdtJElIezMb/fjb7iAvSZIktXJoyTvseXB5Ku/Ar8m/
+/nlObSjJkK5iz5nKc6yO5p+2JEmS1L7BZT67rY/t0dLTZsGlr1hEYKT2ovNNJEmSpLkeXu4MFftu
+MVxspParscrLwKwtGzxcqeTXsD8PVK/n7QXmmbhKlyRJkqQ7AearCwuyv3/8ZFHBuFOB6S42Rxyu
+vj9WjekZ29fli0mWSr4x9vgXY3NIesbmzuy5s9FidWMeRpYXVR6rJJIkSZJmLOB8c+ZxKyCSJEmS
+JEmSJEmSJEmSJEmSJEmSJEmSJEmSJEmSJEmSJEmSJEmSJEmSJEmSJEmSJEmSJEmSJEmSJEmSJEmS
+JEmSlPj/MdPlvTf5s6wAAAAASUVORK5CYII=
+
+------MultipartBoundary--8eyw3KXcGX90ofgh8W3GtTevXeVDWAKlusfDralZ2f----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.min.css
+
+@charset "utf-8";
+
+.github-fork-ribbon { position: absolute; padding: 2px 0px; background-colo=
+r: rgb(170, 0, 0); background-image: linear-gradient(rgba(0, 0, 0, 0), rgba=
+(0, 0, 0, 0.15)); box-shadow: rgba(0, 0, 0, 0.5) 0px 2px 3px 0px; font: 700=
+ 13px "Helvetica Neue", Helvetica, Arial, sans-serif; z-index: 9999; pointe=
+r-events: auto; }
+
+.github-fork-ribbon a, .github-fork-ribbon a:hover { color: rgb(255, 255, 2=
+55); text-decoration: none; text-shadow: rgba(0, 0, 0, 0.5) 0px -1px; text-=
+align: center; width: 200px; line-height: 20px; display: inline-block; padd=
+ing: 2px 0px; border-width: 1px 0px; border-style: dotted; border-color: rg=
+ba(255, 255, 255, 0.7); }
+
+.github-fork-ribbon-wrapper { width: 150px; height: 150px; position: absolu=
+te; overflow: hidden; top: 0px; z-index: 9999; pointer-events: none; }
+
+.github-fork-ribbon-wrapper.fixed { position: fixed; }
+
+.github-fork-ribbon-wrapper.left { left: 0px; }
+
+.github-fork-ribbon-wrapper.right { right: 0px; }
+
+.github-fork-ribbon-wrapper.left-bottom { position: fixed; top: inherit; bo=
+ttom: 0px; left: 0px; }
+
+.github-fork-ribbon-wrapper.right-bottom { position: fixed; top: inherit; b=
+ottom: 0px; right: 0px; }
+
+.github-fork-ribbon-wrapper.right .github-fork-ribbon { top: 42px; right: -=
+43px; transform: rotate(45deg); }
+
+.github-fork-ribbon-wrapper.left .github-fork-ribbon { top: 42px; left: -43=
+px; transform: rotate(-45deg); }
+
+.github-fork-ribbon-wrapper.left-bottom .github-fork-ribbon { top: 80px; le=
+ft: -43px; transform: rotate(45deg); }
+
+.github-fork-ribbon-wrapper.right-bottom .github-fork-ribbon { top: 80px; r=
+ight: -43px; transform: rotate(-45deg); }
+------MultipartBoundary--8eyw3KXcGX90ofgh8W3GtTevXeVDWAKlusfDralZ2f----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://mobx.js.org/assets/getting-started-assets/javascripts/codemirror/lib/codemirror.css
+
+@charset "utf-8";
+
+.CodeMirror { font-family: monospace; height: 300px; color: black; directio=
+n: ltr; }
+
+.CodeMirror-lines { padding: 4px 0px; }
+
+.CodeMirror pre.CodeMirror-line, .CodeMirror pre.CodeMirror-line-like { pad=
+ding: 0px 4px; }
+
+.CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler { background-color:=
+ white; }
+
+.CodeMirror-gutters { border-right: 1px solid rgb(221, 221, 221); backgroun=
+d-color: rgb(247, 247, 247); white-space: nowrap; }
+
+.CodeMirror-linenumbers { }
+
+.CodeMirror-linenumber { padding: 0px 3px 0px 5px; min-width: 20px; text-al=
+ign: right; color: rgb(153, 153, 153); white-space: nowrap; }
+
+.CodeMirror-guttermarker { color: black; }
+
+.CodeMirror-guttermarker-subtle { color: rgb(153, 153, 153); }
+
+.CodeMirror-cursor { border-left: 1px solid black; border-right: none; widt=
+h: 0px; }
+
+.CodeMirror div.CodeMirror-secondarycursor { border-left: 1px solid silver;=
+ }
+
+.cm-fat-cursor .CodeMirror-cursor { width: auto; background: rgb(119, 238, =
+119); border: 0px !important; }
+
+.cm-fat-cursor div.CodeMirror-cursors { z-index: 1; }
+
+.cm-fat-cursor-mark { background-color: rgba(20, 255, 20, 0.5); animation: =
+1.06s steps(1) 0s infinite normal none running blink; }
+
+.cm-animate-fat-cursor { width: auto; border: 0px; animation: 1.06s steps(1=
+) 0s infinite normal none running blink; background-color: rgb(119, 238, 11=
+9); }
+
+@-webkit-keyframes blink {=20
+  0% { }
+  50% { background-color: transparent; }
+  100% { }
+}
+
+@keyframes blink {=20
+  0% { }
+  50% { background-color: transparent; }
+  100% { }
+}
+
+.CodeMirror-overwrite .CodeMirror-cursor { }
+
+.cm-tab { display: inline-block; text-decoration: inherit; }
+
+.CodeMirror-rulers { position: absolute; inset: -50px 0px 0px; overflow: hi=
+dden; }
+
+.CodeMirror-ruler { border-left: 1px solid rgb(204, 204, 204); top: 0px; bo=
+ttom: 0px; position: absolute; }
+
+.cm-s-default .cm-header { color: blue; }
+
+.cm-s-default .cm-quote { color: rgb(0, 153, 0); }
+
+.cm-negative { color: rgb(221, 68, 68); }
+
+.cm-positive { color: rgb(34, 153, 34); }
+
+.cm-header, .cm-strong { font-weight: bold; }
+
+.cm-em { font-style: italic; }
+
+.cm-link { text-decoration: underline; }
+
+.cm-strikethrough { text-decoration: line-through; }
+
+.cm-s-default .cm-keyword { color: rgb(119, 0, 136); }
+
+.cm-s-default .cm-atom { color: rgb(34, 17, 153); }
+
+.cm-s-default .cm-number { color: rgb(17, 102, 68); }
+
+.cm-s-default .cm-def { color: rgb(0, 0, 255); }
+
+.cm-s-default .cm-variable, .cm-s-default .cm-punctuation, .cm-s-default .c=
+m-property, .cm-s-default .cm-operator { }
+
+.cm-s-default .cm-variable-2 { color: rgb(0, 85, 170); }
+
+.cm-s-default .cm-variable-3, .cm-s-default .cm-type { color: rgb(0, 136, 8=
+5); }
+
+.cm-s-default .cm-comment { color: rgb(170, 85, 0); }
+
+.cm-s-default .cm-string { color: rgb(170, 17, 17); }
+
+.cm-s-default .cm-string-2 { color: rgb(255, 85, 0); }
+
+.cm-s-default .cm-meta { color: rgb(85, 85, 85); }
+
+.cm-s-default .cm-qualifier { color: rgb(85, 85, 85); }
+
+.cm-s-default .cm-builtin { color: rgb(51, 0, 170); }
+
+.cm-s-default .cm-bracket { color: rgb(153, 153, 119); }
+
+.cm-s-default .cm-tag { color: rgb(17, 119, 0); }
+
+.cm-s-default .cm-attribute { color: rgb(0, 0, 204); }
+
+.cm-s-default .cm-hr { color: rgb(153, 153, 153); }
+
+.cm-s-default .cm-link { color: rgb(0, 0, 204); }
+
+.cm-s-default .cm-error { color: rgb(255, 0, 0); }
+
+.cm-invalidchar { color: rgb(255, 0, 0); }
+
+.CodeMirror-composing { border-bottom: 2px solid; }
+
+div.CodeMirror span.CodeMirror-matchingbracket { color: rgb(0, 187, 0); }
+
+div.CodeMirror span.CodeMirror-nonmatchingbracket { color: rgb(170, 34, 34)=
+; }
+
+.CodeMirror-matchingtag { background: rgba(255, 150, 0, 0.3); }
+
+.CodeMirror-activeline-background { background: rgb(232, 242, 255); }
+
+.CodeMirror { position: relative; overflow: hidden; background: white; }
+
+.CodeMirror-scroll { margin-bottom: -30px; margin-right: -30px; padding-bot=
+tom: 30px; height: 100%; outline: none; position: relative; overflow: scrol=
+l !important; }
+
+.CodeMirror-sizer { position: relative; border-right: 30px solid transparen=
+t; }
+
+.CodeMirror-vscrollbar, .CodeMirror-hscrollbar, .CodeMirror-scrollbar-fille=
+r, .CodeMirror-gutter-filler { position: absolute; z-index: 6; display: non=
+e; }
+
+.CodeMirror-vscrollbar { right: 0px; top: 0px; overflow: hidden scroll; }
+
+.CodeMirror-hscrollbar { bottom: 0px; left: 0px; overflow: scroll hidden; }
+
+.CodeMirror-scrollbar-filler { right: 0px; bottom: 0px; }
+
+.CodeMirror-gutter-filler { left: 0px; bottom: 0px; }
+
+.CodeMirror-gutters { position: absolute; left: 0px; top: 0px; min-height: =
+100%; z-index: 3; }
+
+.CodeMirror-gutter { white-space: normal; height: 100%; display: inline-blo=
+ck; vertical-align: top; margin-bottom: -30px; }
+
+.CodeMirror-gutter-wrapper { position: absolute; z-index: 4; background: no=
+ne !important; border: none !important; }
+
+.CodeMirror-gutter-background { position: absolute; top: 0px; bottom: 0px; =
+z-index: 4; }
+
+.CodeMirror-gutter-elt { position: absolute; cursor: default; z-index: 4; }
+
+.CodeMirror-gutter-wrapper ::selection { background-color: transparent; }
+
+.CodeMirror-lines { cursor: text; min-height: 1px; }
+
+.CodeMirror pre.CodeMirror-line, .CodeMirror pre.CodeMirror-line-like { bor=
+der-radius: 0px; border-width: 0px; background: transparent; font-family: i=
+nherit; font-size: inherit; margin: 0px; white-space: pre; overflow-wrap: n=
+ormal; line-height: inherit; color: inherit; z-index: 2; position: relative=
+; overflow: visible; -webkit-tap-highlight-color: transparent; font-variant=
+-ligatures: contextual; }
+
+.CodeMirror-wrap pre.CodeMirror-line, .CodeMirror-wrap pre.CodeMirror-line-=
+like { overflow-wrap: break-word; white-space: pre-wrap; word-break: normal=
+; }
+
+.CodeMirror-linebackground { position: absolute; inset: 0px; z-index: 0; }
+
+.CodeMirror-linewidget { position: relative; z-index: 2; padding: 0.1px; }
+
+.CodeMirror-widget { }
+
+.CodeMirror-rtl pre { direction: rtl; }
+
+.CodeMirror-code { outline: none; }
+
+.CodeMirror-scroll, .CodeMirror-sizer, .CodeMirror-gutter, .CodeMirror-gutt=
+ers, .CodeMirror-linenumber { box-sizing: content-box; }
+
+.CodeMirror-measure { position: absolute; width: 100%; height: 0px; overflo=
+w: hidden; visibility: hidden; }
+
+.CodeMirror-cursor { position: absolute; pointer-events: none; }
+
+.CodeMirror-measure pre { position: static; }
+
+div.CodeMirror-cursors { visibility: hidden; position: relative; z-index: 3=
+; }
+
+div.CodeMirror-dragcursors { visibility: visible; }
+
+.CodeMirror-focused div.CodeMirror-cursors { visibility: visible; }
+
+.CodeMirror-selected { background: rgb(217, 217, 217); }
+
+.CodeMirror-focused .CodeMirror-selected { background: rgb(215, 212, 240); =
+}
+
+.CodeMirror-crosshair { cursor: crosshair; }
+
+.CodeMirror-line::selection, .CodeMirror-line > span::selection, .CodeMirro=
+r-line > span > span::selection { background: rgb(215, 212, 240); }
+
+.cm-searching { background-color: rgba(255, 255, 0, 0.4); }
+
+.cm-force-border { padding-right: 0.1px; }
+
+@media print {
+  .CodeMirror div.CodeMirror-cursors { visibility: hidden; }
+}
+
+.cm-tab-wrap-hack::after { content: ""; }
+
+span.CodeMirror-selectedtext { background: none; }
+------MultipartBoundary--8eyw3KXcGX90ofgh8W3GtTevXeVDWAKlusfDralZ2f----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://mobx.js.org/assets/getting-started-assets/javascripts/codemirror/theme/xq-light.css
+
+@charset "utf-8";
+
+.cm-s-xq-light span.cm-keyword { line-height: 1em; font-weight: bold; color=
+: rgb(90, 92, 173); }
+
+.cm-s-xq-light span.cm-atom { color: rgb(108, 140, 213); }
+
+.cm-s-xq-light span.cm-number { color: rgb(17, 102, 68); }
+
+.cm-s-xq-light span.cm-def { text-decoration: underline; }
+
+.cm-s-xq-light span.cm-variable { color: black; }
+
+.cm-s-xq-light span.cm-variable-2 { color: black; }
+
+.cm-s-xq-light span.cm-variable-3 { color: black; }
+
+.cm-s-xq-light span.cm-property { }
+
+.cm-s-xq-light span.cm-operator { }
+
+.cm-s-xq-light span.cm-comment { color: rgb(0, 128, 255); font-style: itali=
+c; }
+
+.cm-s-xq-light span.cm-string { color: red; }
+
+.cm-s-xq-light span.cm-meta { color: yellow; }
+
+.cm-s-xq-light span.cm-qualifier { color: grey; }
+
+.cm-s-xq-light span.cm-builtin { color: rgb(126, 166, 86); }
+
+.cm-s-xq-light span.cm-bracket { color: rgb(204, 204, 119); }
+
+.cm-s-xq-light span.cm-tag { color: rgb(63, 127, 127); }
+
+.cm-s-xq-light span.cm-attribute { color: rgb(127, 0, 127); }
+
+.cm-s-xq-light span.cm-error { color: rgb(255, 0, 0); }
+
+.cm-s-xq-light .CodeMirror-activeline-background { background: rgb(232, 242=
+, 255) !important; }
+
+.cm-s-xq-light .CodeMirror-matchingbracket { outline: grey solid 1px; backg=
+round: yellow; color: black !important; }
+------MultipartBoundary--8eyw3KXcGX90ofgh8W3GtTevXeVDWAKlusfDralZ2f----
+Content-Type: text/html
+Content-ID: <frame-EC607FB8A8A47384B1D76A89C4138149@mhtml.blink>
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://platform.twitter.com/widgets/widget_iframe.c4bdc17e77719578b594d5555bee90db.html?origin=https%3A%2F%2Fmobx.js.org
+
+<!DOCTYPE html><html><head><meta http-equiv=3D"Content-Type" content=3D"tex=
+t/html; charset=3DUTF-8"><meta chartset=3D"utf-8">
+<title>Twitter Widget Iframe</title>
+</head><body>
+
+
+</body></html>
+------MultipartBoundary--8eyw3KXcGX90ofgh8W3GtTevXeVDWAKlusfDralZ2f----
+Content-Type: text/html
+Content-ID: <frame-8D9AC33916C250D420C4F4AB63EF1F3D@mhtml.blink>
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://platform.twitter.com/widgets/tweet_button.c4bdc17e77719578b594d5555bee90db.en.html#dnt=false&hashtags=mobx&id=twitter-widget-0&lang=en&original_referer=https%3A%2F%2Fmobx.js.org%2Fgetting-started&size=m&text=MobX%3A%20Ten%20minute%20introduction%20to%20MobX%20and%20React&time=1662971783591&type=share&url=https%3A%2F%2Fmobx.js.org%2Fgetting-started&via=mweststrate
+
+<!DOCTYPE html><html data-scribe=3D"page:button" lang=3D"en"><head><meta ht=
+tp-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF-8"><link rel=
+=3D"stylesheet" type=3D"text/css" href=3D"cid:css-3af52ad6-1c8d-4dc8-b008-9=
+06ba074616a@mhtml.blink" />
+ =20
+  <link rel=3D"dns-prefetch" href=3D"https://twitter.com/">
+  <title>Tweet Button</title>
+  <base target=3D"_blank">
+ =20
+</head>
+<body data-scribe=3D"section:share" class=3D" regular ltr ready">
+<div id=3D"widget">
+  <div class=3D"btn-o" data-scribe=3D"component:button" style=3D"width: 73p=
+x;"><a href=3D"https://twitter.com/intent/tweet?hashtags=3Dmobx&amp;origina=
+l_referer=3Dhttps%3A%2F%2Fmobx.js.org%2F&amp;ref_src=3Dtwsrc%5Etfw%7Ctwcamp=
+%5Ebuttonembed%7Ctwterm%5Eshare%7Ctwgr%5E&amp;text=3DMobX%3A%20Ten%20minute=
+%20introduction%20to%20MobX%20and%20React&amp;url=3Dhttps%3A%2F%2Fmobx.js.o=
+rg%2Fgetting-started&amp;via=3Dmweststrate" class=3D"btn" id=3D"b"><i></i><=
+span class=3D"label" id=3D"l">Tweet</span></a></div>
+</div>
+
+
+
+</body></html>
+------MultipartBoundary--8eyw3KXcGX90ofgh8W3GtTevXeVDWAKlusfDralZ2f----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: cid:css-3af52ad6-1c8d-4dc8-b008-906ba074616a@mhtml.blink
+
+@charset "utf-8";
+
+html { margin: 0px; padding: 0px; font: 12px / 18px "Helvetica Neue", Arial=
+, sans-serif; color: rgb(51, 51, 51); user-select: none; }
+
+body { margin: 0px; padding: 0px; background: 0px 0px; }
+
+a { outline: 0px; text-decoration: none; }
+
+body.rtl { direction: rtl; }
+
+#widget { display: inline-block; white-space: nowrap; overflow: hidden; tex=
+t-align: left; }
+
+#count, .btn, .btn .label, .btn-o, .count-o { display: inline-block; vertic=
+al-align: top; zoom: 1; }
+
+.btn-o { max-width: 100%; }
+
+.btn { position: relative; height: 20px; box-sizing: border-box; padding: 1=
+px 12px; background-color: rgb(29, 155, 240); color: rgb(255, 255, 255); bo=
+rder-radius: 9999px; font-weight: 500; cursor: pointer; }
+
+.rtl .btn { padding: 1px 12px; }
+
+.btn:active, .btn:focus, .btn:hover { background-color: rgb(12, 122, 191); =
+}
+
+.btn:active { box-shadow: rgba(0, 0, 0, 0.1) 0px 3px 5px inset; }
+
+.xl .btn:active { box-shadow: rgba(0, 0, 0, 0.1) 0px 3px 7px inset; }
+
+.btn i { position: relative; top: 2px; display: inline-block; width: 14px; =
+height: 14px; background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%=
+3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2072%2072%22%3E%3Cp=
+ath%20fill%3D%22none%22%20d%3D%22M0%200h72v72H0z%22%2F%3E%3Cpath%20class%3D=
+%22icon%22%20fill%3D%22%23fff%22%20d%3D%22M68.812%2015.14c-2.348%201.04-4.8=
+7%201.744-7.52%202.06%202.704-1.62%204.78-4.186%205.757-7.243-2.53%201.5-5.=
+33%202.592-8.314%203.176C56.35%2010.59%2052.948%209%2049.182%209c-7.23%200-=
+13.092%205.86-13.092%2013.093%200%201.026.118%202.02.338%202.98C25.543%2024=
+.527%2015.9%2019.318%209.44%2011.396c-1.125%201.936-1.77%204.184-1.77%206.5=
+8%200%204.543%202.312%208.552%205.824%2010.9-2.146-.07-4.165-.658-5.93-1.64=
+-.002.056-.002.11-.002.163%200%206.345%204.513%2011.638%2010.504%2012.84-1.=
+1.298-2.256.457-3.45.457-.845%200-1.666-.078-2.464-.23%201.667%205.2%206.5%=
+208.985%2012.23%209.09-4.482%203.51-10.13%205.605-16.26%205.605-1.055%200-2=
+.096-.06-3.122-.184%205.794%203.717%2012.676%205.882%2020.067%205.882%2024.=
+083%200%2037.25-19.95%2037.25-37.25%200-.565-.013-1.133-.038-1.693%202.558-=
+1.847%204.778-4.15%206.532-6.774z%22%2F%3E%3C%2Fsvg%3E") 0px 0px no-repeat =
+transparent; }
+
+.btn .label { margin-left: 3px; white-space: nowrap; }
+
+.btn .label b { font-weight: 500; white-space: nowrap; }
+
+.rtl .btn .label { margin-right: 3px; }
+
+.rtl .btn .label b { display: inline-block; direction: ltr; }
+
+.xl { font-size: 13px; line-height: 26px; }
+
+.xl .btn { height: 28px; border-radius: 9999px; padding: 1px 12px; }
+
+.rtl.xl .btn { padding: 1px 12px; }
+
+.xl .btn i { top: 4px; height: 18px; width: 18px; }
+
+.xl .btn .label { margin-left: 4px; }
+
+.rtl.xl .btn .label { margin-right: 4px; }
+
+.aria { position: absolute; left: -999em; }
+
+.rtl .aria { left: auto; right: -999em; }
+
+.count-o { position: relative; background: rgb(255, 255, 255); border: 1px =
+solid rgb(130, 154, 171); border-radius: 4px; visibility: hidden; min-heigh=
+t: 18px; min-width: 15px; text-align: center; }
+
+#count { white-space: nowrap; color: rgb(41, 47, 51); }
+
+#count:focus, #count:hover { color: rgb(51, 51, 51); text-decoration: under=
+line; }
+
+.ncount .count-o { display: none; }
+
+.count-ready .count-o { visibility: visible; }
+
+.count-o i, .count-o u { position: absolute; zoom: 1; line-height: 0; width=
+: 0px; height: 0px; left: 0px; top: 50%; margin: -4px 0px 0px -4px; border-=
+width: 4px 4px 4px 0px; border-top-style: solid; border-right-style: solid;=
+ border-bottom-style: solid; border-top-color: transparent; border-bottom-c=
+olor: transparent; border-image: initial; border-right-color: rgb(130, 154,=
+ 171); border-left-style: initial; border-left-color: initial; }
+
+.count-o u { margin-left: -3px; border-right-color: rgb(255, 255, 255); }
+
+.rtl .count-o i, .rtl .count-o u { left: auto; right: 0px; margin: -4px -4p=
+x 0px 0px; border-width: 4px 0px 4px 4px; border-top-style: solid; border-b=
+ottom-style: solid; border-left-style: solid; border-top-color: transparent=
+; border-bottom-color: transparent; border-image: initial; border-left-colo=
+r: rgb(130, 154, 171); border-right-style: initial; border-right-color: ini=
+tial; }
+
+.rtl .count-o u { margin-right: -3px; border-left-color: rgb(255, 255, 255)=
+; }
+
+.hcount .count-o { margin: 0px 0px 0px 5px; }
+
+.hcount.rtl .count-o { margin: 0px 5px 0px 0px; }
+
+.hcount #count { padding: 0px 8px; }
+
+.xl .count-o { font-size: 11px; border-radius: 4px; }
+
+.xl.hcount .count-o { margin: 0px 0px 0px 6px; }
+
+.xl.rtl.hcount .count-o { margin: 0px 6px 0px 0px; }
+
+.xl.hcount .count-o i, .xl.hcount .count-o u { margin: -5px 0px 0px -5px; b=
+order-width: 5px 5px 5px 0px; }
+
+.xl.hcount .count-o u { margin-left: -4px; }
+
+.xl.rtl.hcount .count-o i, .xl.rtl.hcount .count-o u { margin: -5px -5px 0p=
+x 0px; border-width: 5px 0px 5px 5px; }
+
+.xl.rtl.hcount .count-o u { margin-right: -4px; }
+
+.xl #count { padding: 0px 8px; }
+------MultipartBoundary--8eyw3KXcGX90ofgh8W3GtTevXeVDWAKlusfDralZ2f----
+Content-Type: text/html
+Content-ID: <frame-C0F672D76CC67F3AE84BF3C638AC39E2@mhtml.blink>
+Content-Transfer-Encoding: quoted-printable
+
+<html class=3D"SandboxRoot"><head><meta http-equiv=3D"Content-Type" content=
+=3D"text/html; charset=3DUTF-8"><link rel=3D"stylesheet" type=3D"text/css" =
+href=3D"cid:css-3cb4a19f-2d3c-4ccb-8948-5f279205b280@mhtml.blink" /><base t=
+arget=3D"_blank"></head><body></body></html>
+------MultipartBoundary--8eyw3KXcGX90ofgh8W3GtTevXeVDWAKlusfDralZ2f----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: cid:css-3cb4a19f-2d3c-4ccb-8948-5f279205b280@mhtml.blink
+
+@charset "utf-8";
+
+.SandboxRoot { display: none; }
+------MultipartBoundary--8eyw3KXcGX90ofgh8W3GtTevXeVDWAKlusfDralZ2f------

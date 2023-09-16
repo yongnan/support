@@ -1,0 +1,3 @@
+https://weather.com/weather/today/l/TWXX6761:1:TW
+
+python -m weatherterm -u Celsius -a TWXX6761:1:TW -p WeatherComParser -td
