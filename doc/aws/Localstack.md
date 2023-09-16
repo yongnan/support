@@ -154,17 +154,17 @@ aws_access_key_id = 000000000000
 aws_secret_access_key = 
 
 [featuredev]
-aws_access_key_id = AKIA3FSGVINMR5EJMMHS
-aws_secret_access_key = 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
+aws_access_key_id = 
+aws_secret_access_key = 
 AWS_ROLE_ARN = arn:aws:iam::767873598297:role/cdk-hnb659fds-deploy-role-767873598297-eu-central-1
 
 [staging]
-aws_access_key_id = AKIA3FSGVINMR5EJMMHS
-aws_secret_access_key = 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
+aws_access_key_id = 
+aws_secret_access_key = 
 
 [prod]
-aws_access_key_id = AKIA3FSGVINMR5EJMMHS
-aws_secret_access_key = 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
+aws_access_key_id = 
+aws_secret_access_key = 
 
 [default]
 aws_access_key_id = 000000000000
