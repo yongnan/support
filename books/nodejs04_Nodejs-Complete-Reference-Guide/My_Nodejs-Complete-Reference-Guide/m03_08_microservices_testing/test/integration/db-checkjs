@@ -1,0 +1,55 @@
+const chai = require("chai");
+const http = require("chai-http");
+const sinon = require("sinon");
+const tools = require("../tools");
+
+chai.use(http);
+describe("Checking db", () => {
+    // it("should return 200 if it exists", (done) => {
+    //     chai
+    //         .request(tools.service)
+    //         .post("/uploads/test_image_check.png")
+    //         .set("Content-Type", "image/png")
+    //         .send(tools.sample)
+    //         .end((err, res) => {
+    //             chai.expect(res).to.have.status(200);
+    //             chai.expect(res.body).to.have.status("ok");
+    //             chai
+    //                 .request(tools.service)
+    //                 .head("/uploads/test_image_check.png")
+    //                 .end((err, res) => {
+    //                     chai.expect(res).to.have.status(200);
+    //                     return done();
+    //                 });
+    //         });
+    // });
+    it('db.connection.connect should ...', async (done) => {
+        try{
+            let connect = sinon.mock(tools.service.db);
+            connect
+                //.withArgs(tools.service.settings.db)
+                .withArgs(tools.service.settings.db)
+                .callsArgWithAsync(2, new Error("Fake"));
+            connect.callThrough()
+            tools.service.mysql.createConnection( (err, res) => {
+                chai.expect(res).to.equal("SQL CONNECT SUCCESSFUL.");
+                connect.restore();
+                return done();
+            });
+        }catch(err){
+            console.log(err);
+            return done(err);
+        }
+    });
+    // sqlReqStub = sinon.stub();
+    // sqlReqStub.execute = sinon.stub();
+    // sinon.stub(sql, 'Request').returns(sqlReqStub);
+    // conn = sinon.stub();
+    // sinon.stub(sql, 'Connection').returns(conn);
+    //
+    // conn.connect = sinon.stub().callsArgWith(0, null);
+    //
+    // reqExecute = sqlReqStub.execute.withArgs('sp_executesql').onFirstCall().callsArgWith(1, null, {
+    //     a: 1
+    // });
+});

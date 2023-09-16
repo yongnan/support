@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "lib": ["es2016", "dom"],
+    "target": "es5",
+    "rootDir": "./src", 
+    "outDir": "./dist",
+    "strictNullChecks": true,
+
+    /* fix no initializer error */
+    "noImplicitAny": true,
+    "strictPropertyInitialization": true,
+
+      /* Experimental Options */
+    "experimentalDecorators": true, 
+    "emitDecoratorMetadata": true, 
+
+    /* Advanced Options */
+    "forceConsistentCasingInFileNames": true,
+    
+
+  },
+  "files": [
+    //"src/04_AdvancedTpes/0406_infer_parameters.ts",
+    // "src/04_AdvancedTpes/0416_example_non-empty_strings.ts",
+    //"src/05_TypeScriptInPratice/0502_exercise_fix_compile_error.ts",
+    //"src/05_TypeScriptInPratice/0503_debug_narrowing_types.ts",
+    "src/05_TypeScriptInPratice/0504_debug_unintuitive_error.ts",
+  ]
+}

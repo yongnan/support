@@ -1,0 +1,42 @@
+{
+  "name": "notes",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "SEQUELIZE_CONNECT=models/sequelize-postgres.yaml NOTES_MODEL=sequelize USER_SERVICE_URL=http://localhost:3333 node --experimental-modules ./app",
+    "start-server1": "SEQUELIZE_CONNECT=models/sequelize-postgres.yaml NOTES_MODEL=sequelize USER_SERVICE_URL=http://localhost:3333 PORT=3001 node --experimental-modules ./app",
+    "start-server2": "SEQUELIZE_CONNECT=models/sequelize-postgres.yaml NOTES_MODEL=sequelize USER_SERVICE_URL=http://localhost:3333 PORT=3002 node --experimental-modules ./app",
+    "dl-minty-css": "wget https://bootswatch.com/4/minty/bootstrap.css-O minty/bootstrap.css",
+    "dl-minty-min-css": "wget https://bootswatch.com/4/minty/bootstrap.min.css -O minty/bootstrap.min.css"
+  },
+  "dependencies": {
+    "body-parser": "~1.18.2",
+    "bootstrap": "^4.3.1",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "^4.17.1",
+    "express-session": "^1.15.6",
+    "feather-icons": ">=4.5.x",
+    "file-stream-rotator": "^0.4.1",
+    "fs-extra": "^8.1.0",
+    "hbs": "~4.0.1",
+    "jquery": "^1.9.1",
+    "js-yaml": "^3.10.0",
+    "level": "^2.1.2",
+    "mongodb": "^3.3.2",
+    "morgan": "~1.9.0",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "passport-twitter": "^1.0.4",
+    "passport.socketio": "^3.7.0",
+    "pg": "^7.12.1",
+    "popper.js": "^1.15.0",
+    "rotating-file-stream": "^1.4.3",
+    "sequelize": "^4.31.2",
+    "serve-favicon": "~2.4.5",
+    "session-file-store": "^1.2.0",
+    "socket.io": "^2.2.0",
+    "sqlite3": "^4.1.0",
+    "superagent": "^3.8.3"
+  }
+}

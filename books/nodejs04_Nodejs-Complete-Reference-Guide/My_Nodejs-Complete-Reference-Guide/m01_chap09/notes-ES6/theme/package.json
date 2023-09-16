@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "download": "wget -O - https://github.com/twbs/bootstrap/archive/v4.1.0.tar.gz | tar xvfz -",
+    "postdownload": "cd bootstrap-4.1.0 && npm install",
+    "prebuild": "cp _custom.scss bootstrap.scss bootstrap-4.1.0/scss",
+    "build": "cd bootstrap-4.1.0 && npm run dist",
+    "watch": "cd bootstrap-4.1.0 && npm run watch"
+  },
+  "dependencies": {
+    "jquery": "^1.9.1"
+  }
+}

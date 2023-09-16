@@ -1,0 +1,3 @@
+{
+  "db": "mysql://imaginiuser:password1@localhost/imagini"
+}

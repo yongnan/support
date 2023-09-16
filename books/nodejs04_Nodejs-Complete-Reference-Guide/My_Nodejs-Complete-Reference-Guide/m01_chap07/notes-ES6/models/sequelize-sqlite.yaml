@@ -1,0 +1,18 @@
+# --- sqlite3
+#dbname: notes
+#username:
+#password:
+#params:
+#  dialect: sqlite
+#  storage: notes-sequelize.sqlite3
+
+# --- postgres
+dbname: notes
+username: yongnan
+password:
+params:
+  host: localhost
+  port: 5432
+  # port : 5432
+  # port : 46520
+  dialect: postgres

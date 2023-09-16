@@ -1,0 +1,56 @@
+Notes Operation Guid
+====================
+Docker
+------
+# Installing Docker on laptop
+[macOS installation](https://docs.docker.com/docker-for-mac/install/)
+
+# AuthNet
+#### Initializing network
+$ cd authnet <br/>
+$ sh -x ./buildauthnet.sh
+
+#### start database
+$ cd authnet <br/>
+$ sh ./startdb.sh
+
+#### build the service
+$ cd users<br/>
+$ npm run docker-build
+
+#### start the service
+$ cd authnet<br/>
+$ sh -x ./startserver.sh
+
+> ## for dockers<br/>
+>$ docker container start db-userauth<br/>
+>$ docker container stop db-userauth
+
+#### Exploring database
+$ docker exec -it userauth bash
+
+##### list users
+$ PORT=3333 node users-list.js
+
+##### create a user
+$ PORT=3333 node users-add.js
+
+# FrontNet
+#### Initializing network
+$ cd frontnet <br/>
+$ sh -x ./buildfrontnet.sh
+
+#### start database
+$ cd frontnet <br/>
+$ sh -x ./startdb.sh
+
+#### build the service
+$ cd notes <br/>
+$ npm run docker-build
+
+#### start the service
+$ cd frontnet <br/>
+$ sh -x ./startserver.sh
+> ## for dockers<br/>
+>$ docker container start notes<br/>
+>$ docker container stop notes

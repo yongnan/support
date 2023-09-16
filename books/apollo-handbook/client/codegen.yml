@@ -1,0 +1,9 @@
+overwrite: true
+schema: "https://apollo-handbook-api.vercel.app/api/graphql"
+documents: "**/graphql.{tsx,ts}"
+generates:
+  lib/graphql_generated.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"

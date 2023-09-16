@@ -1,0 +1,15 @@
+FROM mongo:latest
+
+RUN mkdir -p /data/scripts
+
+COPY . /data/scripts
+
+RUN mongod --fork --logpath /var/log/mongodb.log --dbpath /data/db/
+
+RUN FILES=scripts/*-create.js
+RUN for f in $FILES; do mongo mydb $f; done
+
+RUN FILES=scripts/*-insert.js
+RUN for f in $FILES; do mongo mydb $f; done
+
+RUN mongod --shutdown

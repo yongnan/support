@@ -1,0 +1,17 @@
+{
+  "name": "m03_04_microservices_seneca",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "seneca": "^3.17.0",
+    "sharp": "^0.23.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
