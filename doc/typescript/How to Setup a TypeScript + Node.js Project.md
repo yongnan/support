@@ -322,17 +322,13 @@ Oh yeah, linting is another thing you'll most likely want to do. If you're inter
 
 I like having concurrently in the mix.. npm start and thats it.
 
-*"scripts"*: {
-
-*"start"*: "concurrently npm:start:*",
-
-*"start:build"*: "tsc -w",
-
-*"start:run"*: "nodemon build/index.js",
-
+```
+"scripts": {
+	"start": "concurrently npm:start:*",
+	"start:build": "tsc -w",
+	"start:run": "nodemon build/index.js",
 },
-
-
+```
 
 i stuck at one place at nodemon config
 
