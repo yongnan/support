@@ -28,13 +28,13 @@ The output shows a newly created `package.json` file:
 ### Install typescript
 
 ```bash
-npm i -D typescript
+yarn add -D typescript
 ```
 
 ### Install ambient Node.js types for TypeScript
 
 ```
-npm install @types/node --save-dev
+yarn add -D @types/node 
 ```
 
 ### Setup tsconfig
@@ -67,7 +67,7 @@ result content of  `tsconfig.json`
 ```json
 {
   "compilerOptions": {
-		"target": "es5",
+		"target": "es2016",
     "module": "commonjs",
     "lib": ["es6"],
     "rootDir": "src",
@@ -109,7 +109,7 @@ npx tsc
  Cold reloading
 
 ```bash
-npm install --save-dev ts-node nodemon
+yarn add -D ts-node nodemon
 ```
 
 Add a `nodemon.json` config.
@@ -140,7 +140,7 @@ In order to *clean* and compile the project for production, we can add a `build`
 Install `rimraf`, a cross-platform tool that acts like the `rm -rf` command (just obliterates whatever you tell it to).
 
 ```bash
-npm install --save-dev rimraf
+yarn add -D rimraf
 ```
 
 And then, add this to your `package.json`.
@@ -163,10 +163,18 @@ The startup script looks like this.
 
 ### eslint
 
+```
+npm init @eslint/config
+```
+
+
+
+### eslint2
+
 Run the following commands to setup ESLint in your TypeScript project.
 
 ```bash
-npm install --save-dev eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin
+yarn add -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin
 ```
 
 Create an `.eslintrc` file.
@@ -224,15 +232,13 @@ Ready to try it out? Let's run the following command.
 npm run lint
 ```
 
-### Add eslint Rules
+#### Add eslint Rules
 
 There are three modes for a rule in eslint: `off`, `warn`, and `error`.
 
 - "off" means 0 (turns the rule off completely)
 - "warn" means 1 (turns the rule on but won't make the linter fail)
 - "error" means 2 (turns the rule on and will make the linter fail)
-
-### Adding a rule
 
 In `.eslintrc`, add a new attribute to the json object called "rules".
 
@@ -255,6 +261,56 @@ We update the `.eslintrc`
 }
 ```
 
-#### installing ESLint Extension
+#### Fixing linted code with ESLint
+
+You might have noticed that at the end of the error message, it says "2 errors and 0 warnings potentially fixable with the `--fix` option."
+
+You *can* run ESLint and tell it to fix things that it's able to fix at the same time.
+
+Using the `--fix` option, let's add a new script to our `package.json` called `lint-and-fix`.
+
+```json
+{
+  "scripts": {
+    ...
+    "lint": "eslint . --ext .ts",
+    "lint-and-fix": "eslint . --ext .ts --fix"  },
+}
+```
+
+#### Installing ESLint Extension
 
 ![image-20230918105346660](/Users/yongnan/Library/Application Support/typora-user-images/image-20230918105346660.png)
+
+To find the settings in Visual Studio Code, use the command palette to open **Preferences: Open Workspace Settings (JSON)**.
+
+The `settings.json` file will open inside of your code editor. For ESLint to fix errors when you save your file, you will need to write the following code in `settings.json`:
+
+.vscode/settings.json
+
+```json
+{
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "eslint.validate": ["javascript", "typescript", "typescriptreact"]
+}
+```
+
+####  COMBINE ESLINT AND PRETTIER
+
+```jsx
+yarn add -D eslint-config-prettier eslint-plugin-prettier
+```
+
+ *.eslintrc* file in the root directory of your project and give it the following configuration:
+
+```jsx
+{
+  "extends": ["prettier"],
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": ["error"]
+  },
+}
+```
