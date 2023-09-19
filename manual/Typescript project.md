@@ -167,8 +167,6 @@ The startup script looks like this.
 npm init @eslint/config
 ```
 
-
-
 ### eslint2
 
 Run the following commands to setup ESLint in your TypeScript project.
@@ -261,6 +259,46 @@ We update the `.eslintrc`
 }
 ```
 
+**no-loops** is a plugin that will enable you to enforce a convention specifying that `for` and `while` loops are illegal and that you should use functions like `map` and `forEach` instead.
+
+Install it like this.
+
+```bash
+yarn add -D eslint-plugin-no-loops
+```
+
+And then update your `.eslintrc` with `no-loops` in the "plugins" array, and add the rule to the "rules" attribute like so.
+
+```json
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint",
+    "no-loops"  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": {
+    "no-console": 1,
+    "no-loops/no-loops": 2  }
+}
+```
+
+Now if we update our code to include a `for` loop...
+
+src/index.ts
+
+```typescript
+console.log('Hello world!');
+
+for (let i = 0; i < 10; i++) {
+  console.log(i)
+}
+```
+
 #### Fixing linted code with ESLint
 
 You might have noticed that at the end of the error message, it says "2 errors and 0 warnings potentially fixable with the `--fix` option."
@@ -297,20 +335,3 @@ The `settings.json` file will open inside of your code editor. For ESLint to fix
 }
 ```
 
-####  COMBINE ESLINT AND PRETTIER
-
-```jsx
-yarn add -D eslint-config-prettier eslint-plugin-prettier
-```
-
- *.eslintrc* file in the root directory of your project and give it the following configuration:
-
-```jsx
-{
-  "extends": ["prettier"],
-  "plugins": ["prettier"],
-  "rules": {
-    "prettier/prettier": ["error"]
-  },
-}
-```
