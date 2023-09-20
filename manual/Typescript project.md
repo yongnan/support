@@ -335,3 +335,92 @@ The `settings.json` file will open inside of your code editor. For ESLint to fix
 }
 ```
 
+# Coding
+
+## passing env
+
+```
+yarn add dotenv
+```
+
+```
+// .env
+
+API_KEY = <YOUR_API_KEY>
+DB_URI = <YOUR_DB_URL>
+....
+```
+
+Now to access these variables we can do something like
+
+```ts
+import path from "path";
+import dotenv from "dotenv";
+
+// Parsing the env file.
+dotenv.config({ path: path.resolve(__dirname, "../config/config.env") });
+
+interface ENV {
+  NODE_ENV: string | undefined;
+  PORT: number | undefined;
+  MONGO_URI: string | undefined;
+}
+
+interface Config {
+  NODE_ENV: string;
+  PORT: number;
+  MONGO_URI: string;
+}
+
+// Loading process.env as ENV interface
+
+const getConfig = (): ENV => {
+  return {
+    NODE_ENV: process.env.NODE_ENV,
+    PORT: process.env.PORT ? Number(process.env.PORT) : undefined,
+    MONGO_URI: process.env.MONGO_URI
+  };
+};
+
+const getSanitzedConfig = (config: ENV): Config => {
+  for (const [key, value] of Object.entries(config)) {
+    if (value === undefined) {
+      throw new Error(`Missing key ${key} in config.env`);
+    }
+  }
+  return config as Config;
+};
+
+const config = getConfig();
+
+const sanitizedConfig = getSanitzedConfig(config);
+
+export default sanitizedConfig;
+
+```
+
+```ts
+import mongoose from "mongoose";
+import config from "./config";
+
+const connectDB = async () => {
+  const connection = await mongoose.connect(config.MONGO_URI);
+  console.log(`🟢 Mongo db connected:`, connection.connection.host);
+};
+```
+
+
+
+```js
+// index.js
+
+const dotenv = require('dotenv');
+
+dotenv.config()
+
+const connectDB = () => {
+  ...
+  mongooose.connect(process.env.DB_URI)
+  ...
+}
+```
