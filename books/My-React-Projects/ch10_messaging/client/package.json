@@ -1,0 +1,36 @@
+{
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start-client": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "eject": "expo eject"
+  },
+  "dependencies": {
+    "apollo-cache-inmemory": "^1.6.5",
+    "apollo-client": "^2.6.8",
+    "apollo-link-context": "^1.0.19",
+    "apollo-link-http": "^1.5.16",
+    "apollo-link-ws": "^1.0.19",
+    "apollo-utilities": "^1.3.3",
+    "expo": "^35.0.0",
+    "graphql": "^14.0.2",
+    "graphql-tag": "^2.10.2",
+    "react": "16.13.1",
+    "react-apollo": "^3.1.4",
+    "react-dom": "^16.8.6",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
+    "react-native-gesture-handler": "~1.3.0",
+    "react-native-screens": "^1.0.0-alpha.23",
+    "react-native-vector-icons": "^6.6.0",
+    "react-native-web": "^0.11.4",
+    "react-navigation": "^3.11.0",
+    "styled-components": "^4.3.2",
+    "subscriptions-transport-ws": "^0.9.16"
+  },
+  "devDependencies": {
+    "babel-preset-expo": "^5.1.1"
+  },
+  "private": true
+}

@@ -1,0 +1,7 @@
+dbname: notes
+username: yongnan
+password:
+params:
+    host: localhost
+    port: 5432
+    dialect: postgres
