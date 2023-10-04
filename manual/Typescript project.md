@@ -59,7 +59,7 @@ npx tsc --init
 * way3
 
 ```
-touch tsconfig
+touch tsconfig.json
 ```
 
 result content of  `tsconfig.json`
@@ -334,6 +334,52 @@ The `settings.json` file will open inside of your code editor. For ESLint to fix
     "eslint.validate": ["javascript", "typescript", "typescriptreact"]
 }
 ```
+
+### testing
+
+```bash
+yarn add -D jest ts-jest @types/jest
+```
+
+`package.json`, add script:
+
+```json
+ "scripts": {
+ 		...
+		"test": "jest",
+ 		"test:dev": "jest --watchAll"
+ }		
+```
+
+In order for Jest to transpile TypeScript with `ts-jest`, you may also need to create a [configuration](https://kulshekhar.github.io/ts-jest/docs/getting-started/installation#jest-config-file) file.
+
+```bash
+yarn ts-jest config:init
+```
+
+`jest.config.js`
+
+```javascript
+/** @type {import('ts-jest').JestConfigWithTsJest} */
+module.exports = {
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+};
+```
+
+
+
+sample test file `src/index.spec.ts`
+
+```typescript
+describe('test', () => {
+  test('add', async () => {
+    expect(1 + 1).toEqual(2);
+  });
+});
+```
+
+
 
 # Coding
 
