@@ -1,5 +1,6 @@
 # Remix
 
+<<<<<<< HEAD
 # Quick Start
 
 ## Installation
@@ -205,6 +206,9 @@ Copy code to clipboard
 Entry file entry.client created at app/entry.client.tsx.
 Entry file entry.server created at app/entry.server.tsx.
 ```
+=======
+
+>>>>>>> 4c77056a3e0716d2e3ab77a4e099c5d2c5ccadf9
 
 # QA
 

@@ -150,7 +150,11 @@ output = json
 
 ```
 [localstack]
+<<<<<<< HEAD
 aws_access_key_id = 000000000000
+=======
+aws_access_key_id = 
+>>>>>>> 4c77056a3e0716d2e3ab77a4e099c5d2c5ccadf9
 aws_secret_access_key = 
 
 [featuredev]
@@ -167,14 +171,22 @@ aws_access_key_id =
 aws_secret_access_key = 
 
 [default]
+<<<<<<< HEAD
 aws_access_key_id = 000000000000
+=======
+aws_access_key_id = 
+>>>>>>> 4c77056a3e0716d2e3ab77a4e099c5d2c5ccadf9
 aws_secret_access_key = test
 ```
 
 
 
 ```
+<<<<<<< HEAD
 export AWS_ACCESS_KEY_ID="000000000000"
+=======
+export AWS_ACCESS_KEY_ID=""
+>>>>>>> 4c77056a3e0716d2e3ab77a4e099c5d2c5ccadf9
 export AWS_SECRET_ACCESS_KEY="test"
 export AWS_DEFAULT_REGION="ap-northeast-1"
 

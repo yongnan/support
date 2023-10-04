@@ -79,3 +79,15 @@ When all files are removed from the index, you can add the regular files back (t
 $ git add .
 $ git commit -am 'Removed files from the index (now ignored)'
 ```
+<<<<<<< HEAD
+=======
+
+
+
+### [How do I create a remote Git branch?](https://stackoverflow.com/questions/1519006/how-do-i-create-a-remote-git-branch)
+
+```
+git push -u origin HEAD
+```
+
+>>>>>>> 4c77056a3e0716d2e3ab77a4e099c5d2c5ccadf9

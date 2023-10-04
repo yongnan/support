@@ -59,7 +59,11 @@ npx tsc --init
 * way3
 
 ```
+<<<<<<< HEAD
 touch tsconfig.json
+=======
+touch tsconfig
+>>>>>>> 4c77056a3e0716d2e3ab77a4e099c5d2c5ccadf9
 ```
 
 result content of  `tsconfig.json`
@@ -335,6 +339,7 @@ The `settings.json` file will open inside of your code editor. For ESLint to fix
 }
 ```
 
+<<<<<<< HEAD
 ### testing
 
 ```bash
@@ -381,6 +386,8 @@ describe('test', () => {
 
 
 
+=======
+>>>>>>> 4c77056a3e0716d2e3ab77a4e099c5d2c5ccadf9
 # Coding
 
 ## passing env
