@@ -79,11 +79,6 @@ When all files are removed from the index, you can add the regular files back (t
 $ git add .
 $ git commit -am 'Removed files from the index (now ignored)'
 ```
-<<<<<<< HEAD
-=======
-
-
-
 ### [How do I create a remote Git branch?](https://stackoverflow.com/questions/1519006/how-do-i-create-a-remote-git-branch)
 
 ```
@@ -91,3 +86,20 @@ git push -u origin HEAD
 ```
 
 >>>>>>> 4c77056a3e0716d2e3ab77a4e099c5d2c5ccadf9
+
+
+
+### The “fatal: refusing to merge unrelated histories” Git error
+
+The **“fatal: refusing to merge unrelated histories”** [Git](https://www.educative.io/answers/what-is-git) error occurs when two *unrelated* projects are merged (i.e., projects that are not aware of each other’s existence and have mismatching commit histories).
+
+![img](./img/Screen Shot 2023-10-04 at 9.50.55 AM.png)
+
+## Solution
+
+The error is resolved by toggling the *allow-unrelated-histories* switch. After a `git pull` or `git merge` command, add the following tag:
+
+```git
+git pull origin master --allow-unrelated-histories
+```
+
