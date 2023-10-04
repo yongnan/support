@@ -185,7 +185,7 @@ A | any = any
 A & any = any
 ```
 
-## [Summary](https://type-level-typescript.com/types-are-just-data#summary)
+### [Summary](https://type-level-typescript.com/types-are-just-data#summary)
 
 What a chapter! We have already covered some of the most important concepts needed to become a TypeScript expert. Let me summarize what we've learned so far:
 
@@ -196,4 +196,163 @@ What a chapter! We have already covered some of the most important concepts need
 5. `unknown` is the **final superset** — it contains every other type.
 6. `never` is the **empty set** — it is contained in every other type.
 7. `any` is weird because it's the subset **and** the superset of every type.
+
+## Objects and Records
+
+ ### Reading several properties at once
+
+```ts
+  type NameOrAge = User["name" | "age"]; // => string | number
+  type NameOrAge2 = User["name"] | User["age"]; // => string | number
+  type Keys = keyof User; // "name" | "age" | "isAdmin"
+  type UserValues = User[keyof User]; //  string | number | boolean
+```
+
+ ### The keyof keyword
+
+```ts
+  //type ValueOf<Obj> = Obj[keyof Obj];
+  type UserValues2 = ValueOf<User>; //  string | number | boolean
+```
+### Optional properties
+
+```ts
+  type BlogPost = { title: string; tags?: string[] };
+  //                                   ^ this property is optional!
+
+  //type BlogPost = { title: string; tags: string[] | undefined };
+  // ✅ No `tags` property
+
+  const blogBost1: BlogPost = { title: "introduction" };
+  // ✅ `tags` contains a list of strings
+  const blogBost2: BlogPost = {
+			title: "part 1",
+			tags: ["#easy", "#beginner-friendly"],
+  };
+```
+### Merging object types with intersections (&)
+
+```ts
+  ///intersection of two objects contains the union of their key
+  type WithName = { name: string };
+  type WithAge = { age: number };
+  type WithRole = { isAdmin: boolean };
+ 
+  type User = WithName & WithAge & WithRole;
+  type Organization = WithName & WithAge; // organizations don't have a isAdmin
+```
+### Intersections of objects and unions of keys
+
+```ts
+  type A = { a: string };
+  type KeyOfA = keyof A; // => 'a'
+  type B = { b: number };
+  type KeyOfB = keyof B; // => 'b'
+  
+  type C = A & B;
+  type KeyOfC = keyof C; // => 'a' | 'b'
+```
+### Union of two objects contains the intersection of their keys:
+
+```ts
+  type A = { a: string; c: boolean };
+  type KeyOfA = keyof A; // => 'a' | 'c'
+  type B = { b: number; c: boolean };
+  type KeyOfB = keyof B; // => 'b' | 'c'
+  
+  type C = A | B;
+  type KeyOfC = keyof C; // => ('a' | 'c') & ('b' | 'c') <=> 'c'
+```
+
+General rule:
+
+```ts
+keyof (A & B) = (keyof A) | (keyof B)
+keyof (A | B) = (keyof A) & (keyof B)
+```
+
+### Records
+
+```ts
+type Record<K, V> = { [Key in K]: V };
+```
+
+### [Partial](https://type-level-typescript.com/objects-and-records#partial)
+
+The `Partial` generic takes an object type and returns another one that's identical except that all of its properties are optional:
+
+```ts
+type Props = { value: string; focused: boolean; edited: boolean };
+
+type PartialProps = Partial<Props>;
+// is equivalent to:
+type PartialProps = { value?: string; focused?: boolean; edited?: boolean };
+```
+
+### [Required](https://type-level-typescript.com/objects-and-records#required)
+
+The `Required` generic does the opposite of `Partial`. It takes an object and returns another one that's identical except that all of its properties are required:
+
+```ts
+type Props = { value?: string; focused?: boolean; edited?: boolean };
+
+type RequiredProps = Required<Props>;
+// is equivalent to:
+type RequiredProps = { value: string; focused: boolean; edited: boolean };
+```
+
+### [Pick](https://type-level-typescript.com/objects-and-records#pick)
+
+The `Pick` generic removes all keys that **aren't assignable** to the type of key given as second argument:
+
+```ts
+type Props = { value: string; focused: boolean; edited: boolean };
+
+type ValueProps = Pick<Props, "value">;
+// is equivalent to:
+type ValueProps = { value: string };
+
+type SomeProps = Pick<Props, "value" | "focused">;
+// is equivalent to:
+type SomeProps = { value: string; focused: boolean };
+```
+
+### [Omit](https://type-level-typescript.com/objects-and-records#omit)
+
+The `Omit` generic removes all object properties that **are assignable** to the type given as second argument. It does the opposite of `Pick`!
+
+```ts
+type Props = { value: string; focused: boolean; edited: boolean };
+
+type ValueProps = Omit<Props, "value">;
+// is equivalent to:
+type ValueProps = { edited: boolean; focused: boolean };
+
+type OtherProps = Omit<Props, "value" | "focused">;
+// is equivalent to:
+type OtherProps = { edited: boolean };
+```
+
+### [Summary](https://type-level-typescript.com/objects-and-records#summary)
+
+Here are some notions we covered:
+
+- Object types and Records both represent **sets of JavaScript objects**.
+- Object types are sets of objects containing **at least** all properties defined on this type, but they can also contain more properties.
+- Record types are sets of objects that share **the same type** for all properties.
+- Intersections let us "merge" objects together in types containing all of their properties.
+- TypeScript provides several built-in functions like `Partial`, `Required`, `Pick` and `Omit` to transform object types.
+
+## Arrays & Tuples
+
+### Tuples
+
+Tuples are essentially **lists of types**! 
+
+```ts
+type Empty = [];
+type One = [1];
+type Two = [1, "2"]; // types can be different!
+type Three = [1, "2", 1]; // tuples can contain duplicates
+```
 
