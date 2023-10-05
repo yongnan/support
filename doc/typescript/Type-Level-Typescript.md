@@ -356,3 +356,52 @@ type Two = [1, "2"]; // types can be different!
 type Three = [1, "2", 1]; // tuples can contain duplicates
 ```
 
+####Reading indices of a tuple
+
+```ts
+type SomeTuple = ["Bob", 28];
+type Name = SomeTuple[0]; // "Bob"
+type Age = SomeTuple[1]; // 28 
+```
+####Reading several indices
+
+```ts
+type User = { name: string; age: number; isAdmin: true };
+type NameOrAge = User["name" | "age"]; // => string | number 
+type SomeTuple2 = ["Bob", 28, true];
+type NameOrAge2 = SomeTuple2[0 | 1]; // => "Bob" | 28
+```
+####Can we use keyof?
+
+```ts
+type Keys = keyof ["Bob", 28]; // "0" | "1" | "map" | "filter" | ...
+const key: Keys = "map"; // ✅ 😬
+```
+####Concatenating tuples
+
+```ts
+type Tuple1 = [4, 5];
+type Tuple2 = [1, 2, 3, ...Tuple1];
+// => [1, 2, 3, 4, 5]
+type TupleA1 = [1, 2, 3];
+type TupleA2 = [4, 5];
+type Tuple3 = [...TupleA1, ...TupleA2];
+// => [1, 2, 3, 4, 5]
+```
+#### Named Indices
+```ts
+type User2 = [firstName: string, lastName: string]; 
+```
+####Optional indices
+
+```ts
+type OptTuple = [string, number?];
+//                             ^ optional index!
+const tuple1: OptTuple = ["Bob", 28]; // ✅
+const tuple2: OptTuple = ["Bob"]; // ✅
+const tuple3: OptTuple = ["Bob", undefined]; // ✅
+//    ^ we can also explicitly set it to `undefined` 
+```
+
+### Array
+
