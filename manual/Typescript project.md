@@ -59,11 +59,7 @@ npx tsc --init
 * way3
 
 ```
-<<<<<<< HEAD
 touch tsconfig.json
-=======
-touch tsconfig
->>>>>>> 4c77056a3e0716d2e3ab77a4e099c5d2c5ccadf9
 ```
 
 result content of  `tsconfig.json`
@@ -126,6 +122,25 @@ Add a `nodemon.json` config.
   "exec": "npx ts-node ./src/index.ts"
 }
 ```
+
+or
+
+```json
+{
+  "restartable": "rs",
+  "ignore": [".git", "node_modules/", "dist/", "coverage/"],
+  "watch": ["src/"],
+  "execMap": {
+    "ts": "node -r ts-node/register"
+  },
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "ext": "js,json,ts"
+}
+```
+
+
 
 And then to run the project, all we have to do is run `nodemon`. Let's add a script for that.
 
