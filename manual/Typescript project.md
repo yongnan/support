@@ -426,7 +426,7 @@ import path from "path";
 import dotenv from "dotenv";
 
 // Parsing the env file.
-dotenv.config({ path: path.resolve(__dirname, "../config/config.env") });
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 interface ENV {
   NODE_ENV: string | undefined;
