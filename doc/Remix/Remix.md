@@ -1,6 +1,5 @@
 # Remix
 
-<<<<<<< HEAD
 # Quick Start
 
 ## Installation
@@ -16,14 +15,45 @@ npm i @remix-run/node @remix-run/react @remix-run/serve isbot react react-dom
 npm i -D @remix-run/dev
 ```
 
+```
+touch tsconfig.json
+```
+
+```ts
+{
+  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx", "app/actions/authenticate._ts"],
+  "compilerOptions": {
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "target": "ES2022",
+    "strict": true,
+    "allowJs": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./app/*"]
+    },
+
+    // Remix takes care of building everything in `remix build`.
+    "noEmit": true
+  }
+}
+```
+
+
+
 ## The Root Route
 
 ```
 mkdir app
-touch app/root.jsx
+touch app/root.tsx
 ```
 
-`app/root.jsx`
+`app/root.tsx`
 
 ```jsx
 import {
@@ -63,6 +93,10 @@ First build the app for production:
 npx remix build
 ```
 
+You should now see a `build/` folder (the server version of your app) and `public/build` folder (the browser version) with some build artifacts in them. (This is all [configurable](https://remix.run/docs/en/main/file-conventions/remix-config).)
+
+###  Run with `remix-serve`
+
 add to `package.json`:
 
 ```
@@ -78,7 +112,7 @@ npx remix-serve build/index.js
 
 You should be able to open up [http://localhost:3000](http://localhost:3000/) and see the "hello world" page.
 
-## Using express-server
+### Using express-server
 
 👉 **Install Express and the Remix Express adapter**
 
@@ -89,15 +123,11 @@ npm i express @remix-run/express
 npm uninstall @remix-run/serve
 ```
 
-Copy code to clipboard
-
 👉 **Create an Express server**
 
 ```
 touch server.mjs
 ```
-
-Copy code to clipboard
 
 ```jsx
 import { createRequestHandler } from "@remix-run/express";
@@ -116,8 +146,6 @@ app.listen(3000, () => {
   console.log("App listening on http://localhost:3000");
 });
 ```
-
-Copy code to clipboard
 
 👉 **Run your app with express**
 
@@ -144,9 +172,11 @@ node --inspect server.mjs
 
 👉 **Add `broadcastDevReady` to your server**
 
-`server.mjs`
+When files change, Remix will restart your server for you, but because you own your server, you also have to tell Remix when it has restarted so Remix can safely send the hot updates to the browser.
 
-```
+update to `server.mjs`
+
+```tsx
 import { broadcastDevReady } from "@remix-run/node";
 
 ...
@@ -158,15 +188,14 @@ app.listen(3000, () => {
 });
 ```
 
+And finally, let's connect your UI in the browser to receive those broadcasts:
 
+add to `root.tsx`
 
 ```jsx
 import {
-  Links,
+  ...
   LiveReload,
-	Meta,
-  Outlet,
-  Scripts,
 } from "@remix-run/react";
 
 export default function App() {
@@ -206,10 +235,6 @@ Copy code to clipboard
 Entry file entry.client created at app/entry.client.tsx.
 Entry file entry.server created at app/entry.server.tsx.
 ```
-=======
-
->>>>>>> 4c77056a3e0716d2e3ab77a4e099c5d2c5ccadf9
-
 # QA
 
 1. # [The resource was preloaded using link preload but not used within a few seconds](https://wordpress.stackexchange.com/questions/253151/the-resource-was-preloaded-using-link-preload-but-not-used-within-a-few-seconds)
