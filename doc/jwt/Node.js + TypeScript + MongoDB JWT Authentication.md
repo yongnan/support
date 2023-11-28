@@ -215,10 +215,6 @@ mkdir jwt_auth
 cd jwt_auth
 ```
 
-PowerShell
-
-
-
 ### Initialize a Node.js Project with TypeScript
 
 The first thing we always do before coding a Node.js project that will require external libraries is to initialize a new project with the following command.
@@ -230,13 +226,7 @@ yarn init
 npm init
 ```
 
-Shell
-
-
-
 You will be prompted to provide some answers. If you don’t want to answer questions then use the `**-y**`flag.
-
-
 
 You should see logs like this in your terminal if you answered the prompted questions.
 
@@ -258,8 +248,6 @@ Done in 21.33s.
 
 Run the command below to install TypeScript as a dev dependency. This will allow us compile the TypeScript code into pure JavaScript using the TypeScript compiler.
 
-
-
 ```shell
 # with yarn
 yarn add -D typescript
@@ -268,19 +256,11 @@ npm init -y
 npm install -D typescript
 ```
 
-Shell
-
-
-
 Run the following command to initialize a TypeScript project. A tsconfig.json file will be created in your root directory.
 
 ```shell
 npx tsc --init
 ```
-
-Shell
-
-
 
 #### TypeScript tsconfig.json file configurations
 
@@ -302,10 +282,6 @@ Add the following configuration options to your **tsconfig.json** file to allow 
 }
 ```
 
-JSON
-
-
-
 #### Important configurations in the tsconfig.json
 
 - experimentalDecorators: true
@@ -323,10 +299,6 @@ npm install @typegoose/typegoose bcryptjs config cookie-parser dotenv express js
 # yarn
 yarn add @typegoose/typegoose bcryptjs config cookie-parser dotenv express jsonwebtoken lodash mongoose redis ts-node-dev zod cors
 ```
-
-Shell
-
-
 
 - **`dotenv`** – loads environment variables from a `.env` file into `process.env`
 - **`@typegoose/typegoose`** – writing Mongoose models with TypeScript class
@@ -346,15 +318,9 @@ npm install -D morgan typescript
 yarn add -D morgan typescript
 ```
 
-Shell
-
-
-
 #### Install the Type Definition files
 
 These type definition files are needed for TypeScript to function properly.
-
-
 
 ```shell
 # npm
@@ -362,10 +328,6 @@ npm install -D @types/bcryptjs @types/config @types/cookie-parser @types/express
 # yarn
 yarn add -D @types/bcryptjs @types/config @types/cookie-parser @types/express @types/jsonwebtoken @types/lodash @types/morgan @types/node @types/cors
 ```
-
-Shell
-
-
 
 ### Initialize and Start the Express Server
 
@@ -388,13 +350,7 @@ app.listen(port, () => {
 });
 ```
 
-TypeScript
-
-
-
 In the code snippets above, I imported the [dotenv](https://www.npmjs.com/package/dotenv) package and configured it at the top level of the `app.ts` file.
-
-
 
 Then I created an instance of the express class and called the listen method with the port we want to run the server on and a callback function.
 
@@ -414,13 +370,7 @@ ACCESS_TOKEN_PRIVATE_KEY=LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlCT2dJQkF
 ACCESS_TOKEN_PUBLIC_KEY=LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUZ3d0RRWUpLb1pJaHZjTkFRRUJCUUFEU3dBd1NBSkJBTlFLQStSV2ZQZFdHR25iYS9WRVo1TUs5cG1nMUlQawovaWhBOXVxdjcvKzVZc0YzVFVEaHFHZXN1bGJhdFFGdkNPaHVmSlNJQmFWT3RjbVZrTWZoWmRrQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQ==
 ```
 
-Env
-
-
-
 Within the .env file, I added public and private access token keys which are base64 encoded.
-
-
 
 I also provided the MongoDB database credentials we will need for the mongo docker container.
 
@@ -440,13 +390,7 @@ origin: 'http://localhost:3000',
 };
 ```
 
-TypeScript
-
-
-
 Next, add the following code to the `custom-environment-variables.ts` file.
-
-
 
 **config/custom-environment-variables.ts**
 
@@ -459,10 +403,6 @@ export default {
 };
 ```
 
-TypeScript
-
-
-
 The **custom-environment-variables.ts** file will allow us to import the environment variables we defined in the **.env** file.
 
 Now add the start script to the package.json file
@@ -473,13 +413,7 @@ Now add the start script to the package.json file
   }
 ```
 
-JSON
-
-
-
 If you followed all the instructions above, your final package.json file should look somehow like this:
-
-
 
 **package.json**
 
@@ -521,21 +455,11 @@ If you followed all the instructions above, your final package.json file should 
 }
 ```
 
-JSON
-
-
-
 Finally, open your terminal and run the start script to start the Express server.
-
-
 
 ```shell
 yarn start
 ```
-
-Shell
-
-
 
 This will start the Express server on port **8000** or the port you specified.
 
@@ -544,8 +468,6 @@ Click on this http://localhost:8000/healthChecker link and you should see this i
 ![express app health checker](https://codevoweb.com/wp-content/uploads/2022/04/express-app-health-checker.png?ezimgfmt=rs:615x357/rscb1/ng:webp/ngcb1)
 
 Once you see the Welcome message then it means you did everything correctly.
-
-
 
 ### Setting up Redis and MongoDB with Docker Compose
 
@@ -581,13 +503,7 @@ volumes:
   redis:
 ```
 
-YAML
-
-
-
 With the mongo container, I exposed port 6000 so that we can log into the mongo container on port 6000 in MongoDB Compass.
-
-
 
 Also, I exposed port 6379 on the Redis container to allow us to connect to the Redis container with the [MySQL VS Code client extension](https://marketplace.visualstudio.com/items?itemName=cweijan.vscode-mysql-client2).
 
@@ -598,17 +514,11 @@ Now, open your terminal and run the command below to spawn the Mongo and Redis c
 docker-compose up -d
 ```
 
-Shell
-
-
-
 ### Connecting to the MongoDB Docker Container with Mongoose
 
 Since we have our MongoDB database up and running, we need to connect our Express app to it with Mongoose.
 
 In the src folder, create a **utils** folder, and within this `utils` folder create a `connectDB.ts` file and paste this code into it.
-
-
 
 **src/utils/connectDB.ts**
 
@@ -633,10 +543,6 @@ const connectDB = async () => {
 export default connectDB;
 ```
 
-TypeScript
-
-
-
 What we just did above:
 
 - imported mongoose and the config library
@@ -646,15 +552,9 @@ What we just did above:
 
 The database connection URL has the following structure:
 
-
-
 ```js
 const dbUrl = `mongodb://username:password@host:port/database?authSource=admin`
 ```
-
-JavaScript
-
-
 
 |   NAME   | PLACEHOLDER |                         DESCRIPTION                          |
 | :------: | :---------: | :----------------------------------------------------------: |
@@ -698,13 +598,7 @@ redisClient.on('error', (err) => console.log(err));
 export default redisClient;
 ```
 
-TypeScript
-
-
-
 Here is a breakdown of what I did in the `connectRedis.ts` file:
-
-
 
 - I imported the `createClient` function from the `redis` library
 - I created the Redis connection URL and assigned it to redisUrl
@@ -713,8 +607,6 @@ Here is a breakdown of what I did in the `connectRedis.ts` file:
 - Lastly, I used setTimeout to call the `connectRedis` function after every 5s when the connection fails.
 
 Now, open `app.ts` and import the `connectDB` function we defined in the`connectDB.ts` file then call it below the `console.log()` in the callback we passed to the `listen` function.
-
-
 
 **src/app.ts**
 
@@ -733,10 +625,6 @@ app.listen(port, () => {
   connectDB();
 });
 ```
-
-TypeScript
-
-
 
 You will see the DB connection message in the terminal assuming your server is still running.
 
@@ -799,13 +687,7 @@ const userModel = getModelForClass(User);
 export default userModel;
 ```
 
-TypeScript
-
-
-
 Breakdown of what I did above:
-
-
 
 - I created a User class and added all the properties our model requires with the Typegoose decorators and exported the class.
 - I used the utility function `getModelForClass` to create a Mongoose model from the User class we defined above.
@@ -814,17 +696,41 @@ Breakdown of what I did above:
 
 ## How to Generate Private and Public keys for JWT Authentication
 
+#### Way1:
+
+First check the bit length of your key
+
+```
+$ PRIVATE_KEY_FILE="private.pem"
+$ openssl rsa -in $PRIVATE_KEY_FILE -text -noout | grep "Private-Key"
+```
+
+The reported bit length should be >= 2048. If your key has less then 2048 bits you have the following options:
+
+1.) Gnerate a new key pair:
+
+```
+openssl genrsa -out private.pem 2048
+openssl rsa -in private.pem -pubout -out public.pem
+```
+
+2.) Switch to one of the `ES*` algorithms
+
+3.) If for some reasons you can not change your keys, you might set the flag `allowInsecureKeySizes` to true.
+Although this is not recommended as 1024 bit keys are considered weak nowadays. Also the RFC7518 requires at least 2048 bit keys.
+
+> A key of size 2048 bits or larger MUST be used with these algorithms.
+> https://datatracker.ietf.org/doc/html/rfc7518.html#section-3.3
+
+####Way2:
+
 Generating the private and public keys yourself can be challenging so am going to use [this website](http://travistidwell.com/jsencrypt/demo/) to easily generate them.
 
 On the website, you can use either **512 bits** or **1024 bits** as the key size but am going to use **512 bits**. After selecting the key size, click on the **“Generate New Key”** button to generate the keys.
 
-
-
 Now let’s [visit this website](https://www.base64encode.org/) to encode both keys in **base64**.  each of the keys and paste it into the “Encode to Base64 format” Textarea then click on the “Encode” button.
 
 After each encoding  the encoded key and paste it into the .env file respectively.
-
-
 
 ## Define Middleware to Sign and Verify JWTs
 
@@ -862,13 +768,7 @@ export const verifyJwt = <T>(token: string): T | null => {
 };
 ```
 
-TypeScript
-
-
-
 Let me explain what I did in the `jwt.ts` file:
-
-
 
 - I exported a `signJwt` and `verifyJwt` functions
 - The `signJwt` function is responsible for signing a new JsonWebToken. The `signJwt` function takes two parameters, a payload object and a SignOptions object.
@@ -879,8 +779,6 @@ Let me explain what I did in the `jwt.ts` file:
 ## Define a Custom Error Handler in Express
 
 Next, let’s create a custom Express Error Handler by extending the Error class.
-
-
 
 **src/utils/appError.ts**
 
@@ -898,10 +796,6 @@ export default class AppError extends Error {
   }
 }
 ```
-
-TypeScript
-
-
 
 Whenever we want to send an error to the user we’ll call the next function and pass an instance of the **AppError** class with the message and the status code.
 
@@ -922,8 +816,6 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) =&gt; {
 ```
 
 The error controller will then perform some logic before sending the actual message and status code to the user that made the request.
-
-
 
 Error handling in Express can be very challenging but I simplified the error handling process in this article because I noticed the article was getting too long.
 
@@ -972,13 +864,7 @@ export type CreateUserInput = TypeOf<typeof createuserschema="">['body'];
 export type LoginUserInput = TypeOf<typeof loginuserschema="">['body'];
 ```
 
-TypeScript
-
-
-
 I also used the **TypeOf** function from Zod to infer the TypeScript types of our schemas and exported them from the file.
-
-
 
 ## Create a Middleware to Validate the User Inputs
 
@@ -1013,15 +899,9 @@ export const validate =
   };
 ```
 
-TypeScript
-
-
-
 ## Create a Service to Communicate with the Database
 
 It’s recommended to always have services that communicate with the database for a couple of reasons.
-
-
 
 Don’t let your controllers access and mutate the database directly if you want to scale and easily test your Express app.
 
@@ -1084,13 +964,7 @@ export const signToken = async (user: DocumentType<User>) => {
 };
 ```
 
-TypeScript
-
-
-
 Important things to note in the above code:
-
-
 
 - In the `signToken` function, I first generated the access token and specified expiration time in minutes.
 - I then called the set method on the redisClient object and used the user id as the key and the user’s info as the value to be stored in Redis. I also gave the data an expiration time.
@@ -1200,10 +1074,6 @@ export const loginHandler = async (
 };
 ```
 
-TypeScript
-
-
-
 Here is a breakdown of what I did in the **auth.controller.ts** file:
 
 - We have two functions, a `registerHandler` and `loginHandler` .
@@ -1264,10 +1134,6 @@ export const getAllUsersHandler = async (
   }
 };
 ```
-
-TypeScript
-
-
 
 ## Define a function to deserialize the User
 
@@ -1337,10 +1203,6 @@ export const deserializeUser = async (
 };
 ```
 
-TypeScript
-
-
-
 ## Define a function to check if the user is logged in
 
 This middleware will be called after the **deserializeUser** middleware to check if the user exists on **res.locals**.
@@ -1369,10 +1231,6 @@ export const requireUser = (
 };
 ```
 
-TypeScript
-
-
-
 ## Define a Middleware to Restrict Unauthorized Access
 
 This middleware checks if the user role exists in the `allowedRoles` array. If the role is in the array then it means the user is allowed to perform that action else it will throw an error.
@@ -1396,10 +1254,6 @@ export const restrictTo =
     next();
   };
 ```
-
-TypeScript
-
-
 
 ## Create the Authentication Routes
 
@@ -1431,10 +1285,6 @@ router.get('/me', getMeHandler);
 export default router;
 ```
 
-TypeScript
-
-
-
 The `user.route.ts` contains the routes to:
 
 - Get all users (only by Admin)
@@ -1458,10 +1308,6 @@ router.post('/login', validate(loginUserSchema), loginHandler);
 
 export default router;
 ```
-
-TypeScript
-
-
 
 The `auth.route.ts` contains the routes to:
 
@@ -1550,10 +1396,6 @@ app.listen(port, () => {
 });
 ```
 
-TypeScript
-
-
-
 ## Testing the JWT Authentication Rest API
 
 Run this command to spawn the MongoDB and Redis Docker containers:
@@ -1562,13 +1404,9 @@ Run this command to spawn the MongoDB and Redis Docker containers:
 docker-compose up -d
 ```
 
-Shell
-
-
-
 You should see the following logs:
 
-```
+```bash
 $ docker-compose up -d
 Creating network "jwt_auth_default" with the default driver
 Creating redis ... done
@@ -1577,7 +1415,7 @@ Creating mongo ... done
 
 Run `yarn start` in the terminal and you should see the following logs:
 
-```
+```bash
 $ yarn start
 yarn run v1.22.18
 $ ts-node-dev --respawn --transpile-only src/app.ts
@@ -1593,25 +1431,76 @@ Let’s register some users. You can use Postman but am going to use the [HTTP c
 
 Register some users with http://localhost:8000/api/auth/register route
 
-![jwt authentication register new user](https://codevoweb.com/wp-content/uploads/2022/05/jwt-authentication-register-new-user.png?ezimgfmt=rs:615x599/rscb1/ng:webp/ngcb1)
+```json
+{
+  "body": {
+  	"name": "John Doe",
+  	"email": "johndoe@gmail.com",
+  	"password": "password123",
+  	"passwordConfirm": "password123"
+	},
+  "method": "POST",
+  "url": "http://127.0.0.1:8000/api/auth/register"
+}
+```
 
 Here is the response you’ll get after registering a new user
 
-![jwt authentication response after registering a user](https://codevoweb.com/wp-content/uploads/2022/05/jwt-authentication-response-after-registering-a-user.webp?ezimgfmt=rs:615x642/rscb1/ng:webp/ngcb1)
+```json
+{
+    "status": "success",
+    "data": {
+        "user": {
+            "name": "John Doe",
+            "email": "johndoe@gmail.com",
+            "role": "user",
+            "_id": "655c38ce06dbd7d269a8bb87",
+            "createdAt": "2023-11-21T04:57:50.186Z",
+            "updatedAt": "2023-11-21T04:57:50.186Z",
+            "__v": 0
+        }
+    }
+}
+```
 
 Open MongoDB Compass then click on the users collection and you should see the registered users.
 
-![registered users in MongoDB database](https://codevoweb.com/wp-content/uploads/2022/04/registered-users-in-MongoDB-database.png?ezimgfmt=rs:615x505/rscb1/ng:webp/ngcb1)
+```json
+{
+    "_id" : ObjectId("655c38ce06dbd7d269a8bb87"),
+    "name" : "John Doe",
+    "email" : "johndoe@gmail.com",
+    "password" : "$2a$12$3qqTiowMJWf.MAj8sABNBeXTvNeaoZKznTIO1LbtjuoiWJSM5QVi.",
+    "role" : "user",
+    "createdAt" : ISODate("2023-11-21T04:57:50.186+0000"),
+    "updatedAt" : ISODate("2023-11-21T04:57:50.186+0000"),
+    "__v" : NumberInt(0)
+}
+```
 
 ### Login user
 
 Let’s login with the login credentials of any of the users you created
 
-![jwt authentication register new user](https://codevoweb.com/wp-content/uploads/2022/05/jwt-authentication-login-the-registered-user.png?ezimgfmt=rs:615x642/rscb1/ng:webp/ngcb1)
+```json
+{
+  "body": {
+	  "email": "johndoe@gmail.com",
+  	"password": "password123"
+	}
+  "method": "POST",
+  "url": "http://127.0.0.1:8000/api/auth/login"
+}  
+```
 
 You should get a response with an access token. We sent a cookie with the response but this extension doesn’t show cookies. If you are using Postman then you will see the cookies in the cookie tab.
 
-![jwt authentication response after logging in](https://codevoweb.com/wp-content/uploads/2022/05/jwt-authentication-response-after-logging-in.webp?ezimgfmt=rs:615x642/rscb1/ng:webp/ngcb1)
+```json
+{
+    "status": "success",
+    "accessToken": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NTVjMzhjZTA2ZGJkN2QyNjlhOGJiODciLCJpYXQiOjE3MDA1NDM3NTQsImV4cCI6MTcwMDU0NDY1NH0.DvZIYSi6lRbhrNGJwZQW8YgqcAV0NYh4CJCWP1MNEbRZOEZ8DEv6FzJFDhSTH8Qw6BlIXkmLWX-eDntp1mcyBuGQLZzTu235slR-74bkJmVNjAzT_T86R6GgFpqK3ShqUuS24LYTOyW0YEXy2Y0AbWCBfb6r06-bo4MUG7kL0wxYS8wx5vOHjLwE_oo5eEQtH2wt0ueMuqFrnWgBBePt87gnc7hVHDjskVOUXiIIly_Eqzd-bKsQp2PuSS0Z-6-uKZUqakY6oYQfmZc9B5fn1-mS4iLTIEv--3AH1mHJeWErT_3rqqJLG0S95ayatR_wQC7UcsLPnXoF901tmPXLrw"
+}
+```
 
 Now, let’s connect to the Redis Docker container to see the logged-in users’ credentials. We are storing the credentials in Redis to serve as a form of session.
 
@@ -1621,11 +1510,37 @@ Now, let’s connect to the Redis Docker container to see the logged-in users’
 
 After logging in,  the access token and add the authorization header with the token attached to the bearer string value.
 
-![jwt authentication get logged in users credentials](https://codevoweb.com/wp-content/uploads/2022/05/jwt-authentication-get-logged-in-users-credentials.webp?ezimgfmt=rs:615x638/rscb1/ng:webp/ngcb1)
+```json
+{
+  "body": {
+  },
+  "headers": {
+    "authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MjYxMjBlMDYyZjRmMThlMTVkZjdiNDgiLCJpYXQiOjE2NTA1Mzk0MTksImV4cCI6MTY1MDU0MDMxOX0.ViMoWXT8F9V8NDNSmmr8J9eSqpSr7nwZ7SdF1vjlrOD542rGSd1WUAPbJYTvmcXdDgGoVaWXlvZNGhGwioCs2A"
+  },
+  "method": "GET",
+  "title": "Get Me",
+  "url": "http://localhost:8000/api/users/me"
+}
+```
 
 You should get the users’ credentials as a response if the access token is valid
 
-![jwt authentication response after getting logged in user's credentials](https://codevoweb.com/wp-content/uploads/2022/05/jwt-authentication-response-after-getting-logged-in-users-credentials.webp?ezimgfmt=rs:615x642/rscb1/ng:webp/ngcb1)
+```json
+{
+    "status": "success",
+    "data": {
+        "user": {
+            "_id": "655c38ce06dbd7d269a8bb87",
+            "name": "John Doe",
+            "email": "johndoe@gmail.com",
+            "role": "user",
+            "createdAt": "2023-11-21T04:57:50.186Z",
+            "updatedAt": "2023-11-21T04:57:50.186Z",
+            "__v": 0
+        }
+    }
+}
+```
 
 ### Admin Get All Users
 
@@ -1633,11 +1548,44 @@ Get back to MongoDB Compass and change one of the users’ role to admin and log
 
  and paste the access token and make a request to http://localhost:8000/users route in order to get all the users in the database.
 
-![jwt authentication admin get all users](https://codevoweb.com/wp-content/uploads/2022/05/jwt-authentication-admin-get-all-users.webp?ezimgfmt=rs:615x640/rscb1/ng:webp/ngcb1)
+```json
+{
+  "body": {
+  },
+  "headers": {
+    "authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MjYxMjBlMDYyZjRmMThlMTVkZjdiNDgiLCJpYXQiOjE2NTA1Mzk0MTksImV4cCI6MTY1MDU0MDMxOX0.ViMoWXT8F9V8NDNSmmr8J9eSqpSr7nwZ7SdF1vjlrOD542rGSd1WUAPbJYTvmcXdDgGoVaWXlvZNGhGwioCs2A"
+  },
+  "method": "GET",
+  "title": "All users",
+  "url": "http://localhost:8000/api/users"
+}
+```
+
+
 
 You should get all the users if that email is the admin’s email.
 
-![Admin get all users](https://codevoweb.com/wp-content/uploads/2022/04/Admin-get-all-users.png?ezimgfmt=rs:615x593/rscb1/ng:webp/ngcb1)
+```json
+{
+    "status": "success",
+    "result": 1,
+    "data": {
+        "users": [
+            {
+                "_id": "655c38ce06dbd7d269a8bb87",
+                "name": "John Doe",
+                "email": "johndoe@gmail.com",
+                "role": "admin",
+                "createdAt": "2023-11-21T04:57:50.186Z",
+                "updatedAt": "2023-11-21T04:57:50.186Z",
+                "__v": 0
+            }
+        ]
+    }
+}
+```
+
+
 
 ## Conclusion
 
