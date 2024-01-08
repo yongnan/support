@@ -1,5 +1,7 @@
 # Bun CRUD API with Elysia.js & MongoDB
 
+[source](https://mirzaleka.medium.com/bun-crud-api-with-elysia-js-mongodb-10e73d484723)
+
 ![Mirza Leka](https://miro.medium.com/v2/resize:fill:88:88/1*KDDz8K4iOfG2wBFXH8_nXA.jpeg)
 
 [Mirza Leka](https://mirzaleka.medium.com/?source=post_page-----10e73d484723--------------------------------)
@@ -958,26 +960,6 @@ Feel free to clone the project and play around with it.
 ### Bun CRUD API with Elysia.js & MongoDB. Contribute to Leka-Workshop/Bun-CRUD-App development by creating an account on…
 
 github.com
-
-# Read More
-
-## Evolution of Server-Side JavaScript
-
-### From Java-based runtimes to the rise of Node.js, the birth of NPM, the growing ecosystem, the innovating Deno, and the…
-
-itnext.io
-
-## 35 features that make Angular stand out from the crowd
-
-### In this article, we’ll explore the enduring features that have solidified Angular’s position as a popular web…
-
-mirzaleka.medium.com
-
-## Getting Started with AWS Lambda & Serverless Framework
-
-### This guide will teach you how to develop, test, and deploy AWS Lambda function using Serverless Framework and also get…
-
-mirzaleka.medium.com
 
 # Learn More on Bun
 
