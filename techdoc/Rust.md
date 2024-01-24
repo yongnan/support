@@ -12,6 +12,12 @@ If you’re using Linux or macOS, open a terminal and enter the following comman
 $ curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
 ```
 
+```
+source "$HOME/.cargo/env"
+```
+
+
+
 You will also need a *linker*, which is a program that Rust uses to join its compiled outputs into one file. It is likely you already have one. If you get linker errors, you should install a C compiler, which will typically include a linker. A C compiler is also useful because some common Rust packages depend on C code and will need a C compiler.
 
 On macOS, you can get a C compiler by running:
@@ -106,3 +112,24 @@ $ cargo run
      Running `target/debug/hello_cargo`
 Hello, world!
 ```
+
+ quickly checks your code to make sure it compiles but doesn’t produce an executable:
+
+```
+$ cargo check
+   Checking hello_cargo v0.1.0 (file:///projects/hello_cargo)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.32 secs
+```
+
+### [Building for Release](https://doc.rust-lang.org/book/ch01-03-hello-cargo.html#building-for-release)
+
+When your project is finally ready for release, you can use 
+
+```
+cargo build --release
+```
+
+to compile it with optimizations. This command will create an executable in *target/release*
+
+# Common Programming Concepts
+
