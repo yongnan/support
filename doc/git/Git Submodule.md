@@ -1,6 +1,6 @@
 # Git Submodule
 
-## Starting with Submodules
+### Starting with Submodules
 
 inside your main project
 
@@ -73,7 +73,7 @@ Lastly, push these changes:
 $ git push origin master
 ```
 
-## **Cloning a Project with Submodules**
+### **Cloning a Project with Submodules**
 
 ```console
 $ git clone https://github.com/chaconinc/MainProject
@@ -106,3 +106,5 @@ To also initialize, fetch and checkout any nested submodules, use `git submodule
 ### Working on a Project with Submodules
 
 #### Pulling in Upstream Changes from the Submodule Remote
+
+go into the directory and run `git fetch` and `git merge` 
