@@ -722,25 +722,10 @@ import {
  } from "./schema/user.schema";
 
 ...
-app.post("/api/sessions", validateRequest(createUserSessionSchema), createUserSessionHandler);
+app.post("/api/login", validateRequest(createUserSessionSchema), createUserSessionHandler);
 ```
 
-## Delete a user session
-
-### update route
-
-```ts
-import { 
-  ...,
-  requiresUser 
-} from "./middleware";
-import { 
-  ...,
-  invalidateUserSessionHandler
- } from "./controller/session.controller";
-
-app.delete("/api/sessions", requiresUser, invalidateUserSessionHandler);
-```
+## Logout (Delete a user session)
 
 ### Create requireUser middleware
 
@@ -814,6 +799,53 @@ export async function invalidateUserSessionHandler(
   await updateSession({ _id: sessionId }, { valid: false });
 
   return res.sendStatus(200);
+}
+```
+
+### add findUser to user service
+
+`user.serice.ts`
+
+```ts
+export async function findUser(query: FilterQuery<UserDocument>) {
+  return User.findOne(query).lean();
+}
+```
+
+### Update session service
+
+add `reIssueAccessToken` : 
+
+```ts
+import { get } from "lodash";
+import { 
+  ..., 
+  decode } from "../utils/jwt.utils";
+import { findUser } from "./user.service";
+
+export async function reIssueAccessToken({
+  refreshToken,
+}: {
+  refreshToken: string;
+}) {
+  // Decode the refresh token
+  const { decoded } = decode(refreshToken);
+
+  if (!decoded || !get(decoded, "_id")) return false;
+
+  // Get the session
+  const session = await Session.findById(get(decoded, "_id"));
+
+  // Make sure the session is still valid
+  if (!session || !session?.valid) return false;
+
+  const user = await findUser({ _id: session.user });
+
+  if (!user) return false;
+
+  const accessToken = createAccessToken({ user, session });
+
+  return accessToken;
 }
 ```
 
@@ -891,53 +923,19 @@ import { deserializeUser } from "./middleware";
 app.use(deserializeUser);
 ```
 
-
-
-### Update session service  
-
-add `reIssueAccessToken` : 
+### update route
 
 ```ts
-import { get } from "lodash";
 import { 
-  ..., 
-  decode } from "../utils/jwt.utils";
-import { findUser } from "./user.service";
+  ...,
+  requiresUser 
+} from "./middleware";
+import { 
+  ...,
+  invalidateUserSessionHandler
+ } from "./controller/session.controller";
 
-export async function reIssueAccessToken({
-  refreshToken,
-}: {
-  refreshToken: string;
-}) {
-  // Decode the refresh token
-  const { decoded } = decode(refreshToken);
-
-  if (!decoded || !get(decoded, "_id")) return false;
-
-  // Get the session
-  const session = await Session.findById(get(decoded, "_id"));
-
-  // Make sure the session is still valid
-  if (!session || !session?.valid) return false;
-
-  const user = await findUser({ _id: session.user });
-
-  if (!user) return false;
-
-  const accessToken = createAccessToken({ user, session });
-
-  return accessToken;
-}
-```
-
-### add findUser to user service
-
-`user.serice.ts`
-
-```ts
-export async function findUser(query: FilterQuery<UserDocument>) {
-  return User.findOne(query).lean();
-}
+app.delete("/api/sessions", requiresUser, invalidateUserSessionHandler);
 ```
 
 ## Get all sessions for the currently logged in user
